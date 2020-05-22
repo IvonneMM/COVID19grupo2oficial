@@ -1,0 +1,76 @@
+```{r}
+#Limpieza de tabla de número de doctores
+```
+
+
+```{r}
+install.packages("htmltab")
+
+
+```
+
+```{r}
+library(htmltab)
+```
+
+```{r}
+LinkDoc="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/359.html"
+
+Link_path_doc='//*[@id="fieldListing"]'
+```
+
+```{r}
+Medicos= htmltab (doc = LinkDoc,which = Link_path_doc)
+```
+
+```{r}
+names(Medicos)
+names(Medicos)= c ("Pais", "Numero_medicos")
+```
+
+```{r}
+library(tidyr)
+```
+
+
+```{r}
+Medicos=separate(Medicos,Numero_medicos,into=c("Numero_medicos",'delete'), "\\ ")[,-3]
+```
+
+
+
+```{r}
+#Vamos a intentar quedarnos con los paises que son de europa y america 
+```
+
+
+```{r}
+install.packages("rio")
+```
+
+```{r}
+library(rio)
+```
+
+```{r}
+Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
+```
+
+
+```{r}
+Europa_America2="https://github.com/IvonneMM/Grupo2_COVID2020/raw/master/America%20y%20Europa3%20(3).xls"
+
+EuroAmer2=import(Europa_America2)
+
+```
+
+
+```{r}
+intento2=merge(Medicos,EuroAmer2,by.x='Pais', by.y='Pais') 
+head(intento2)
+```
+
+```{r}
+## salen 81 paises 
+```
+
