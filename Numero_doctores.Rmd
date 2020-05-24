@@ -37,6 +37,27 @@ library(tidyr)
 Medicos=separate(Medicos,Numero_medicos,into=c("Numero_medicos",'delete'), "\\ ")[,-3]
 ```
 
+```{r}
+table(Medicos$Medicos, useNA= 'always')
+```
+```{r}
+Medicos<-na.omit(Medicos)
+Medicos
+```
+```{r}
+str(Medicos)
+```
+
+```{r}
+Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
+```
+
+```{r}
+Medicos<-na.omit(Medicos)
+Medicos
+```
+
+
 
 
 ```{r}
@@ -48,20 +69,29 @@ Medicos=separate(Medicos,Numero_medicos,into=c("Numero_medicos",'delete'), "\\ "
 install.packages("rio")
 ```
 
+
+
 ```{r}
 library(rio)
 ```
 
+
+
 ```{r}
-Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
+Europa_America2="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1).xls"
+
+EuroAmer2=import(Europa_America2)
+
 ```
 
 
 ```{r}
-Europa_America2="https://github.com/IvonneMM/Grupo2_COVID2020/raw/master/America%20y%20Europa3%20(3).xls"
+names(EuroAmer2)
+```
 
-EuroAmer2=import(Europa_America2)
 
+```{r}
+names(EuroAmer2)= c ("Pais")
 ```
 
 
@@ -73,4 +103,5 @@ head(intento2)
 ```{r}
 ## salen 81 paises 
 ```
+
 
