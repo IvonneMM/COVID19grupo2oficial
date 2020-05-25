@@ -1,0 +1,41 @@
+```{r}
+#Limpieza de % del gasto de PBI
+```
+
+```{r}
+library(htmltab)
+```
+
+```{r}
+Linkpbi="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/409.html"
+
+Link_path_pbi='//*[@id="fieldListing"]'
+```
+
+
+```{r}
+pbi= htmltab (doc = Linkpbi,which = Link_path_pbi)
+```
+
+```{r}
+names(pbi)
+names(pbi)= c ("Pais", "Porcentaje_PBI")
+```
+
+```{r}
+install.packages("tidyr")
+```
+
+
+```{r}
+library(tidyr)
+```
+
+```{r}
+pbi=separate(pbi,Porcentaje_PBI,into=c("Porcentaje_PBI",'delete'), "\\%")[,-3]
+```
+
+```{r}
+
+```
+
