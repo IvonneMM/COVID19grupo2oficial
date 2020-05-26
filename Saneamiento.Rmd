@@ -21,10 +21,6 @@ names(saneamiento)
 names(saneamiento)= c ("Pais", "Porcentaje_Saneamiento")
 ```
 
-```{r}
-install.packages("tidyr")
-```
-
 
 ```{r}
 library(tidyr)
