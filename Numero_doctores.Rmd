@@ -2,13 +2,6 @@
 #Limpieza de tabla de número de doctores
 ```
 
-
-```{r}
-install.packages("htmltab")
-
-
-```
-
 ```{r}
 library(htmltab)
 ```
@@ -68,12 +61,6 @@ Medicos
 
 
 ```{r}
-install.packages("rio")
-```
-
-
-
-```{r}
 library(rio)
 ```
 
@@ -99,7 +86,7 @@ names(EuroAmer1)= c ("Pais")
 
 ```{r}
 Medicos_EA =merge(Medicos,EuroAmer1,by.x='Pais', by.y='Pais') 
-head(MedicosEA)
+head(Medicos_EA)
 ```
 
 ```{r}
