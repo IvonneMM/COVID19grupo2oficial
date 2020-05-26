@@ -40,10 +40,12 @@ Medicos=separate(Medicos,Numero_medicos,into=c("Numero_medicos",'delete'), "\\ "
 ```{r}
 table(Medicos$Medicos, useNA= 'always')
 ```
+
 ```{r}
 Medicos<-na.omit(Medicos)
 Medicos
 ```
+
 ```{r}
 str(Medicos)
 ```
@@ -61,7 +63,7 @@ Medicos
 
 
 ```{r}
-#Vamos a intentar quedarnos con los paises que son de europa y america 
+#Nos  quedarnos con los paises que son de europa y america 
 ```
 
 
@@ -78,26 +80,26 @@ library(rio)
 
 
 ```{r}
-Europa_America2="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1).xls"
+Europa_America1="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1).xls"
 
-EuroAmer2=import(Europa_America2)
+EuroAmer1=import(Europa_America1)
 
 ```
 
 
 ```{r}
-names(EuroAmer2)
+names(EuroAmer1)
 ```
 
 
 ```{r}
-names(EuroAmer2)= c ("Pais")
+names(EuroAmer1)= c ("Pais")
 ```
 
 
 ```{r}
-intento2=merge(Medicos,EuroAmer2,by.x='Pais', by.y='Pais') 
-head(intento2)
+Medicos_EA =merge(Medicos,EuroAmer1,by.x='Pais', by.y='Pais') 
+head(MedicosEA)
 ```
 
 ```{r}
