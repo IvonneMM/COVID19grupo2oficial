@@ -22,10 +22,6 @@ names(pbi)
 names(pbi)= c ("Pais", "Porcentaje_PBI")
 ```
 
-```{r}
-install.packages("tidyr")
-```
-
 
 ```{r}
 library(tidyr)
@@ -60,9 +56,6 @@ pbi<-na.omit(pbi)
 #Nos  quedarnos con los paises que son de europa y america 
 ```
 
-```{r}
-install.packages("rio")
-```
 
 ```{r}
 library(rio)
