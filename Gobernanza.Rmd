@@ -1,0 +1,10 @@
+```{r}
+library(rio)
+```
+
+```{r}
+Gobernabilidad="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Government.xls"
+Gobernabilidad=import(Gobernabilidad)
+```
+
+
