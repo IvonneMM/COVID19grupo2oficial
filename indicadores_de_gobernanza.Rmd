@@ -1,7 +1,7 @@
 
 
 ```{r}
-library(htmltab) 
+library(htmltab)
 ```
 ```{r}
 library(rio)
