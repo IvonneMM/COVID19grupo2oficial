@@ -3,7 +3,7 @@
 library(rio)
 ```
 ```{r}
-lkcorrup='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(1).xlsx'
+lkcorrup='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx'
 ```
 ```{r}
 datacorrup=import(lkcorrup)
@@ -24,7 +24,7 @@ str(datacorrup)
 datacorrup$`Control de la corrupción`=as.numeric(datacorrup$`Control de la corrupción`)
 ```
 ```{r}
-lkviolence='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(2).xlsx'
+lkviolence='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_Indicators_political_stability_and_absence_of_violence.xlsx'
 ```
 ```{r}
 dataviolence=import(lkviolence)
