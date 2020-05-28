@@ -2,13 +2,6 @@
 #Limpieza de tabla de número de doctores
 ```
 
-
-```{r}
-install.packages("htmltab")
-
-
-```
-
 ```{r}
 library(htmltab)
 ```
@@ -37,40 +30,67 @@ library(tidyr)
 Medicos=separate(Medicos,Numero_medicos,into=c("Numero_medicos",'delete'), "\\ ")[,-3]
 ```
 
-
-
 ```{r}
-#Vamos a intentar quedarnos con los paises que son de europa y america 
-```
-
-
-```{r}
-install.packages("rio")
+table(Medicos$Medicos, useNA= 'always')
 ```
 
 ```{r}
-library(rio)
+Medicos<-na.omit(Medicos)
+Medicos
+```
+
+```{r}
+str(Medicos)
 ```
 
 ```{r}
 Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
 ```
 
+```{r}
+Medicos<-na.omit(Medicos)
+Medicos
+```
+
+
+
 
 ```{r}
-Europa_America2="https://github.com/IvonneMM/Grupo2_COVID2020/raw/master/America%20y%20Europa3%20(3).xls"
+#Nos  quedarnos con los paises que son de europa y america 
+```
 
-EuroAmer2=import(Europa_America2)
+
+```{r}
+library(rio)
+```
+
+
+
+```{r}
+Europa_America1="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+
+EuroAmer1=import(Europa_America1)
 
 ```
 
 
 ```{r}
-intento2=merge(Medicos,EuroAmer2,by.x='Pais', by.y='Pais') 
-head(intento2)
+names(EuroAmer1)
+```
+
+
+```{r}
+names(EuroAmer1)= c ("Pais")
+```
+
+
+```{r}
+Medicos_EA =merge(Medicos,EuroAmer1,by.x='Pais', by.y='Pais') 
+head(Medicos_EA)
 ```
 
 ```{r}
 ## salen 81 paises 
 ```
+
 
