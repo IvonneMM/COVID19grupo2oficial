@@ -366,6 +366,48 @@ summary {
 
 
 <pre class="r"><code>library(htmltab)</code></pre>
+<<<<<<< HEAD:PBI.html
+<pre class="r"><code>Linkpbi=&quot;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/409.html&quot;
+
+Link_path_pbi='//*[@id=&quot;fieldListing&quot;]'</code></pre>
+<pre class="r"><code>pbi= htmltab (doc = Linkpbi,which = Link_path_pbi)</code></pre>
+<pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
+<pre class="r"><code>names(pbi)</code></pre>
+<pre><code>## [1] &quot;Country&quot;                    &quot;Current Health Expenditure&quot;</code></pre>
+<pre class="r"><code>names(pbi)= c (&quot;Pais&quot;, &quot;Porcentaje_PBI&quot;)</code></pre>
+<pre class="r"><code>library(tidyr)</code></pre>
+<pre class="r"><code>pbi=separate(pbi,Porcentaje_PBI,into=c(&quot;Porcentaje_PBI&quot;,'delete'), &quot;\\%&quot;)[,-3]</code></pre>
+<pre class="r"><code>table(pbi$pbi, useNA= 'always')</code></pre>
+<pre><code>## 
+## &lt;NA&gt; 
+##    0</code></pre>
+<pre class="r"><code>pbi&lt;-na.omit(pbi)</code></pre>
+<pre class="r"><code>str(pbi)</code></pre>
+<pre><code>## 'data.frame':    192 obs. of  2 variables:
+##  $ Pais          : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
+##  $ Porcentaje_PBI: chr  &quot;10.2&quot; &quot;6.7&quot; &quot;6.6&quot; &quot;10.4&quot; ...
+##  - attr(*, &quot;na.action&quot;)= 'omit' Named int 73
+##   ..- attr(*, &quot;names&quot;)= chr &quot;74&quot;</code></pre>
+<pre class="r"><code>pbi$Porcentaje_PBI=as.numeric(pbi$Porcentaje_PBI)</code></pre>
+<pre class="r"><code>pbi&lt;-na.omit(pbi)</code></pre>
+<pre class="r"><code>#Nos  quedarnos con los paises que son de europa y america </code></pre>
+<pre class="r"><code>library(rio)</code></pre>
+<pre class="r"><code>Europa_America2=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
+
+EuroAmer2=import(Europa_America2)</code></pre>
+<pre class="r"><code>names(EuroAmer2)</code></pre>
+<pre><code>## [1] &quot;Pais&quot;</code></pre>
+<pre class="r"><code>names(EuroAmer2)= c (&quot;Pais&quot;)</code></pre>
+<pre class="r"><code>PBI_EA =merge(pbi,EuroAmer2,by.x='Pais', by.y='Pais') 
+head(PBI_EA)</code></pre>
+<pre><code>##                  Pais Porcentaje_PBI
+## 1             Albania            6.7
+## 2             Andorra           10.4
+## 3 Antigua and Barbuda            4.3
+## 4           Argentina            7.5
+## 5             Armenia            9.9
+## 6             Austria           10.4</code></pre>
+=======
 <pre class="r"><code>lkpagecov=&#39;https://es.wikipedia.org/wiki/Pandemia_de_enfermedad_por_coronavirus_de_2019-2020&#39;
 lkpathcov=&#39;//*[@id=&quot;mw-content-text&quot;]/div/div[9]/table&#39;</code></pre>
 <pre class="r"><code>covid19=htmltab(doc = lkpagecov, which = lkpathcov )</code></pre>
@@ -377,6 +419,7 @@ lkpathcov=&#39;//*[@id=&quot;mw-content-text&quot;]/div/div[9]/table&#39;</code>
 <pre><code>## &#39;data.frame&#39;:    249 obs. of  2 variables:
 ##  $ Pais                            : chr  &quot;Estados Unidos&quot; &quot;Brasil&quot; &quot;Rusia&quot; &quot;Reino Unido&quot; ...
 ##  $ Muertes por millón de habitantes: num  312.5 127.9 28.2 564.5 574.7 ...</code></pre>
+>>>>>>> cf74b2e527ab819d2f9d7530862724fdb2d25204:covid19_decesos.html
 
 
 
