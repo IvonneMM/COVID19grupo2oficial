@@ -1,4 +1,4 @@
-LIMPIEZA DE BASE DE DATOS DE LA BASE DE DATOS VOZ Y RESPONSABILIDAD: RANGO DE PORCENTAJE (Voice and Accountability: PErcentile Rank)
+LIMPIEZA DE BASE DE DATOS DE LA BASE DE DATOS VOZ Y RENDICIÓN DE CUENTAS: RANGO DE PORCENTAJE (Voice and Accountability: PErcentile Rank)
 
 1.Trayendo la base de datos desde GitHub
 
@@ -43,5 +43,20 @@ table(VoiceandAcc$`2018 [YR2018]`,useNA = "always")
 
 ```{r}
 names(VoiceandAcc)=c("Pais","VoiceandAccountability")
+```
+
+8.Traemos la base de Excel para que con el Merge quitemos los países innecesarios
+
+```{r}
+library(rio)
+lkXLSX = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+Paisesoficial=import(lkXLSX)
+```
+
+9.Hacemos el Merge
+
+
+```{r}
+VoiceandAccountability = merge(VoiceandAcc,Paisesoficial,by.x='Pais',by.y='Pais')
 ```
 
