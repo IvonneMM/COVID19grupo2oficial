@@ -365,7 +365,7 @@ summary {
 </div>
 
 
-<pre class="r"><code>library(rio)</code></pre>
+<pre class="r"><code>library(rio) </code></pre>
 <pre class="r"><code>lkcorrup=&#39;https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx&#39;</code></pre>
 <pre class="r"><code>datacorrup=import(lkcorrup)</code></pre>
 <pre class="r"><code>datacorrup[c(2:4)]=NULL</code></pre>
@@ -374,7 +374,7 @@ summary {
 <pre class="r"><code>str(datacorrup)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    99 obs. of  2 variables:
 ##  $ Country                 : chr  &quot;Albania&quot; &quot;Andorra&quot; &quot;Anguilla&quot; &quot;Antigua and Barbuda&quot; ...
-##  $ Control de la corrupción: chr  &quot;35.09615&quot; &quot;86.53846&quot; &quot;86.53846&quot; &quot;63.46154&quot; ...</code></pre>
+##  $ Control de la corrupción: chr  &quot;35.096150000000002&quot; &quot;86.538460000000001&quot; &quot;86.538460000000001&quot; &quot;63.461539999999999&quot; ...</code></pre>
 <pre class="r"><code>datacorrup$`Control de la corrupción`=as.numeric(datacorrup$`Control de la corrupción`)</code></pre>
 <pre><code>## Warning: NAs introducidos por coerción</code></pre>
 <pre class="r"><code>lkviolence=&#39;https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_Indicators_political_stability_and_absence_of_violence.xlsx&#39;</code></pre>
@@ -385,7 +385,7 @@ summary {
 <pre class="r"><code>str(dataviolence)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    99 obs. of  2 variables:
 ##  $ Country                                                : chr  &quot;Albania&quot; &quot;Andorra&quot; &quot;Anguilla&quot; &quot;Antigua and Barbuda&quot; ...
-##  $ Estabilidad política y ausencia de violencia/terrorismo: chr  &quot;58.57143&quot; &quot;97.61905&quot; &quot;94.28571&quot; &quot;70.47619&quot; ...</code></pre>
+##  $ Estabilidad política y ausencia de violencia/terrorismo: chr  &quot;58.571429999999999&quot; &quot;97.619050000000001&quot; &quot;94.285709999999995&quot; &quot;70.476190000000003&quot; ...</code></pre>
 <pre class="r"><code>dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`=as.numeric(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`)</code></pre>
 <pre><code>## Warning: NAs introducidos por coerción</code></pre>
 <pre class="r"><code>corrupcion_y_violencia=merge(datacorrup,dataviolence)</code></pre>
