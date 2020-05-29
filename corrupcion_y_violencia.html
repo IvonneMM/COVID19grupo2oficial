@@ -365,53 +365,7 @@ summary {
 </div>
 
 
-<<<<<<< HEAD
 <pre class="r"><code>library(rio)</code></pre>
-=======
-<<<<<<< HEAD:Saneamiento.html
-<pre class="r"><code>#Saneamiento</code></pre>
-<pre class="r"><code>library(htmltab)</code></pre>
-<pre class="r"><code>Linksana=&quot;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/398.html&quot;
-
-Link_path_sana='//*[@id=&quot;fieldListing&quot;]'</code></pre>
-<pre class="r"><code>saneamiento= htmltab (doc = Linksana,which = Link_path_sana)</code></pre>
-<pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<pre class="r"><code>names(saneamiento)</code></pre>
-<pre><code>## [1] &quot;Country&quot;                    &quot;Sanitation facility access&quot;</code></pre>
-<pre class="r"><code>names(saneamiento)= c (&quot;Pais&quot;, &quot;Porcentaje_Saneamiento&quot;)</code></pre>
-<pre class="r"><code>library(tidyr)</code></pre>
-<pre class="r"><code>saneamiento$Porcentaje_Saneamiento=gsub(&quot;\\%.*&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)</code></pre>
-<pre class="r"><code>saneamiento$Porcentaje_Saneamiento=gsub(&quot;.*\\:&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)</code></pre>
-<pre class="r"><code>table(saneamiento$saneamiento, useNA= 'always')</code></pre>
-<pre><code>## 
-## &lt;NA&gt; 
-##    0</code></pre>
-<pre class="r"><code>saneamiento&lt;-na.omit(saneamiento)</code></pre>
-<pre class="r"><code>str(saneamiento)</code></pre>
-<pre><code>## 'data.frame':    209 obs. of  2 variables:
-##  $ Pais                  : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;American Samoa&quot; ...
-##  $ Porcentaje_Saneamiento: chr  &quot;45.1&quot; &quot;95.5&quot; &quot;89.8&quot; &quot;62.5&quot; ...</code></pre>
-<pre class="r"><code>saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)</code></pre>
-<pre class="r"><code>saneamiento&lt;-na.omit(saneamiento)</code></pre>
-<pre class="r"><code>library(rio)</code></pre>
-<pre class="r"><code>Europa_America3=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
-
-EuroAmer3=import(Europa_America3)</code></pre>
-<pre class="r"><code>names(EuroAmer3)</code></pre>
-<pre><code>## [1] &quot;Pais&quot;</code></pre>
-<pre class="r"><code>names(EuroAmer3)= c (&quot;Pais&quot;)</code></pre>
-<pre class="r"><code>Saneamiento_EA =merge(saneamiento,EuroAmer3,by.x='Pais', by.y='Pais') 
-head(Saneamiento_EA)</code></pre>
-<pre><code>##                  Pais Porcentaje_Saneamiento
-## 1             Albania                   95.5
-## 2             Andorra                  100.0
-## 3 Antigua and Barbuda                   91.4
-## 4           Argentina                   96.2
-## 5             Armenia                   96.2
-## 6             Austria                  100.0</code></pre>
-=======
-<pre class="r"><code>library(rio) </code></pre>
->>>>>>> 7a49c3903d8e543ca5aee1909c587d691e531d0b
 <pre class="r"><code>lkcorrup=&#39;https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx&#39;</code></pre>
 <pre class="r"><code>datacorrup=import(lkcorrup)</code></pre>
 <pre class="r"><code>datacorrup[c(2:4)]=NULL</code></pre>
@@ -435,7 +389,9 @@ head(Saneamiento_EA)</code></pre>
 <pre class="r"><code>dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`=as.numeric(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`)</code></pre>
 <pre><code>## Warning: NAs introducidos por coerción</code></pre>
 <pre class="r"><code>corrupcion_y_violencia=merge(datacorrup,dataviolence)</code></pre>
->>>>>>> cf74b2e527ab819d2f9d7530862724fdb2d25204:corrupcion_y_violencia.html
+<pre class="r"><code>lkpaises=&#39;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&#39;</code></pre>
+<pre class="r"><code>datapaises=import(lkpaises)</code></pre>
+<pre class="r"><code>Corrupcion_y_violencia=merge(datapaises,corrupcion_y_violencia)</code></pre>
 
 
 
