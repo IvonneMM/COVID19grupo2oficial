@@ -386,11 +386,11 @@ camas=separate(camas,`Hospital bed density`,into = c(&quot;oficial&quot;,&quot;d
 <p>3.Eliminando columnas innecesarias</p>
 <pre class="r"><code>camas$delete=NULL</code></pre>
 <p>4.Cambiando nombres</p>
-<pre class="r"><code>names(camas)=c(&quot;pais&quot;,&quot;numero de camas por 1000 hab&quot;)</code></pre>
+<pre class="r"><code>names(camas)=c(&quot;Pais&quot;,&quot;numero de camas por 1000 hab&quot;)</code></pre>
 <p>5.Ver la tabla</p>
 <pre class="r"><code>str(camas)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    182 obs. of  2 variables:
-##  $ pais                        : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
+##  $ Pais                        : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
 ##  $ numero de camas por 1000 hab: chr  &quot;0.5&quot; &quot;2.9&quot; &quot;1.9&quot; &quot;2.5&quot; ...</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>Cambiar chr a numerico</li>
@@ -399,7 +399,7 @@ camas=separate(camas,`Hospital bed density`,into = c(&quot;oficial&quot;,&quot;d
 <p>7.Volvemos a ver la tabla</p>
 <pre class="r"><code>str(camas)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    182 obs. of  2 variables:
-##  $ pais                        : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
+##  $ Pais                        : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
 ##  $ numero de camas por 1000 hab: num  0.5 2.9 1.9 2.5 3.8 5 4.2 3.8 7.6 4.7 ...</code></pre>
 <ol start="8" style="list-style-type: decimal">
 <li>Viendo los NA’S</li>

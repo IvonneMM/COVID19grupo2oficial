@@ -35,7 +35,7 @@ camas$delete=NULL
 4.Cambiando nombres
 
 ```{r}
-names(camas)=c("pais","numero de camas por 1000 hab")
+names(camas)=c("Pais","numero de camas por 1000 hab")
 ```
 
 5.Ver la tabla
