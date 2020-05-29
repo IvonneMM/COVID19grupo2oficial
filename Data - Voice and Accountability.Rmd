@@ -1,7 +1,6 @@
-LIMPIEZA DE BASE DE DATOS DE LA BASE DE DATOS VOZ Y ACCOUNTABILITY: RANGO DE PORCENTAJE (Voice and Accountability: PErcentile Rank)
+LIMPIEZA DE BASE DE DATOS DE LA BASE DE DATOS VOZ Y RESPONSABILIDAD: RANGO DE PORCENTAJE (Voice and Accountability: PErcentile Rank)
 
 1.Trayendo la base de datos desde GitHub
-
 
 ```{r}
 library(rio)
