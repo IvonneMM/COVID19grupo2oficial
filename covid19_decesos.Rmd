@@ -1,26 +1,65 @@
- 
-```{r} 
+
+```{r}
 library(htmltab)
 ```
 ```{r}
-lkpagecov='https://es.wikipedia.org/wiki/Pandemia_de_enfermedad_por_coronavirus_de_2019-2020'
-lkpathcov='//*[@id="mw-content-text"]/div/div[9]/table'
+library(rio)
 ```
 ```{r}
-covid19=htmltab(doc = lkpagecov, which = lkpathcov )
+lkpage='https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory'
+lkpath='//*[@id="thetable"]'
 ```
 ```{r}
-covid19[c(2:6,8:10)]=NULL
+covid19data=htmltab(doc=lkpage,which = lkpath)
 ```
 ```{r}
-names(covid19)=c('Pais','Muertes por millón de habitantes')
+covid19data[,c(2,4)]=NULL
 ```
 ```{r}
-covid19=covid19[-c(250:251),]
+lkpage2='https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)'
+lkpath2='//*[@id="main"]'
 ```
 ```{r}
-covid19$`Muertes por millón de habitantes`=as.numeric(covid19$`Muertes por millón de habitantes`)
+population=htmltab(doc=lkpage2,which = lkpath2)
 ```
 ```{r}
-str(covid19)
+population[,c(2:4,6)]=NULL
 ```
+```{r}
+names(covid19data)=c('Pais','decesos')
+```
+```{r}
+names(population)=c('Pais','poblacion')
+```
+```{r}
+covid19data$Pais=trimws(covid19data$Pais,whitespace = "[\\h\\v]")
+```
+```{r}
+population$Pais=trimws(population$Pais,whitespace = "[\\h\\v]")
+```
+```{r}
+population$Pais=gsub('Â',"",population$Pais)
+```
+```{r}
+population$Pais=trimws(population$Pais,whitespace = "[\\h\\v]")
+```
+```{r}
+Covid19=merge(covid19data,population)
+```
+```{r}
+str(Covid19)
+```
+```{r}
+Covid19$poblacion=gsub(',',"",Covid19$poblacion)
+```
+```{r}
+Covid19$decesos=gsub(',',"",Covid19$decesos)
+```
+```{r}
+Covid19[,c(2:3)]=lapply(Covid19[,c(2:3)],as.numeric)
+```
+```{r}
+str(Covid19)
+```
+
+

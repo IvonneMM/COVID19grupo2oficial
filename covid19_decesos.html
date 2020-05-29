@@ -366,17 +366,37 @@ summary {
 
 
 <pre class="r"><code>library(htmltab)</code></pre>
-<pre class="r"><code>lkpagecov=&#39;https://es.wikipedia.org/wiki/Pandemia_de_enfermedad_por_coronavirus_de_2019-2020&#39;
-lkpathcov=&#39;//*[@id=&quot;mw-content-text&quot;]/div/div[9]/table&#39;</code></pre>
-<pre class="r"><code>covid19=htmltab(doc = lkpagecov, which = lkpathcov )</code></pre>
-<pre class="r"><code>covid19[c(2:6,8:10)]=NULL</code></pre>
-<pre class="r"><code>names(covid19)=c(&#39;Pais&#39;,&#39;Muertes por millón de habitantes&#39;)</code></pre>
-<pre class="r"><code>covid19=covid19[-c(250:251),]</code></pre>
-<pre class="r"><code>covid19$`Muertes por millón de habitantes`=as.numeric(covid19$`Muertes por millón de habitantes`)</code></pre>
-<pre class="r"><code>str(covid19)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    249 obs. of  2 variables:
-##  $ Pais                            : chr  &quot;Estados Unidos&quot; &quot;Brasil&quot; &quot;Rusia&quot; &quot;Reino Unido&quot; ...
-##  $ Muertes por millón de habitantes: num  312.5 127.9 28.2 564.5 574.7 ...</code></pre>
+<pre class="r"><code>library(rio)</code></pre>
+<pre class="r"><code>lkpage=&#39;https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory&#39;
+lkpath=&#39;//*[@id=&quot;thetable&quot;]&#39;</code></pre>
+<pre class="r"><code>covid19data=htmltab(doc=lkpage,which = lkpath)</code></pre>
+<pre><code>## Warning: Columns [Locations &gt;&gt; 229,Ref.] seem to have no data and are removed.
+## Use rm_nodata_cols = F to suppress this behavior</code></pre>
+<pre class="r"><code>covid19data[,c(2,4)]=NULL</code></pre>
+<pre class="r"><code>lkpage2=&#39;https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)&#39;
+lkpath2=&#39;//*[@id=&quot;main&quot;]&#39;</code></pre>
+<pre class="r"><code>population=htmltab(doc=lkpage2,which = lkpath2)</code></pre>
+<pre class="r"><code>population[,c(2:4,6)]=NULL</code></pre>
+<pre class="r"><code>names(covid19data)=c(&#39;Pais&#39;,&#39;decesos&#39;)</code></pre>
+<pre class="r"><code>names(population)=c(&#39;Pais&#39;,&#39;poblacion&#39;)</code></pre>
+<pre class="r"><code>covid19data$Pais=trimws(covid19data$Pais,whitespace = &quot;[\\h\\v]&quot;)</code></pre>
+<pre class="r"><code>population$Pais=trimws(population$Pais,whitespace = &quot;[\\h\\v]&quot;)</code></pre>
+<pre class="r"><code>population$Pais=gsub(&#39;Â&#39;,&quot;&quot;,population$Pais)</code></pre>
+<pre class="r"><code>population$Pais=trimws(population$Pais,whitespace = &quot;[\\h\\v]&quot;)</code></pre>
+<pre class="r"><code>Covid19=merge(covid19data,population)</code></pre>
+<pre class="r"><code>str(Covid19)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    198 obs. of  3 variables:
+##  $ Pais     : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
+##  $ decesos  : chr  &quot;235&quot; &quot;33&quot; &quot;630&quot; &quot;51&quot; ...
+##  $ poblacion: chr  &quot;38,041,754&quot; &quot;2,880,917&quot; &quot;43,053,054&quot; &quot;77,142&quot; ...</code></pre>
+<pre class="r"><code>Covid19$poblacion=gsub(&#39;,&#39;,&quot;&quot;,Covid19$poblacion)</code></pre>
+<pre class="r"><code>Covid19$decesos=gsub(&#39;,&#39;,&quot;&quot;,Covid19$decesos)</code></pre>
+<pre class="r"><code>Covid19[,c(2:3)]=lapply(Covid19[,c(2:3)],as.numeric)</code></pre>
+<pre class="r"><code>str(Covid19)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    198 obs. of  3 variables:
+##  $ Pais     : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
+##  $ decesos  : num  235 33 630 51 4 0 508 120 3 103 ...
+##  $ poblacion: num  38041754 2880917 43053054 77142 31825295 ...</code></pre>
 
 
 
