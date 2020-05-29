@@ -1,0 +1,40 @@
+ 
+```{r} 
+library(htmltab)
+```
+```{r}
+library(tidyr)
+```
+```{r}
+library(stringr)
+```
+```{r}
+lkpage='https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html'
+lkpath='//*[@id="fieldListing"]'
+```
+```{r}
+'agua potable' = htmltab(doc = lkpage, which = lkpath)
+```
+```{r}
+names(`agua potable`)
+```
+```{r}
+`agua potable`=separate(`agua potable`,"Drinking water source",into=c('z1','z2','z3','z4'), 'population')
+```
+```{r}
+`agua potable`$z1=NULL
+`agua potable`$z2=NULL
+`agua potable`$z4=NULL
+```
+```{r}
+`agua potable`$z3=str_extract_all(`agua potable`$z3,pattern="(\\-*\\d+\\.*\\d*)")
+```
+```{r}
+`agua potable`$z3=as.numeric(`agua potable`$z3)
+```
+```{r}
+str(`agua potable`)
+```
+```{r}
+names(`agua potable`)=c('Pais','% of population with access to improved drinking water')
+```

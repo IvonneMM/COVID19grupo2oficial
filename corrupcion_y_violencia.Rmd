@@ -1,0 +1,52 @@
+
+```{r}
+library(rio) 
+```
+```{r}
+lkcorrup='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx'
+```
+```{r}
+datacorrup=import(lkcorrup)
+```
+```{r}
+datacorrup[c(2:4)]=NULL
+```
+```{r}
+datacorrup=datacorrup[c(1:99),]
+```
+```{r}
+names(datacorrup)=c('Pais','Control de la corrupción')
+```
+```{r}
+str(datacorrup)
+```
+```{r}
+datacorrup$`Control de la corrupción`=as.numeric(datacorrup$`Control de la corrupción`)
+```
+```{r}
+lkviolence='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_Indicators_political_stability_and_absence_of_violence.xlsx'
+```
+```{r}
+dataviolence=import(lkviolence)
+```
+```{r}
+dataviolence[c(2:4)]=NULL
+```
+```{r}
+dataviolence=dataviolence[c(1:99),]
+```
+```{r}
+names(dataviolence)=c('Pais','Estabilidad política y ausencia de violencia/terrorismo')
+```
+```{r}
+str(dataviolence)
+```
+
+```{r}
+dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`=as.numeric(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`)
+```
+
+```{r}
+corrupcion_y_violencia=merge(datacorrup,dataviolence)
+```
+

@@ -1,0 +1,22 @@
+
+```{r}
+library(rio) 
+```
+```{r}
+UHClk='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_World_Development_Indicators.xlsx'
+```
+```{r}
+datauhc=import(UHClk)
+```
+```{r}
+datauhc[,c(1:2,4:13,15:16)]=NULL
+```
+```{r}
+names(datauhc)=c('Pais','Asistencia sanitaria universal')
+```
+```{r}
+datauhc$`Asistencia sanitaria universal`=as.numeric(datauhc$`Asistencia sanitaria universal`)
+```
+```{r}
+datauhc=datauhc[-c(218:270),]
+```
