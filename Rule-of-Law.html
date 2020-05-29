@@ -420,6 +420,16 @@ RuleofLaw= import(lkXLSX)</code></pre>
 ##        1        1        1        1        1        1        3</code></pre>
 <p>7.Cambiando nombres de las columnas</p>
 <pre class="r"><code>names(RuleofLaw)=c(&quot;Pais&quot;,&quot;RuleofLaw&quot;)</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>Traemos la base de Excel para que con el Merge quitemos los países innecesarios</li>
+</ol>
+<pre class="r"><code>lkXLSX = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
+
+Paisesoficial=import(lkXLSX)</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li>Hacemos el Merge</li>
+</ol>
+<pre class="r"><code>ImperiodelaLey=merge(RuleofLaw,Paisesoficial,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;)</code></pre>
 
 
 
