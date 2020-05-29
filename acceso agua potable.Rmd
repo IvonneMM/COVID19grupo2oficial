@@ -36,5 +36,5 @@ names(`agua potable`)
 str(`agua potable`)
 ```
 ```{r}
-names(`agua potable`)=c('Country','% of population with access to improved drinking water')
+names(`agua potable`)=c('Pais','% of population with access to improved drinking water')
 ```
