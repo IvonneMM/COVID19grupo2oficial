@@ -30,7 +30,7 @@ che$delete=NULL
 4. Cambiando nombres
 
 ```{r}
-names(che)=c("pais","CHE")
+names(che)=c("Pais","CHE")
 ```
 
 

@@ -388,11 +388,11 @@ che=separate(che,`Current Health Expenditure`,into = c(&quot;oficial&quot;,&quot
 <ol start="4" style="list-style-type: decimal">
 <li>Cambiando nombres</li>
 </ol>
-<pre class="r"><code>names(che)=c(&quot;pais&quot;,&quot;CHE&quot;)</code></pre>
+<pre class="r"><code>names(che)=c(&quot;Pais&quot;,&quot;CHE&quot;)</code></pre>
 <p>5.Ver tabla</p>
 <pre class="r"><code>str(che)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    193 obs. of  2 variables:
-##  $ pais: chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
+##  $ Pais: chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
 ##  $ CHE : chr  &quot;10.2&quot; &quot;6.7&quot; &quot;6.6&quot; &quot;10.4&quot; ...</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>Cambiar chr a numérico</li>
@@ -403,7 +403,7 @@ che=separate(che,`Current Health Expenditure`,into = c(&quot;oficial&quot;,&quot
 </ol>
 <pre class="r"><code>str(che)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    193 obs. of  2 variables:
-##  $ pais: chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
+##  $ Pais: chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
 ##  $ CHE : num  10.2 6.7 6.6 10.4 2.9 4.3 7.5 9.9 9.3 10.4 ...</code></pre>
 <p>8.Viendo los NA’s</p>
 <pre class="r"><code>table(che$CHE,useNA = &quot;always&quot;)</code></pre>
