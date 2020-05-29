@@ -368,6 +368,7 @@ summary {
 <pre class="r"><code>library(htmltab)</code></pre>
 <pre class="r"><code>library(tidyr)</code></pre>
 <pre class="r"><code>library(stringr)</code></pre>
+<pre class="r"><code>library(rio)</code></pre>
 <pre class="r"><code>lkpage=&#39;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html&#39;
 lkpath=&#39;//*[@id=&quot;fieldListing&quot;]&#39;</code></pre>
 <pre class="r"><code>&#39;agua potable&#39; = htmltab(doc = lkpage, which = lkpath)</code></pre>
@@ -388,6 +389,9 @@ lkpath=&#39;//*[@id=&quot;fieldListing&quot;]&#39;</code></pre>
 ##  $ Country: chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;American Samoa&quot; ...
 ##  $ z3     : num  55.3 83.6 83.6 100 100 49 5.4 97.9 99.1 100 ...</code></pre>
 <pre class="r"><code>names(`agua potable`)=c(&#39;Pais&#39;,&#39;% of population with access to improved drinking water&#39;)</code></pre>
+<pre class="r"><code>lkpaises=&#39;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&#39;</code></pre>
+<pre class="r"><code>datapaises=import(lkpaises)</code></pre>
+<pre class="r"><code>Aguapotable=merge(datapaises,`agua potable`)</code></pre>
 
 
 

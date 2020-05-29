@@ -29,7 +29,7 @@ names(`agua potable`)
 `agua potable`$z2=NULL
 `agua potable`$z4=NULL
 ```
-```{r}
+```{r} 
 `agua potable`$z3=str_extract_all(`agua potable`$z3,pattern="(\\-*\\d+\\.*\\d*)")
 ```
 ```{r} 

@@ -40,7 +40,7 @@ names(dataviolence)=c('Pais','Estabilidad política y ausencia de violencia/terr
 ```
 ```{r}
 str(dataviolence)
-```
+``` 
 
 ```{r}
 dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`=as.numeric(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`)
