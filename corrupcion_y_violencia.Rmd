@@ -49,4 +49,13 @@ dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`=as.numer
 ```{r}
 corrupcion_y_violencia=merge(datacorrup,dataviolence)
 ```
+```{r}
+lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls'
+```
+```{r}
+datapaises=import(lkpaises)
+```
+```{r}
+Corrupcion_y_violencia=merge(datapaises,corrupcion_y_violencia)
+```
 
