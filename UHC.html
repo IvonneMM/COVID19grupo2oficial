@@ -369,7 +369,7 @@ summary {
 <pre class="r"><code>UHClk=&#39;https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_World_Development_Indicators.xlsx&#39;</code></pre>
 <pre class="r"><code>datauhc=import(UHClk)</code></pre>
 <pre class="r"><code>datauhc[,c(1:2,4:13,15:16)]=NULL</code></pre>
-<pre class="r"><code>names(datauhc)=c(&#39;Country&#39;,&#39;Asistencia sanitaria universal&#39;)</code></pre>
+<pre class="r"><code>names(datauhc)=c(&#39;Pais&#39;,&#39;Asistencia sanitaria universal&#39;)</code></pre>
 <pre class="r"><code>datauhc$`Asistencia sanitaria universal`=as.numeric(datauhc$`Asistencia sanitaria universal`)</code></pre>
 <pre><code>## Warning: NAs introducidos por coerción</code></pre>
 <pre class="r"><code>datauhc=datauhc[-c(218:270),]</code></pre>

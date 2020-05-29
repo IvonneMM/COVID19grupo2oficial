@@ -12,7 +12,7 @@ datauhc=import(UHClk)
 datauhc[,c(1:2,4:13,15:16)]=NULL
 ```
 ```{r}
-names(datauhc)=c('Country','Asistencia sanitaria universal')
+names(datauhc)=c('Pais','Asistencia sanitaria universal')
 ```
 ```{r}
 datauhc$`Asistencia sanitaria universal`=as.numeric(datauhc$`Asistencia sanitaria universal`)

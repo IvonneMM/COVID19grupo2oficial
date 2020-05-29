@@ -1,0 +1,26 @@
+
+```{r}
+library(htmltab)
+```
+```{r}
+lkpagecov='https://es.wikipedia.org/wiki/Pandemia_de_enfermedad_por_coronavirus_de_2019-2020'
+lkpathcov='//*[@id="mw-content-text"]/div/div[9]/table'
+```
+```{r}
+covid19=htmltab(doc = lkpagecov, which = lkpathcov )
+```
+```{r}
+covid19[c(2:6,8:10)]=NULL
+```
+```{r}
+names(covid19)=c('Pais','Muertes por millón de habitantes')
+```
+```{r}
+covid19=covid19[-c(250:251),]
+```
+```{r}
+covid19$`Muertes por millón de habitantes`=as.numeric(covid19$`Muertes por millón de habitantes`)
+```
+```{r}
+str(covid19)
+```
