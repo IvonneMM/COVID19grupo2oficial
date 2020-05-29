@@ -50,7 +50,19 @@ table(RuleofLaw$`2018 [YR2018]`,useNA = "always")
 names(RuleofLaw)=c("Pais","RuleofLaw")
 ```
 
+8.  Traemos la base de Excel para que con el Merge quitemos los países innecesarios
 
+```{r}
+lkXLSX = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+
+Paisesoficial=import(lkXLSX)
+```
+
+9. Hacemos el Merge
+
+```{r}
+ImperiodelaLey=merge(RuleofLaw,Paisesoficial,by.x='Pais', by.y='Pais')
+```
 
 
 
