@@ -61,5 +61,28 @@ Covid19[,c(2:3)]=lapply(Covid19[,c(2:3)],as.numeric)
 ```{r}
 str(Covid19)
 ```
-
+```{r}
+Covid19$z1=(Covid19$decesos/Covid19$poblacion)*10^6
+```
+```{r}
+Covid19=Covid19[,-c(2:3)]
+```
+```{r}
+names(Covid19)=c('Pais','Decesos por millón de habitantes a causa de la COVID-19')
+```
+```{r}
+lkpaises='https://github.com/GonzaloBerger/covid-19/raw/master/lista_de_paises.xlsx'
+```
+```{r}
+datapaises=import(lkpaises) 
+```
+```{r}
+Covid19[48,1]='Czechia'
+```
+```{r}
+Covid19decesos=merge(Covid19,datapaises)
+```
+```{r}
+summary(Covid19decesos) 
+```
 
