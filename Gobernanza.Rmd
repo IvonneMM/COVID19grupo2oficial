@@ -15,8 +15,4 @@ names(Gobernabilidad)= c ("Pais", "Gobernabilidad")
 Gobernabilidad$Gobernabilidad=as.numeric(Gobernabilidad$Gobernabilidad)
 ```
 
-```{r}
-Gobernabilidad<-na.omit(Gobernabilidad)
-Gobernabilidad
-```
 

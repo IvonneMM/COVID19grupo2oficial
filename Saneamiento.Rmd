@@ -35,23 +35,7 @@ saneamiento$Porcentaje_Saneamiento=gsub(".*\\:","",saneamiento$Porcentaje_Saneam
 ```
 
 ```{r}
-table(saneamiento$saneamiento, useNA= 'always')
-```
-
-```{r}
-saneamiento<-na.omit(saneamiento)
-```
-
-```{r}
-str(saneamiento)
-```
-
-```{r}
 saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)
-```
-
-```{r}
-saneamiento<-na.omit(saneamiento)
 ```
 
 ```{r}
