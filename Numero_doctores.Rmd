@@ -31,29 +31,8 @@ Medicos=separate(Medicos,Numero_medicos,into=c("Numero_medicos",'delete'), "\\ "
 ```
 
 ```{r}
-table(Medicos$Medicos, useNA= 'always')
-```
-
-```{r}
-Medicos<-na.omit(Medicos)
-Medicos
-```
-
-```{r}
-str(Medicos)
-```
-
-```{r}
 Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
 ```
-
-```{r}
-Medicos<-na.omit(Medicos)
-Medicos
-```
-
-
-
 
 ```{r}
 #Nos  quedarnos con los paises que son de europa y america 
