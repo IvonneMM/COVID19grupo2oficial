@@ -86,3 +86,10 @@ data$'Decesos por millón de habitantes'=(data$Z1/data$Z2)*10^6
 ```{r}
 data=data[,-c(2,5)]
 ```
+```{r}
+data[50,1]='Czechia'
+```
+
+
+
+
