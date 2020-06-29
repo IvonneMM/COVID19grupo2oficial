@@ -22,7 +22,6 @@ names(pbi)
 names(pbi)= c ("Pais", "Porcentaje_PBI")
 ```
 
-
 ```{r}
 library(tidyr)
 ```
@@ -32,24 +31,11 @@ pbi=separate(pbi,Porcentaje_PBI,into=c("Porcentaje_PBI",'delete'), "\\%")[,-3]
 ```
 
 ```{r}
-table(pbi$pbi, useNA= 'always')
-```
-
-```{r}
-pbi<-na.omit(pbi)
-
+pbi$Porcentaje_PBI =as.numeric(pbi$Porcentaje_PBI)
 ```
 
 ```{r}
 str(pbi)
-```
-
-```{r}
-pbi$Porcentaje_PBI=as.numeric(pbi$Porcentaje_PBI)
-```
-
-```{r}
-pbi<-na.omit(pbi)
 ```
 
 ```{r}
@@ -76,7 +62,8 @@ names(EuroAmer2)= c ("Pais")
 ```
 
 ```{r}
-PBI_EA =merge(pbi,EuroAmer2,by.x='Pais', by.y='Pais') 
-head(PBI_EA)
+PBI_EA=merge(pbi,EuroAmer2)
 ```
+
+
 

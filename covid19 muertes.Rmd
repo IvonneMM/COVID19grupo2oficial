@@ -1,0 +1,88 @@
+
+```{r}
+library(htmltab)
+```
+```{r}
+library(rio)
+```
+```{r}
+library(stringr)
+```
+```{r}
+library(knitr)
+```
+```{r}
+library(kableExtra)
+```
+```{r}
+lkpage='https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory'
+lkpath='//*[@id="thetable"]'
+```
+```{r}
+lkpage2='https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)'
+lkpath2='//*[@id="main"]'
+```
+```{r}
+covid19=htmltab(doc=lkpage,which = lkpath)
+poblacion=htmltab(doc=lkpage2,which = lkpath2)
+```
+```{r}
+covid19[,c(2,4)]=NULL
+poblacion[,c(4,6)]=NULL
+```
+```{r}
+names(covid19)[names(covid19)=='Location >> World']= 'Pais'
+```
+```{r}
+names(poblacion)[names(poblacion)=='Country/Territory >> World']= 'Pais'
+```
+```{r}
+poblacion$Pais=str_split(poblacion$Pais,pattern='\\(',simplify = T)[,1]
+```
+```{r}
+poblacion$Pais=trimws(poblacion$Pais,whitespace = "[\\h\\v]")
+```
+```{r}
+poblacion$Pais=gsub('Â',"",poblacion$Pais)
+```
+```{r}
+poblacion$Pais=trimws(poblacion$Pais,whitespace = "[\\h\\v]")
+```
+```{r}
+nrow(merge(covid19,poblacion))
+```
+```{r}
+data=merge(covid19,poblacion,all.x=T,all.y=T)
+```
+```{r}
+kable(data[!complete.cases(data),],type='html')%>%
+    kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'),
+                  font_size = 10)
+```
+
+```{r}
+covid19[covid19$Pais=='Saint Vincent','Pais']='Saint Vincent and the Grenadines'
+```
+```{r}
+data=merge(covid19,poblacion)
+```
+```{r}
+str(data)
+```
+```{r}
+names(data)[names(data)=='Deaths >> 502,947']= 'Z1'
+names(data)[names(data)=='Population(1 July 2019) >> 7,713,468,100']= 'Z2'
+```
+```{r}
+data$Z1=gsub(',',"",data$Z1)
+data$Z2=gsub(',',"",data$Z2)
+```
+```{r}
+data[,c(2,5)]=lapply(data[,c(2,5)],as.numeric)
+```
+```{r}
+data$'Decesos por millón de habitantes'=(data$Z1/data$Z2)*10^6
+```
+```{r}
+data=data[,-c(2,5)]
+```
