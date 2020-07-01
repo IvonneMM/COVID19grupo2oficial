@@ -70,8 +70,7 @@ data=merge(covid19,poblacion)
 str(data)
 ```
 ```{r}
-names(data)[names(data)=='Deaths >> 502,947']= 'Z1'
-names(data)[names(data)=='Population(1 July 2019) >> 7,713,468,100']= 'Z2'
+names(data)=c('Pais','Z1','UN continentalregion','UN statisticalsubregion','Z2')
 ```
 ```{r}
 data$Z1=gsub(',',"",data$Z1)
