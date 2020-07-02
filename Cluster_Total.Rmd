@@ -1,0 +1,818 @@
+#MERGE TOTAL
+
+#MERGE DE GOBERNANZA
+```{r}
+#VARIABLE 1 - ACCOUNTABILITY
+
+library(rio)
+lXLSX="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Voice%20and%20Accountability%20Percentile%20Rank.xlsx"
+
+VoiceandAcc=import(lXLSX)
+
+VoiceandAcc[,c(2,3,4)]=NULL
+
+VoiceandAcc$`2018 [YR2018]`=as.numeric(VoiceandAcc$`2018 [YR2018]`)
+
+table(VoiceandAcc$`2018 [YR2018]`,useNA = "always")
+
+names(VoiceandAcc)=c("Pais","VoiceandAccountability")
+
+library(rio)
+lkXLSX = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+Paisesoficial=import(lkXLSX)
+
+VoiceandAccountability = merge(VoiceandAcc,Paisesoficial,by.x='Pais',by.y='Pais')
+```
+
+```{r}
+# VARIABLE 2 - CORRUPCION Y VIOLENCIA
+
+library(rio)
+lkcorrup='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx'
+
+datacorrup=import(lkcorrup)
+
+datacorrup[c(2:4)]=NULL
+
+datacorrup=datacorrup[c(1:99),]
+
+names(datacorrup)=c('Pais','Control de la corrupción')
+
+datacorrup$`Control de la corrupción`=as.numeric(datacorrup$`Control de la corrupción`)
+
+lkviolence='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_Indicators_political_stability_and_absence_of_violence.xlsx'
+
+dataviolence=import(lkviolence)
+
+dataviolence[c(2:4)]=NULL
+
+dataviolence=dataviolence[c(1:99),]
+
+names(dataviolence)=c('Pais','Estabilidad política y ausencia de violencia/terrorismo')
+
+dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`=as.numeric(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`)
+
+corrupcion_y_violencia=merge(datacorrup,dataviolence)
+
+lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls'
+
+datapaises=import(lkpaises)
+
+Corrupcion_y_violencia=merge(datapaises,corrupcion_y_violencia)
+
+```
+
+```{r}
+#VARIABLE 3 - EFECTIVIDAD DEL GOBIERNO
+
+library(rio)
+
+Gobernabilidad="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(2)%20(1).xls"
+Gobernabilidad=import(Gobernabilidad)
+
+names(Gobernabilidad)= c ("Pais", "Gobernabilidad")
+
+Gobernabilidad$Gobernabilidad=as.numeric(Gobernabilidad$Gobernabilidad)
+```
+
+```{r}
+#VARIABLE 4 - IMPERIO DE LA LEY
+
+library(rio)
+
+lkXLSX= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Rule%20of%20Law%20Percentile%20Rank.xlsx"
+
+RuleofLaw= import(lkXLSX)
+
+RuleofLaw[,c(2,3,4)] = NULL
+
+RuleofLaw$`2018 [YR2018]`=as.numeric(RuleofLaw$`2018 [YR2018]`)
+
+table(RuleofLaw$`2018 [YR2018]`,useNA = "always")
+
+names(RuleofLaw)=c("Pais","RuleofLaw")
+
+lkXLSX = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+
+Paisesoficial=import(lkXLSX)
+
+ImperiodelaLey=merge(RuleofLaw,Paisesoficial,by.x='Pais', by.y='Pais')
+```
+
+```{r}
+#MERGE 1 - de variable 1 y 2 
+
+Accountability_Corrupcion_y_violencia=merge(VoiceandAccountability,Corrupcion_y_violencia)
+```
+
+```{r}
+#MERGE 2  - variable 3 y 4 
+
+Gob_Ley=merge(Gobernabilidad,ImperiodelaLey)
+```
+
+```{r}
+#MERGE DE LA VARIABLE GOBERNANZA - VARIABLES 1, 2, 3 Y 4
+
+Gobernanza=merge(Accountability_Corrupcion_y_violencia,Gob_Ley)
+```
+
+#MERGE DE SALUD
+
+LIMPIEZA DE LA BASE DE DATOS DE GASTO ACTUAL EN SALUD (Current Health Expenditure - CHE)
+
+1. Trayendo la base de datos:
+
+```{r}
+library(htmltab)
+
+linkCIA_che = "https://www.cia.gov/library/publications/resources/the-world-factbook/fields/409.html"
+linkPath_che='//*[@id="fieldListing"]'
+
+che= htmltab(doc = linkCIA_che,
+             which = linkPath_che)
+
+```
+
+2. Separando columnas
+
+```{r}
+library(tidyr)
+
+che=separate(che,`Current Health Expenditure`,into = c("oficial","delete"),"%")
+```
+
+3.Eliminando columnas que no necesitamos
+
+```{r}
+che$delete=NULL
+```
+
+4. Cambiando nombres
+
+```{r}
+names(che)=c("Pais","CHE")
+```
+
+
+5.Ver tabla
+
+```{r}
+str(che)
+```
+
+6. Cambiar chr a numérico
+
+```{r}
+che$CHE=as.numeric(che$CHE)
+```
+
+7. Volvemos a visualizar la tabla
+
+```{r}
+str(che)
+```
+
+
+8.Viendo los NA's
+
+```{r}
+table(che$CHE,useNA = "always")
+```
+
+
+9. Traemos la base de Excel para que con el Merge quitemos los países innecesarios
+
+```{r}
+library(rio)
+```
+
+```{r}
+lkXLSX = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+
+Paisesoficial=import(lkXLSX)
+```
+
+10. Hacemos el Merge
+
+```{r}
+HealthExpenditure=merge(che,Paisesoficial,by.x='Pais', by.y='Pais')
+```
+1. Trayendo la base
+
+```{r}
+library(htmltab)
+
+linkCIA_cama = "https://www.cia.gov/library/publications/resources/the-world-factbook/fields/360.html"
+linkPath_cama='//*[@id="fieldListing"]'
+
+camas = htmltab(doc = linkCIA_cama,
+                which = linkPath_cama)
+
+```
+
+2.Separando columnas
+
+```{r}
+library(tidyr)
+
+camas=separate(camas,`Hospital bed density`,into = c("oficial","delete")," ")
+```
+
+3.Eliminando columnas innecesarias
+
+```{r}
+camas$delete=NULL
+```
+
+4.Cambiando nombres
+
+```{r}
+names(camas)=c("Pais","numero de camas por 1000 hab")
+```
+
+5.Ver la tabla
+
+```{r}
+str(camas)
+```
+
+6. Cambiar chr a numerico
+
+```{r}
+camas$`numero de camas por 1000 hab`=as.numeric(camas$`numero de camas por 1000 hab`)
+```
+
+7.Volvemos a ver la tabla
+
+```{r}
+str(camas)
+```
+
+8. Viendo los NA'S
+```{r}
+table(camas$`numero de camas por 1000 hab`,useNA = "always")
+```
+
+9.Traemos la base de Excel para que con el Merge quitemos los países innecesarios
+
+```{r}
+library(rio)
+lkXLSX = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+Paisesoficial=import(lkXLSX)
+```
+
+10. Hacemos el Merge
+
+```{r}
+Numerodecamas=merge(camas,Paisesoficial,by.x='Pais',by.y='Pais')
+```
+
+#Limpieza de tabla de número de doctores
+
+```{r}
+library(htmltab)
+```
+
+```{r}
+LinkDoc="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/359.html"
+
+Link_path_doc='//*[@id="fieldListing"]'
+```
+
+```{r}
+Medicos= htmltab (doc = LinkDoc,which = Link_path_doc)
+```
+
+```{r}
+names(Medicos)
+names(Medicos)= c ("Pais", "Numero_medicos")
+```
+
+```{r}
+library(tidyr)
+```
+
+```{r}
+Medicos=separate(Medicos,Numero_medicos,into=c("Numero_medicos",'delete'), "\\ ")[,-3]
+```
+
+```{r}
+table(Medicos$Medicos, useNA= 'always')
+```
+
+```{r}
+Medicos<-na.omit(Medicos)
+Medicos
+```
+
+```{r}
+str(Medicos)
+```
+
+```{r}
+Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
+```
+
+```{r}
+Medicos<-na.omit(Medicos)
+Medicos
+```
+
+#Nos  quedarnos con los paises que son de europa y america 
+
+```{r}
+library(rio)
+```
+```{r}
+Europa_America1="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+
+EuroAmer1=import(Europa_America1)
+
+```
+```{r}
+names(EuroAmer1)
+```
+```{r}
+names(EuroAmer1)= c ("Pais")
+```
+```{r}
+Medicos_EA =merge(Medicos,EuroAmer1,by.x='Pais', by.y='Pais') 
+head(Medicos_EA)
+```
+## salen 81 paises 
+
+```{r}
+library(rio) 
+```
+```{r} 
+UHClk='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_World_Development_Indicators.xlsx'
+```
+```{r}
+datauhc=import(UHClk)
+```
+```{r}
+datauhc[,c(1:2,4:13,15:16)]=NULL
+```
+```{r}
+names(datauhc)=c('Pais','Asistencia sanitaria universal')
+```
+```{r}
+datauhc$`Asistencia sanitaria universal`=as.numeric(datauhc$`Asistencia sanitaria universal`)
+```
+```{r}
+datauhc=datauhc[-c(218:270),]
+```
+```{r}
+lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls'
+```
+```{r}
+datapaises=import(lkpaises)
+```
+```{r}
+UHC=merge(datapaises,datauhc)
+```
+
+#Limpieza de % del gasto de PBI
+
+
+```{r}
+library(htmltab)
+```
+
+```{r}
+Linkpbi="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/409.html"
+
+Link_path_pbi='//*[@id="fieldListing"]'
+```
+
+```{r}
+pbi= htmltab (doc = Linkpbi,which = Link_path_pbi)
+```
+
+```{r}
+names(pbi)
+names(pbi)= c ("Pais", "Porcentaje_PBI")
+```
+
+```{r}
+library(tidyr)
+```
+
+```{r}
+pbi=separate(pbi,Porcentaje_PBI,into=c("Porcentaje_PBI",'delete'), "\\%")[,-3]
+```
+
+```{r}
+table(pbi$pbi, useNA= 'always')
+```
+
+```{r}
+pbi<-na.omit(pbi)
+
+```
+
+```{r}
+str(pbi)
+```
+
+```{r}
+pbi$Porcentaje_PBI=as.numeric(pbi$Porcentaje_PBI)
+```
+
+```{r}
+pbi<-na.omit(pbi)
+```
+
+#Nos  quedarnos con los paises que son de europa y america 
+
+```{r}
+library(rio)
+```
+
+```{r}
+Europa_America2="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+
+EuroAmer2=import(Europa_America2)
+```
+
+```{r}
+names(EuroAmer2)
+```
+
+```{r}
+names(EuroAmer2)= c ("Pais")
+```
+
+```{r}
+PBI_EA =merge(pbi,EuroAmer2,by.x='Pais', by.y='Pais') 
+head(PBI_EA)
+```
+
+```{r}
+DataSalud=merge(HealthExpenditure,Numerodecamas)
+```
+```{r}
+DataSalud=merge(DataSalud,Medicos_EA)
+```
+```{r}
+DataSalud=merge(DataSalud,UHC)
+```
+```{r}
+DataSalud=merge(DataSalud,PBI_EA)
+```
+
+#MERGE DE SALUD Y GOBERNANZA
+
+```{r}
+Saludygob=merge(DataSalud,Gobernanza,by.x = "Pais",by.y = "Pais")
+```
+
+
+#MERGE DE SALUD Y GOBERNANZA CON AGUA Y SANEAMIENTO
+
+#BASE DE AGUA Y SANEAMIENTO
+
+
+#MERGE ENTRE ACCESO A AGUA POTABLE Y SANEAMIENTO
+ 
+#BASE DE ACCESO A AGUA POTABLE
+
+ 
+```{r} 
+library(htmltab)
+```
+```{r}
+library(tidyr)
+```
+```{r}
+library(stringr)
+```
+```{r}
+library(rio)
+```
+```{r}
+lkpage='https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html'
+lkpath='//*[@id="fieldListing"]'
+```
+```{r}
+'agua potable' = htmltab(doc = lkpage, which = lkpath)
+```
+```{r}
+names(`agua potable`)
+```
+```{r}
+`agua potable`=separate(`agua potable`,"Drinking water source",into=c('z1','z2','z3','z4'), 'population')
+```
+```{r}
+`agua potable`$z1=NULL
+`agua potable`$z2=NULL
+`agua potable`$z4=NULL
+```
+```{r} 
+`agua potable`$z3=str_extract_all(`agua potable`$z3,pattern="(\\-*\\d+\\.*\\d*)")
+```
+```{r} 
+`agua potable`$z3=as.numeric(`agua potable`$z3)
+```
+```{r}
+str(`agua potable`)
+```
+```{r}
+names(`agua potable`)=c('Pais','% of population with access to improved drinking water')
+```
+```{r}
+lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls'
+```
+```{r}
+datapaises=import(lkpaises)
+```
+```{r}
+Aguapotable=merge(datapaises,`agua potable`)
+```
+
+
+#BASE DE SANEAMIENTO
+
+```{r}
+#Saneamiento
+```
+
+```{r}
+library(htmltab)
+```
+
+```{r}
+Linksana="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/398.html"
+
+Link_path_sana='//*[@id="fieldListing"]'
+```
+
+```{r}
+saneamiento= htmltab (doc = Linksana,which = Link_path_sana)
+```
+
+```{r}
+names(saneamiento)
+names(saneamiento)= c ("Pais", "Porcentaje_Saneamiento")
+```
+
+
+```{r}
+library(tidyr)
+```
+
+```{r}
+saneamiento$Porcentaje_Saneamiento=gsub("\\%.*","",saneamiento$Porcentaje_Saneamiento)
+```
+
+```{r}
+saneamiento$Porcentaje_Saneamiento=gsub(".*\\:","",saneamiento$Porcentaje_Saneamiento)
+```
+
+```{r}
+table(saneamiento$saneamiento, useNA= 'always')
+```
+
+```{r}
+saneamiento<-na.omit(saneamiento)
+```
+
+```{r}
+str(saneamiento)
+```
+
+```{r}
+saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)
+```
+
+```{r}
+saneamiento<-na.omit(saneamiento)
+```
+
+```{r}
+library(rio)
+```
+
+```{r}
+Europa_America3="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+
+EuroAmer3=import(Europa_America3)
+```
+
+```{r}
+names(EuroAmer3)
+```
+
+```{r}
+names(EuroAmer3)= c ("Pais")
+```
+
+```{r}
+Saneamiento_EA =merge(saneamiento,EuroAmer3,by.x='Pais', by.y='Pais') 
+head(Saneamiento_EA)
+```
+
+#MERGE DE AMBAS BASES
+
+ 
+```{r}
+Aguaysaneamiento=merge(Aguapotable,Saneamiento_EA,by.x = "Pais",by.y = "Pais") 
+```
+
+
+#MERGE
+
+```{r}
+Aggobsal=merge(Saludygob,Aguaysaneamiento,by.x = "Pais",by.y = "Pais")
+```
+
+#BASE DE DATOS PAÍSES Y NÚMERO DE MUERTES POR MILLÓN DE HABITANTES
+
+
+```{r}
+library(htmltab)
+```
+```{r}
+library(rio)
+```
+```{r}
+library(stringr)
+```
+```{r}
+library(knitr)
+```
+```{r}
+library(kableExtra)
+```
+```{r}
+lkpage='https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory'
+lkpath='//*[@id="thetable"]'
+```
+```{r}
+lkpage2='https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)'
+lkpath2='//*[@id="main"]'
+```
+```{r}
+covid19=htmltab(doc=lkpage,which = lkpath)
+poblacion=htmltab(doc=lkpage2,which = lkpath2)
+```
+```{r}
+covid19[,c(2,4)]=NULL
+poblacion[,c(4,6)]=NULL
+```
+```{r}
+names(covid19)[names(covid19)=='Location >> World']= 'Pais'
+```
+```{r}
+names(poblacion)[names(poblacion)=='Country/Territory >> World']= 'Pais'
+```
+```{r}
+poblacion$Pais=str_split(poblacion$Pais,pattern='\\(',simplify = T)[,1]
+```
+```{r}
+poblacion$Pais=trimws(poblacion$Pais,whitespace = "[\\h\\v]")
+```
+```{r}
+poblacion$Pais=gsub('Â',"",poblacion$Pais)
+```
+```{r}
+poblacion$Pais=trimws(poblacion$Pais,whitespace = "[\\h\\v]")
+```
+```{r}
+nrow(merge(covid19,poblacion))
+```
+```{r}
+data=merge(covid19,poblacion,all.x=T,all.y=T)
+```
+```{r}
+kable(data[!complete.cases(data),],type='html')%>%
+    kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'),
+                  font_size = 10)
+```
+
+```{r}
+covid19[covid19$Pais=='Saint Vincent','Pais']='Saint Vincent and the Grenadines'
+```
+```{r}
+data=merge(covid19,poblacion)
+```
+```{r}
+str(data)
+```
+```{r}
+names(data)=c('Pais','Z1','UN continentalregion','UN statisticalsubregion','Z2')
+```
+```{r}
+data$Z1=gsub(',',"",data$Z1)
+data$Z2=gsub(',',"",data$Z2)
+```
+```{r}
+data[,c(2,5)]=lapply(data[,c(2,5)],as.numeric)
+```
+```{r}
+data$'Decesos por millón de habitantes'=(data$Z1/data$Z2)*10^6
+```
+```{r}
+data=data[,-c(2,5)]
+```
+```{r}
+data[50,1]='Czechia'
+```
+
+#MERGE FINAL
+
+```{r}
+BaseoficialCOVID=merge(data,Aggobsal,by.x = "Pais",by.y = "Pais")
+```
+
+#ELIMINAMOS LOS NA'S
+
+```{r}
+BaseoficialCOVID=na.omit(BaseoficialCOVID)
+```
+
+
+```{r}
+#CLUSTER DE DENSIDAD
+
+row.names(BaseoficialCOVID)=BaseoficialCOVID$Pais
+BaseoficialCOVID=na.omit(BaseoficialCOVID)
+
+```
+
+```{r}
+library(cluster)
+distancia = daisy(BaseoficialCOVID[,c(4:16)],metric='gower')
+```
+
+```{r}
+COVID = cmdscale(distancia, k=2,add = T)
+```
+
+```{r}
+BaseoficialCOVID$dim1 <- COVID$points[,1]
+BaseoficialCOVID$dim2 <- COVID$points[,2]
+```
+
+```{r}
+library(factoextra)
+```
+
+
+```{r}
+baseCOVID= ggplot(BaseoficialCOVID,aes(x=dim1, y=dim2,label=row.names(BaseoficialCOVID))) 
+baseCOVID + geom_text(size=2)
+```
+
+```{r}
+#calculando los DBSCAN
+distancia.cmd= daisy(BaseoficialCOVID[,c('dim1','dim2')], metric = 'euclidean')
+```
+
+```{r}
+#Calculo de epsilon
+library(dbscan)
+kNNdistplot(distancia.cmd, k=13)
+
+abline(h=0.11, lty=2)
+```
+
+```{r}
+library(fpc)
+db.cmd = dbscan(distancia.cmd, eps=0.10, MinPts=13,method = 'dist')
+
+##OJO: ¿cual eps es mejor 0,10 - 0,11
+```
+
+```{r}
+BaseoficialCOVID$dbCMD=as.factor(db.cmd$cluster)
+```
+
+```{r}
+min(BaseoficialCOVID[,c('dim1','dim2')]); max(BaseoficialCOVID[,c('dim1','dim2')])
+```
+```{r}
+limites = c(-0.5,0.4)
+```
+
+```{r}
+library(ggrepel)
+baseCOVID= ggplot(BaseoficialCOVID,aes(x=dim1, y=dim2)) + ylim(limites) + xlim(limites) + coord_fixed()
+dbplot_COVID= baseCOVID + geom_point(aes(color=dbCMD)) 
+dbplot_COVID
+```
+
+```{r}
+dbplot_COVID + geom_text_repel(size=3,aes(label=row.names(BaseoficialCOVID)))
+```
+
+```{r}
+#Aquí sólo los atípicos:
+LABEL=ifelse(BaseoficialCOVID$dbCMD==0,row.names(BaseoficialCOVID),"")
+dbplot_COVID + geom_text_repel(aes(label=LABEL),
+                         size=3, 
+                         direction = "y", ylim = 0.30,
+                         angle=40,
+                         segment.colour = "grey")
+```
