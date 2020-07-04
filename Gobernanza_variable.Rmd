@@ -64,13 +64,17 @@ Corrupcion_y_violencia=merge(datapaises,corrupcion_y_violencia)
 
 library(rio)
 
-Gobernabilidad="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(2)%20(1).xls"
+Gobernabilidad="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(2)%20(1)%20(3).xls"
 Gobernabilidad=import(Gobernabilidad)
 
 names(Gobernabilidad)= c ("Pais", "Gobernabilidad")
 
 Gobernabilidad$Gobernabilidad=as.numeric(Gobernabilidad$Gobernabilidad)
+
+table(Gobernabilidad$`Gobernabilidad`,useNA = "always")
 ```
+
+
 
 ```{r}
 #VARIABLE 4 - IMPERIO DE LA LEY
@@ -99,18 +103,21 @@ ImperiodelaLey=merge(RuleofLaw,Paisesoficial,by.x='Pais', by.y='Pais')
 ```{r}
 #MERGE 1 - de variable 1 y 2 
 
-Accountability_Corrupcion_y_violencia=merge(VoiceandAccountability,Corrupcion_y_violencia)
+Accountability_Corrupcion_y_violencia=merge(Corrupcion_y_violencia,VoiceandAccountability,all.x=T, all.y=T)
 ```
+
 
 ```{r}
 #MERGE 2  - variable 3 y 4 
 
-Gob_Ley=merge(Gobernabilidad,ImperiodelaLey)
+Gob_Ley=merge(Gobernabilidad,ImperiodelaLey, all.x=T, all.y=T)
 ```
 
 ```{r}
 #MERGE DE LA VARIABLE GOBERNANZA - VARIABLES 1, 2, 3 Y 4
 
-Gobernanza=merge(Accountability_Corrupcion_y_violencia,Gob_Ley)
+Gobernanza=merge(Accountability_Corrupcion_y_violencia,Gob_Ley, all.x=T, all.y=T)
 ```
+
+
 
