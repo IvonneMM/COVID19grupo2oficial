@@ -380,12 +380,12 @@ summary {
 <pre><code>## Warning: package &#39;rio&#39; was built under R version 4.0.2</code></pre>
 <pre class="r"><code>library(stringr)</code></pre>
 <pre><code>## Warning: package &#39;stringr&#39; was built under R version 4.0.2</code></pre>
-<pre class="r"><code>library(knitr)</code></pre>
-<pre class="r"><code>library(kableExtra)</code></pre>
+<pre class="r"><code>library(knitr) 
+library(kableExtra)</code></pre>
 <pre><code>## Warning: package &#39;kableExtra&#39; was built under R version 4.0.2</code></pre>
 <pre class="r"><code>lkpage=&#39;https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory&#39;
-lkpath=&#39;//*[@id=&quot;thetable&quot;]&#39;</code></pre>
-<pre class="r"><code>lkpage2=&#39;https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)&#39;
+lkpath=&#39;//*[@id=&quot;thetable&quot;]&#39;
+lkpage2=&#39;https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)&#39;
 lkpath2=&#39;//*[@id=&quot;main&quot;]&#39;</code></pre>
 <pre class="r"><code>covid19=htmltab(doc=lkpage,which = lkpath)</code></pre>
 <pre><code>## Warning: Columns [Location,Ref.] seem to have no data and are removed. Use
@@ -393,12 +393,118 @@ lkpath2=&#39;//*[@id=&quot;main&quot;]&#39;</code></pre>
 <pre class="r"><code>poblacion=htmltab(doc=lkpage2,which = lkpath2)</code></pre>
 <pre class="r"><code>covid19[,c(2,4)]=NULL
 poblacion[,c(4,6)]=NULL</code></pre>
-<pre class="r"><code>names(covid19)[names(covid19)==&#39;Location &gt;&gt; World&#39;]= &#39;Pais&#39;</code></pre>
-<pre class="r"><code>names(poblacion)[names(poblacion)==&#39;Country/Territory &gt;&gt; World&#39;]= &#39;Pais&#39;</code></pre>
+<pre class="r"><code>names(covid19)[names(covid19)==&#39;Location &gt;&gt; World&#39;]= &#39;Pais&#39;
+names(poblacion)[names(poblacion)==&#39;Country/Territory &gt;&gt; World&#39;]= &#39;Pais&#39;</code></pre>
 <pre class="r"><code>poblacion$Pais=str_split(poblacion$Pais,pattern=&#39;\\(&#39;,simplify = T)[,1]</code></pre>
 <pre class="r"><code>poblacion$Pais=trimws(poblacion$Pais,whitespace = &quot;[\\h\\v]&quot;)</code></pre>
 <pre class="r"><code>poblacion$Pais=gsub(&#39;Â&#39;,&quot;&quot;,poblacion$Pais)</code></pre>
 <pre class="r"><code>poblacion$Pais=trimws(poblacion$Pais,whitespace = &quot;[\\h\\v]&quot;)</code></pre>
+<pre class="r"><code>names(covid19)=c(&#39;Pais&#39;,&#39;Z1&#39;)</code></pre>
+<pre class="r"><code>covid19$Z1=gsub(&#39;,&#39;,&#39;&#39;,covid19$Z1)</code></pre>
+<pre class="r"><code>covid19$Z1=gsub(&#39;No data&#39;,NA,covid19$Z1)</code></pre>
+<pre class="r"><code>covid19[,c(2)]=as.numeric(covid19[,c(2)])</code></pre>
+<pre><code>## Warning: NAs introducidos por coerción</code></pre>
+<pre class="r"><code>table(covid19$Z1, useNA = &#39;always&#39;)</code></pre>
+<pre><code>## 
+##      0      1      2      3      4      5      6      7      8      9     10 
+##     36     10      4      5      3      1      3      5      1      2      6 
+##     11     12     13     14     15     16     18     19     21     22     24 
+##      3      1      4      4      3      1      2      2      1      1      1 
+##     25     26     27     28     29     30     31     33     34     35     37 
+##      1      1      2      2      1      2      2      1      1      1      1 
+##     38     42     44     48     50     51     52     53     55     58     59 
+##      1      2      1      1      1      1      2      1      2      1      2 
+##     62     68     69     70     74     75     78     79     83     86     90 
+##      1      1      1      1      2      1      1      1      1      1      1 
+##     96    103    104    110    111    113    117    121    123    129    151 
+##      1      1      1      2      1      1      2      1      1      1      1 
+##    159    182    188    191    192    203    210    232    239    241    251 
+##      1      1      1      1      1      1      1      1      1      1      1 
+##    283    306    321    328    329    330    334    335    352    365    418 
+##      1      1      1      1      1      1      1      1      1      1      1 
+##    477    580    589    604    605    606    628    698    705    786    826 
+##      1      1      1      1      1      1      1      1      1      1      1 
+##    880    946    977   1227   1290   1320   1437   1512   1605   1686   1731 
+##      1      1      1      1      1      1      1      1      1      1      1 
+##   1741   1858   1997   2368   2952   3089   3280   3777   4619   4634   4769 
+##      1      1      1      1      1      1      1      1      1      1      1 
+##   5206   5420   6113   6192   8674   9081   9771  10027  10412  11408  18655 
+##      1      1      1      1      1      1      1      1      1      1      1 
+##  28385  29843  29893  34854  44198  64265 131732   &lt;NA&gt; 
+##      1      1      1      1      1      1      1      3</code></pre>
+<pre class="r"><code>names(poblacion)=c(&#39;Pais&#39;,&#39;continentalregion&#39;,&#39;subregion&#39;,&#39;Z2&#39;)</code></pre>
+<pre class="r"><code>poblacion$Z2=gsub(&#39;,&#39;,&quot;&quot;,poblacion$Z2)</code></pre>
+<pre class="r"><code>poblacion$Z2=as.numeric(poblacion$Z2)</code></pre>
+<pre class="r"><code>table(poblacion$Z2, useNA = &#39;always&#39;)</code></pre>
+<pre><code>## 
+##        799       1340       1615       3377       4989       5822       6059 
+##          1          1          1          1          1          1          1 
+##      10756      11432      11646      14869      17548      18008      25979 
+##          1          1          1          1          1          1          1 
+##      30030      33701      33860      38019      38191      38964      42388 
+##          1          1          1          1          1          1          1 
+##      48678      52823      55312      56188      56672      58791      62506 
+##          1          1          1          1          1          1          1 
+##      64948      71808      77142      84584      97118      97739     104578 
+##          1          1          1          1          1          1          1 
+##     106314     110589     110940     112003     113815     117606     163424 
+##          1          1          1          1          1          1          1 
+##     167294     172259     182790     197097     215056     266150     279287 
+##          1          1          1          1          1          1          1 
+##     282731     282750     287025     299882     339031     375554     389482 
+##          1          1          1          1          1          1          1 
+##     390353     433285     440372     447905     530953     549935     581372 
+##          1          1          1          1          1          1          1 
+##     582463     615729     627987     640445     669823     763092     782766 
+##          1          1          1          1          1          1          1 
+##     850886     888927     889953     973560    1148130    1179551    1198575 
+##          1          1          1          1          1          1          1 
+##    1293119    1325648    1355986    1394973    1641172    1906743    1920922 
+##          1          1          1          1          1          1          1 
+##    2078654    2083459    2125268    2172579    2303697    2347706    2494530 
+##          1          1          1          1          1          1          1 
+##    2759627    2832067    2880917    2933408    2948279    2957731    3225167 
+##          1          1          1          1          1          1          1 
+##    3301000    3461734    3497117    3996765    4043263    4130304    4207083 
+##          1          1          1          1          1          1          1 
+##    4246439    4525696    4745185    4783063    4882495    4937374    4974986 
+##          1          1          1          1          1          1          1 
+##    4981420    5047561    5378857    5380508    5457013    5532156    5771876 
+##          1          1          1          1          1          1          1 
+##    5804337    5942089    6415850    6453553    6545502    6777452    6855713 
+##          1          1          1          1          1          1          1 
+##    7000119    7044636    7169455    7436154    7813215    8082366    8519377 
+##          1          1          1          1          1          1          1 
+##    8591365    8772235    8776109    8955102    9321018    9452411    9684679 
+##          1          1          1          1          1          1          1 
+##    9746117    9770529   10036379   10047718   10101694   10226187   10473455 
+##          1          1          1          1          1          1          1 
+##   10689209   10738958   10864245   11062113   11263770   11333483   11513100 
+##          1          1          1          1          1          1          1 
+##   11539328   11694719   11801151   12626950   12771246   14645468   15442905 
+##          1          1          1          1          1          1          1 
+##   15946876   16296364   16486542   17070135   17097130   17373662   17581472 
+##          1          1          1          1          1          1          1 
+##   17861030   18551427   18628747   18952038   19364557   19658031   20321378 
+##          1          1          1          1          1          1          1 
+##   21323733   23310715   23773876   25203198   25666161   25716544   25876380 
+##          1          1          1          1          1          1          1 
+##   26969307   28515829   28608710   28833629   29161922   30366036   31825295 
+##          1          1          1          1          1          1          1 
+##   31949777   32510453   32981716   34268528   36471769   37411047   37887768 
+##          1          1          1          1          1          1          1 
+##   38041754   39309783   42813238   43053054   43993638   44269594   44780677 
+##          1          1          1          1          1          1          1 
+##   46736776   50339443   51225308   52573973   54045420   58005463   58558270 
+##          1          1          1          1          1          1          1 
+##   60550075   65129728   67530172   69037513   82913906   83429615   83517045 
+##          1          1          1          1          1          1          1 
+##   86790567   96462106  100388073  108116615  112078730  126860301  127575529 
+##          1          1          1          1          1          1          1 
+##  145872256  163046161  200963599  211049527  216565318  270625568  329064917 
+##          1          1          1          1          1          1          1 
+## 1366417754 1433783686       &lt;NA&gt; 
+##          1          1          0</code></pre>
 <pre class="r"><code>nrow(merge(covid19,poblacion))</code></pre>
 <pre><code>## [1] 205</code></pre>
 <pre class="r"><code>data=merge(covid19,poblacion,all.x=T,all.y=T)</code></pre>
@@ -413,17 +519,17 @@ poblacion[,c(4,6)]=NULL</code></pre>
 <th style="text-align:left;">
 Pais
 </th>
-<th style="text-align:left;">
-Deaths &gt;&gt; 512,331
+<th style="text-align:right;">
+Z1
 </th>
 <th style="text-align:left;">
-UN continentalregion
+continentalregion
 </th>
 <th style="text-align:left;">
-UN statisticalsubregion
+subregion
 </th>
-<th style="text-align:left;">
-Population(1 July 2019) &gt;&gt; 7,713,468,100
+<th style="text-align:right;">
+Z2
 </th>
 </tr>
 </thead>
@@ -435,7 +541,7 @@ Population(1 July 2019) &gt;&gt; 7,713,468,100
 <td style="text-align:left;">
 Abkhazia
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 1
 </td>
 <td style="text-align:left;">
@@ -444,7 +550,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -455,7 +561,7 @@ NA
 <td style="text-align:left;">
 American Samoa
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -464,8 +570,8 @@ Oceania
 <td style="text-align:left;">
 Polynesia
 </td>
-<td style="text-align:left;">
-55,312
+<td style="text-align:right;">
+55312
 </td>
 </tr>
 <tr>
@@ -475,7 +581,7 @@ Polynesia
 <td style="text-align:left;">
 Artsakh
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0
 </td>
 <td style="text-align:left;">
@@ -484,7 +590,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -493,18 +599,18 @@ NA
 14
 </td>
 <td style="text-align:left;">
-As of 1 July 2020 (UTC) Â· History of cases: China, international
+As of 4 July 2020 (UTC) Â· History of cases Â· History of deaths
 </td>
-<td style="text-align:left;">
-As of 1 July 2020 (UTC) Â· History of cases: China, international
-</td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -515,7 +621,7 @@ NA
 <td style="text-align:left;">
 Bonaire
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0
 </td>
 <td style="text-align:left;">
@@ -524,7 +630,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -535,7 +641,7 @@ NA
 <td style="text-align:left;">
 Caribbean Netherlands
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -544,8 +650,8 @@ Americas
 <td style="text-align:left;">
 Caribbean
 </td>
-<td style="text-align:left;">
-25,979
+<td style="text-align:right;">
+25979
 </td>
 </tr>
 <tr>
@@ -555,7 +661,7 @@ Caribbean
 <td style="text-align:left;">
 Channel Islands
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -564,8 +670,8 @@ Europe
 <td style="text-align:left;">
 Northern Europe
 </td>
-<td style="text-align:left;">
-172,259
+<td style="text-align:right;">
+172259
 </td>
 </tr>
 <tr>
@@ -575,7 +681,7 @@ Northern Europe
 <td style="text-align:left;">
 Charles de Gaulle
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0
 </td>
 <td style="text-align:left;">
@@ -584,7 +690,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -595,7 +701,7 @@ NA
 <td style="text-align:left;">
 Cook Islands
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -604,8 +710,8 @@ Oceania
 <td style="text-align:left;">
 Polynesia
 </td>
-<td style="text-align:left;">
-17,548
+<td style="text-align:right;">
+17548
 </td>
 </tr>
 <tr>
@@ -615,7 +721,7 @@ Polynesia
 <td style="text-align:left;">
 Coral Princess
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 3
 </td>
 <td style="text-align:left;">
@@ -624,7 +730,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -635,7 +741,7 @@ NA
 <td style="text-align:left;">
 Costa Atlantica
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0
 </td>
 <td style="text-align:left;">
@@ -644,7 +750,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -655,7 +761,7 @@ NA
 <td style="text-align:left;">
 Diamond Princess
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 14
 </td>
 <td style="text-align:left;">
@@ -664,7 +770,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -675,8 +781,8 @@ NA
 <td style="text-align:left;">
 Donetsk PR
 </td>
-<td style="text-align:left;">
-70
+<td style="text-align:right;">
+75
 </td>
 <td style="text-align:left;">
 NA
@@ -684,7 +790,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -695,7 +801,7 @@ NA
 <td style="text-align:left;">
 F.S. Micronesia
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -704,8 +810,8 @@ Oceania
 <td style="text-align:left;">
 Micronesia
 </td>
-<td style="text-align:left;">
-113,815
+<td style="text-align:right;">
+113815
 </td>
 </tr>
 <tr>
@@ -715,7 +821,7 @@ Micronesia
 <td style="text-align:left;">
 French Guiana
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -724,8 +830,8 @@ Americas
 <td style="text-align:left;">
 South America
 </td>
-<td style="text-align:left;">
-282,731
+<td style="text-align:right;">
+282731
 </td>
 </tr>
 <tr>
@@ -735,7 +841,7 @@ South America
 <td style="text-align:left;">
 Gambia
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -744,8 +850,8 @@ Africa
 <td style="text-align:left;">
 Western Africa
 </td>
-<td style="text-align:left;">
-2,347,706
+<td style="text-align:right;">
+2347706
 </td>
 </tr>
 <tr>
@@ -755,7 +861,7 @@ Western Africa
 <td style="text-align:left;">
 Greg Mortimer
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 1
 </td>
 <td style="text-align:left;">
@@ -764,7 +870,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -775,7 +881,7 @@ NA
 <td style="text-align:left;">
 Guadeloupe
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -784,8 +890,8 @@ Americas
 <td style="text-align:left;">
 Caribbean
 </td>
-<td style="text-align:left;">
-447,905
+<td style="text-align:right;">
+447905
 </td>
 </tr>
 <tr>
@@ -795,7 +901,7 @@ Caribbean
 <td style="text-align:left;">
 Guernsey
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 13
 </td>
 <td style="text-align:left;">
@@ -804,7 +910,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -815,7 +921,7 @@ NA
 <td style="text-align:left;">
 HNLMS Dolfijn
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0
 </td>
 <td style="text-align:left;">
@@ -824,7 +930,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -835,7 +941,7 @@ NA
 <td style="text-align:left;">
 Jersey
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 31
 </td>
 <td style="text-align:left;">
@@ -844,7 +950,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -855,7 +961,7 @@ NA
 <td style="text-align:left;">
 Kiribati
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -864,8 +970,8 @@ Oceania
 <td style="text-align:left;">
 Micronesia
 </td>
-<td style="text-align:left;">
-117,606
+<td style="text-align:right;">
+117606
 </td>
 </tr>
 <tr>
@@ -875,8 +981,8 @@ Micronesia
 <td style="text-align:left;">
 Kosovo
 </td>
-<td style="text-align:left;">
-51
+<td style="text-align:right;">
+55
 </td>
 <td style="text-align:left;">
 NA
@@ -884,7 +990,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -895,7 +1001,7 @@ NA
 <td style="text-align:left;">
 Luhansk PR
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 11
 </td>
 <td style="text-align:left;">
@@ -904,7 +1010,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -915,7 +1021,7 @@ NA
 <td style="text-align:left;">
 Marshall Islands
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -924,8 +1030,8 @@ Oceania
 <td style="text-align:left;">
 Micronesia
 </td>
-<td style="text-align:left;">
-58,791
+<td style="text-align:right;">
+58791
 </td>
 </tr>
 <tr>
@@ -935,7 +1041,7 @@ Micronesia
 <td style="text-align:left;">
 Martinique
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -944,8 +1050,8 @@ Americas
 <td style="text-align:left;">
 Caribbean
 </td>
-<td style="text-align:left;">
-375,554
+<td style="text-align:right;">
+375554
 </td>
 </tr>
 <tr>
@@ -955,7 +1061,7 @@ Caribbean
 <td style="text-align:left;">
 Mayotte
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -964,8 +1070,8 @@ Africa
 <td style="text-align:left;">
 Eastern Africa
 </td>
-<td style="text-align:left;">
-266,150
+<td style="text-align:right;">
+266150
 </td>
 </tr>
 <tr>
@@ -975,7 +1081,7 @@ Eastern Africa
 <td style="text-align:left;">
 MS Zaandam
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 4
 </td>
 <td style="text-align:left;">
@@ -984,7 +1090,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -995,7 +1101,7 @@ NA
 <td style="text-align:left;">
 Nauru
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1004,8 +1110,8 @@ Oceania
 <td style="text-align:left;">
 Micronesia
 </td>
-<td style="text-align:left;">
-10,756
+<td style="text-align:right;">
+10756
 </td>
 </tr>
 <tr>
@@ -1015,7 +1121,7 @@ Micronesia
 <td style="text-align:left;">
 Niue
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1024,8 +1130,8 @@ Oceania
 <td style="text-align:left;">
 Polynesia
 </td>
-<td style="text-align:left;">
-1,615
+<td style="text-align:right;">
+1615
 </td>
 </tr>
 <tr>
@@ -1035,7 +1141,7 @@ Polynesia
 <td style="text-align:left;">
 North Korea
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1044,8 +1150,8 @@ Asia
 <td style="text-align:left;">
 Eastern Asia
 </td>
-<td style="text-align:left;">
-25,666,161
+<td style="text-align:right;">
+25666161
 </td>
 </tr>
 <tr>
@@ -1055,7 +1161,7 @@ Eastern Asia
 <td style="text-align:left;">
 Northern Cyprus
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 4
 </td>
 <td style="text-align:left;">
@@ -1064,7 +1170,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -1073,18 +1179,18 @@ NA
 175
 </td>
 <td style="text-align:left;">
-Notes^ Cases: This number shows the cumulative number of confirmed human cases reported to date. The actual number of infections and cases is likely to be higher than reported. Reporting criteria and testing capacity vary between locations.The total number of cases may not necessarily represent an aggregate sum of all entries in this column as it relies on aggregate sources and not local sources.^Location: Countries, territories, and international conveyances where cases were diagnosed. The nationality of the infected and the origin of infection may vary. For some countries, cases are split into respective territories and noted accordingly.^Deaths: Reporting criteria vary between locations.The total number of deaths may not necessarily represent an aggregate sum of all entries in this column as it relies on aggregate sources and not local sources.^Recoveries: May not correspond to actual current figures and not all recoveries may be reported. Reporting criteria vary between locations.The total number of recoveries may not necessarily represent an aggregate sum of all entries in this column as it relies on aggregate sources and not local sources.^WorldTotal numbers worldwide. Some locations, including North Korea, have yet to report cases.^United StatesFigures include cases identified on the Grand Princess.Figures do not include the unincorporated territories of Puerto Rico, Guam, Northern Mariana Islands, and U.S. Virgin Islands, all of which are listed separately.Not all states or overseas territories report recovery data.Cases include clinically diagnosed cases as per CDC guidelines.Recoveries and deaths include probable deaths and people released from quarantine as per CDC guidelines.Figures from the United States Department of Defense are only released on a branch-by branch basis since April 2020, without distinction between domestic and foreign deployment, and cases may be reported to local health authorities.Cases for the USS Theodore Roosevelt, currently docked at Guam, are reported separate from national figures but included in the Navy’s totals.There is also one case reported from Guantanamo Bay Naval Base not included in any other nation or territory’s counts. Since April 2020, the United States Department of Defense has directed all bases, including Guantanamo Bay, to not publicize case statistics.^BrazilSince 6 June, the Brazilian government has ordered the Ministry of Health to stop reporting the total number of deaths and active cases. After this, the National Council of Health Secretaries assumed the function of reporting the total number of deaths and active cases.^RussiaIncluding cases from the disputed Crimea and Sevastopol.Excluding the cases from Diamond Princess cruise ship which are classified as “on an international conveyance”.^United KingdomExcluding all British Overseas Territories and Crown dependencies.As of 23 March 2020, the UK government does not publish the number of recoveries. The last update on 22 March reported 135 recovered patients.^ChileIncluding the special territory of Easter Island.The Chilean Ministry of Health considered all cases as a “recovered” after 14 days since the initial symptoms of the virus, no matter the health situation of the infected or if following tests indicate the continuing presence of the virus. The only exception were casualties, which are not included as recovered.Deaths only include cases with positive PCR tests and catalogued as “COVID-19 related death” by the Civil Registry and Identification Service. This number is informed on the daily reports of the Ministry of Health. A report with the total number of deaths, including suspected cases without PCR test, is released weekly since 20 June 2020. In the latest report (28 June 2020), the number of total deaths is 8,935.^SpainExcludes serologyâ€“confirmed cases.^GermanyNot all state authorities count recoveries.Recoveries include estimations by the Robert Koch Institute.^FranceIncluding overseas regions of French Guiana, Guadeloupe, Martinique, Mayotte and RÃ©union, and collectivities of Saint BarthÃ©lemy and Saint Martin.Excluding collectivities of New Caledonia, French Polynesia and Saint Pierre and Miquelon.Recoveries only include hospitalized cases.Figures for total confirmed cases and total deaths include data from both hospital and nursing home (ESMS: Ã©tablissements sociaux et mÃ©dico-sociaux).^ChinaExcluding 100 asymptomatic cases under medical observation as of 30Â JuneÂ 2020.Asymptomatic cases were not reported before 31 March 2020.Excluding Special Administrative Regions of Hong Kong and Macau.Does not include Taiwan.^EgyptIncludes cases identified on the MS River Anuket.^ArgentinaExcluding confirmed cases on the claimed territory of the Falkland Islands. Since 11 April, the Argentine Ministry of Health includes them in their official reports.^BelgiumThe number of deaths also includes untested cases and cases in retirement homes that presumably died because of COVID-19, whilst most countries only include deaths of tested cases in hospitals.^NetherlandsThe Kingdom of the Netherlands consists of a) the Netherlands* [the country as opposed to the kingdom; listed here], which in turn includes the Caribbean Netherlands, that are made up of the special municipalities Bonaire<em>, Saba</em> and Sint Eustatius<em>; b) Aruba</em>; c) CuraÃ§ao<em>; and d) Sint Maarten</em>. All regions marked with an asterisk are listed separately.The Dutch Government agency RIVM, responsible for the constituent country the Netherlands, does not count its number of recoveries.^UkraineExcluding cases from the disputed Crimea and Sevastopol. Cases in these territories are included in the Russian total.Excluding cases from the unrecognized Donetsk and Lugansk People’s Republics.^IsraelIncluding cases from the disputed Golan Heights.Excluding cases from the Palestinian National Authority.^ Diamond Princess and JapanThe British cruise ship Diamond Princess was in Japanese waters, and the Japanese administration was asked to manage its quarantine, with the passengers having not entered Japan. Therefore, this case is included in neither the Japanese nor British official counts. The World Health Organization classifies the cases as being located”on an international conveyance“.^AzerbaijanExcluding the self-declared state of Artsakh.^MoldovaIncluding the disputed territory of Transnistria.^SerbiaExcluding cases from the disputed territory of Kosovo.^DenmarkThe autonomous territories of the Faroe Islands and Greenland are listed separately.^MoroccoIncluding cases in the disputed Western Sahara territory controlled by Morocco. There are no confirmed cases in the rest of Western Sahara.^NorwayEstimation of the number of infected:As of 23 March 2020, according to figures from just over 40 per cent of all GPs in Norway, 20,200 patients have been registered with the”corona code&quot; R991. The figure includes both cases where the patient has been diagnosed with coronavirus infection through testing, and where the GP has used the “corona code” after assessing the patient’s symptoms against the criteria by the Norwegian Institute of Public Health.As of 24 March 2020, the Norwegian Institute of Public Health estimates that between 7,120 and 23,140 Norwegians are infected with the coronavirus.^AustraliaExcluding the cases from Diamond Princess cruise ship which are classified as “on an international conveyance”. Ten cases, including one fatality recorded by the Australian government.^FinlandIncluding the autonomous region of the Ã…land Islands.The number of recoveries is an estimate based on reported cases which were reported at least two weeks ago and there is no other monitoring data on the course of the disease. The exact number of recoveries is not known, as only a small proportion of patients have been hospitalized.^DR CongoThe Democratic Republic of the Congo.^SomaliaExcluding the de facto state of Somaliland.^CubaIncludes cases on the MS Braemar.Excluding cases from Guantanamo Bay, which is governed by the United States.^ Donetsk and Luhansk People’s RepublicNote that these territories are distinct from the Ukraine-administered regions of the Donetsk and Luhansk Oblasts.^ Guam and USS Theodore Roosevelt Cases for the USS Theodore Roosevelt, currently docked at Guam, are reported separately.^CongoAlso known as the Republic of the Congo and not to be confused with the DR Congo.^Charles de GaulleIncluding cases on the escort frigate Chevalier Paul.Florence Parly, Minister of the Armed Forces, reported to the National Assembly’s National Defense and Armed Forces CommitteeÂ [fr] that 2010 sailors of the carrier battle group led by Charles de Gaulle had been tested, with 1081 tests returning positive so far. Many of these cases were aboard Charles de Gaulle, some of the cases were reportedly aboard French frigate Chevalier Paul, and it is unclear if any other ships in the battle group had cases on board.^CyprusIncluding the British Overseas Territory of Akrotiri and Dhekelia.Excluding de facto state of Northern Cyprus.^ Greg Mortimer and UruguayAlthough currently anchored off the coast of Uruguay, cases for the Greg Mortimer are currently reported separately. Six have been transferred inland for hospitalization.^GeorgiaExcluding the de facto states of Abkhazia and South Ossetia.^SomalilandCases from this de facto state are not counted by Somalia.^TaiwanIncluding cases from the ROCS Pan Shi.^Isle of ManRecoveries are presumed. Defined as “An individual testing positive for coronavirus who completes the 14 day self-isolation period from the onset of symptoms who is at home on day 15, or an individual who is discharged from hospital following more severe symptoms.”^SyriaExcluding cases from the disputed Golan Heights.^ArtsakhCases from this de facto state are not counted by Azerbaijan.^Northern CyprusCases from this de facto state are not counted by Cyprus.^South OssetiaCases from this de facto state are not counted by Georgia.^AbkhaziaCases from this de facto state are not counted by Georgia.^Saint VincentThe sovereign state of Saint Vincent and the Grenadines.^MS ZaandamIncluding cases from MS Rotterdam.The MS Rotterdam rendezvoused with the Zaandam on 26 March off the coast of Panama City to provide support and evacuate healthy passengers. Both have since docked in Florida.MS Zaandam and Rotterdam’s numbers are currently not counted in any national figures.^Coral PrincessThe cruise ship Coral Princess has tested positive cases since early AprilÂ 2020 and has since docked in Miami.Coral Princess’s numbers are currently not counted in any national figures.^HNLMS DolfijnAll 8 cases currently associated with Dolfijn were reported while the submarine was at sea in the waters between Scotland and the Netherlands.It is unclear whether the National Institute for Public Health and the Environment (RIVM) is including these cases in their total count, but neither their daily update details nor their daily epidemiological situation reports appear to have mentioned the ship, with a breakdown of cases listing the twelve provinces of the country of the Netherlands (as opposed to the kingdom) accounting for all the cases in the total count.^Figures for Tanzania are for 29 April as the country stopped publishing figures on coronavirus cases on that date. Figures as of that date were 509 cases, 21 deaths, and 183 recoveries.
+Notes^ Cases: This number shows the cumulative number of confirmed human cases reported to date. The actual number of infections and cases is likely to be higher than reported. Reporting criteria and testing capacity vary between locations.The total number of cases may not necessarily represent an aggregate sum of all entries in this column as it relies on aggregate sources and not local sources.^Location: Countries, territories, and international conveyances where cases were diagnosed. The nationality of the infected and the origin of infection may vary. For some countries, cases are split into respective territories and noted accordingly.^Deaths: Reporting criteria vary between locations.The total number of deaths may not necessarily represent an aggregate sum of all entries in this column as it relies on aggregate sources and not local sources.^Recoveries: May not correspond to actual current figures and not all recoveries may be reported. Reporting criteria vary between locations.The total number of recoveries may not necessarily represent an aggregate sum of all entries in this column as it relies on aggregate sources and not local sources.^WorldTotal numbers worldwide. Some locations, including North Korea, have yet to report cases.^United StatesFigures include cases identified on the Grand Princess.Figures do not include the unincorporated territories of Puerto Rico, Guam, Northern Mariana Islands, and U.S. Virgin Islands, all of which are listed separately.Not all states or overseas territories report recovery data.Cases include clinically diagnosed cases as per CDC guidelines.Recoveries and deaths include probable deaths and people released from quarantine as per CDC guidelines.Figures from the United States Department of Defense are only released on a branch-by branch basis since April 2020, without distinction between domestic and foreign deployment, and cases may be reported to local health authorities.Cases for the USS Theodore Roosevelt, currently docked at Guam, are reported separate from national figures but included in the Navy’s totals.There is also one case reported from Guantanamo Bay Naval Base not included in any other nation or territory’s counts. Since April 2020, the United States Department of Defense has directed all bases, including Guantanamo Bay, to not publicize case statistics.^BrazilSince 6 June, the Brazilian government has ordered the Ministry of Health to stop reporting the total number of deaths and active cases. After this, the National Council of Health Secretaries assumed the function of reporting the total number of deaths and active cases.^RussiaIncluding cases from the disputed Crimea and Sevastopol.Excluding the cases from Diamond Princess cruise ship which are classified as “on an international conveyance”.^ChileIncluding the special territory of Easter Island.The Chilean Ministry of Health considered all cases as a “recovered” after 14 days since the initial symptoms of the virus, no matter the health situation of the infected or if following tests indicate the continuing presence of the virus. The only exception were casualties, which are not included as recovered.Deaths only include cases with positive PCR tests and catalogued as “COVID-19 related death” by the Civil Registry and Identification Service. This number is informed on the daily reports of the Ministry of Health. A report with the total number of deaths, including suspected cases without PCR test, is released weekly since 20 June 2020. In the latest report (28 June 2020), the number of total deaths is 8,935.^United KingdomExcluding all British Overseas Territories and Crown dependencies.As of 23 March 2020, the UK government does not publish the number of recoveries. The last update on 22 March reported 135 recovered patients.^SpainExcludes serologyâ€“confirmed cases.^GermanyNot all state authorities count recoveries.Recoveries include estimations by the Robert Koch Institute.^FranceIncluding overseas regions of French Guiana, Guadeloupe, Martinique, Mayotte and RÃ©union, and collectivities of Saint BarthÃ©lemy and Saint Martin.Excluding collectivities of New Caledonia, French Polynesia and Saint Pierre and Miquelon.Recoveries only include hospitalized cases.Figures for total confirmed cases and total deaths include data from both hospital and nursing home (ESMS: Ã©tablissements sociaux et mÃ©dico-sociaux).^ChinaExcluding 98 asymptomatic cases under medical observation as of 3Â JulyÂ 2020.Asymptomatic cases were not reported before 31 March 2020.Excluding Special Administrative Regions of Hong Kong and Macau.Does not include Taiwan.^EgyptIncludes cases identified on the MS River Anuket.^ArgentinaExcluding confirmed cases on the claimed territory of the Falkland Islands. Since 11 April, the Argentine Ministry of Health includes them in their official reports.^BelgiumThe number of deaths also includes untested cases and cases in retirement homes that presumably died because of COVID-19, whilst most countries only include deaths of tested cases in hospitals.^NetherlandsThe Kingdom of the Netherlands consists of a) the Netherlands* [the country as opposed to the kingdom; listed here], which in turn includes the Caribbean Netherlands, that are made up of the special municipalities Bonaire<em>, Saba</em> and Sint Eustatius<em>; b) Aruba</em>; c) CuraÃ§ao<em>; and d) Sint Maarten</em>. All regions marked with an asterisk are listed separately.The Dutch Government agency RIVM, responsible for the constituent country the Netherlands, does not count its number of recoveries.^UkraineExcluding cases from the disputed Crimea and Sevastopol. Cases in these territories are included in the Russian total.Excluding cases from the unrecognized Donetsk and Lugansk People’s Republics.^IsraelIncluding cases from the disputed Golan Heights.Excluding cases from the Palestinian National Authority.^AzerbaijanExcluding the self-declared state of Artsakh.^ Diamond Princess and JapanThe British cruise ship Diamond Princess was in Japanese waters, and the Japanese administration was asked to manage its quarantine, with the passengers having not entered Japan. Therefore, this case is included in neither the Japanese nor British official counts. The World Health Organization classifies the cases as being located”on an international conveyance“.^MoldovaIncluding the disputed territory of Transnistria.^SerbiaExcluding cases from the disputed territory of Kosovo.^MoroccoIncluding cases in the disputed Western Sahara territory controlled by Morocco. There are no confirmed cases in the rest of Western Sahara.^DenmarkThe autonomous territories of the Faroe Islands and Greenland are listed separately.^NorwayEstimation of the number of infected:As of 23 March 2020, according to figures from just over 40 per cent of all GPs in Norway, 20,200 patients have been registered with the”corona code&quot; R991. The figure includes both cases where the patient has been diagnosed with coronavirus infection through testing, and where the GP has used the “corona code” after assessing the patient’s symptoms against the criteria by the Norwegian Institute of Public Health.As of 24 March 2020, the Norwegian Institute of Public Health estimates that between 7,120 and 23,140 Norwegians are infected with the coronavirus.^AustraliaExcluding the cases from Diamond Princess cruise ship which are classified as “on an international conveyance”. Ten cases, including one fatality recorded by the Australian government.^DR CongoThe Democratic Republic of the Congo.^FinlandIncluding the autonomous region of the Ã…land Islands.The number of recoveries is an estimate based on reported cases which were reported at least two weeks ago and there is no other monitoring data on the course of the disease. The exact number of recoveries is not known, as only a small proportion of patients have been hospitalized.^SomaliaExcluding the de facto state of Somaliland.^CubaIncludes cases on the MS Braemar.Excluding cases from Guantanamo Bay, which is governed by the United States.^CongoAlso known as the Republic of the Congo and not to be confused with the DR Congo.^ Donetsk and Luhansk People’s RepublicNote that these territories are distinct from the Ukraine-administered regions of the Donetsk and Luhansk Oblasts.^ Guam and USS Theodore Roosevelt Cases for the USS Theodore Roosevelt, currently docked at Guam, are reported separately.^Charles de GaulleIncluding cases on the escort frigate Chevalier Paul.Florence Parly, Minister of the Armed Forces, reported to the National Assembly’s National Defense and Armed Forces CommitteeÂ [fr] that 2010 sailors of the carrier battle group led by Charles de Gaulle had been tested, with 1081 tests returning positive so far. Many of these cases were aboard Charles de Gaulle, some of the cases were reportedly aboard French frigate Chevalier Paul, and it is unclear if any other ships in the battle group had cases on board.^CyprusIncluding the British Overseas Territory of Akrotiri and Dhekelia.Excluding de facto state of Northern Cyprus.^ Greg Mortimer and UruguayAlthough currently anchored off the coast of Uruguay, cases for the Greg Mortimer are currently reported separately. Six have been transferred inland for hospitalization.^GeorgiaExcluding the de facto states of Abkhazia and South Ossetia.^SomalilandCases from this de facto state are not counted by Somalia.^TaiwanIncluding cases from the ROCS Pan Shi.^Isle of ManRecoveries are presumed. Defined as “An individual testing positive for coronavirus who completes the 14 day self-isolation period from the onset of symptoms who is at home on day 15, or an individual who is discharged from hospital following more severe symptoms.”^SyriaExcluding cases from the disputed Golan Heights.^ArtsakhCases from this de facto state are not counted by Azerbaijan.^Northern CyprusCases from this de facto state are not counted by Cyprus.^South OssetiaCases from this de facto state are not counted by Georgia.^AbkhaziaCases from this de facto state are not counted by Georgia.^Saint VincentThe sovereign state of Saint Vincent and the Grenadines.^MS ZaandamIncluding cases from MS Rotterdam.The MS Rotterdam rendezvoused with the Zaandam on 26 March off the coast of Panama City to provide support and evacuate healthy passengers. Both have since docked in Florida.MS Zaandam and Rotterdam’s numbers are currently not counted in any national figures.^Coral PrincessThe cruise ship Coral Princess has tested positive cases since early AprilÂ 2020 and has since docked in Miami.Coral Princess’s numbers are currently not counted in any national figures.^HNLMS DolfijnAll 8 cases currently associated with Dolfijn were reported while the submarine was at sea in the waters between Scotland and the Netherlands.It is unclear whether the National Institute for Public Health and the Environment (RIVM) is including these cases in their total count, but neither their daily update details nor their daily epidemiological situation reports appear to have mentioned the ship, with a breakdown of cases listing the twelve provinces of the country of the Netherlands (as opposed to the kingdom) accounting for all the cases in the total count.^Figures for Tanzania are for 29 April as the country stopped publishing figures on coronavirus cases on that date. Figures as of that date were 509 cases, 21 deaths, and 183 recoveries.
 </td>
-<td style="text-align:left;">
-Notes^ Cases: This number shows the cumulative number of confirmed human cases reported to date. The actual number of infections and cases is likely to be higher than reported. Reporting criteria and testing capacity vary between locations.The total number of cases may not necessarily represent an aggregate sum of all entries in this column as it relies on aggregate sources and not local sources.^Location: Countries, territories, and international conveyances where cases were diagnosed. The nationality of the infected and the origin of infection may vary. For some countries, cases are split into respective territories and noted accordingly.^Deaths: Reporting criteria vary between locations.The total number of deaths may not necessarily represent an aggregate sum of all entries in this column as it relies on aggregate sources and not local sources.^Recoveries: May not correspond to actual current figures and not all recoveries may be reported. Reporting criteria vary between locations.The total number of recoveries may not necessarily represent an aggregate sum of all entries in this column as it relies on aggregate sources and not local sources.^WorldTotal numbers worldwide. Some locations, including North Korea, have yet to report cases.^United StatesFigures include cases identified on the Grand Princess.Figures do not include the unincorporated territories of Puerto Rico, Guam, Northern Mariana Islands, and U.S. Virgin Islands, all of which are listed separately.Not all states or overseas territories report recovery data.Cases include clinically diagnosed cases as per CDC guidelines.Recoveries and deaths include probable deaths and people released from quarantine as per CDC guidelines.Figures from the United States Department of Defense are only released on a branch-by branch basis since April 2020, without distinction between domestic and foreign deployment, and cases may be reported to local health authorities.Cases for the USS Theodore Roosevelt, currently docked at Guam, are reported separate from national figures but included in the Navy’s totals.There is also one case reported from Guantanamo Bay Naval Base not included in any other nation or territory’s counts. Since April 2020, the United States Department of Defense has directed all bases, including Guantanamo Bay, to not publicize case statistics.^BrazilSince 6 June, the Brazilian government has ordered the Ministry of Health to stop reporting the total number of deaths and active cases. After this, the National Council of Health Secretaries assumed the function of reporting the total number of deaths and active cases.^RussiaIncluding cases from the disputed Crimea and Sevastopol.Excluding the cases from Diamond Princess cruise ship which are classified as “on an international conveyance”.^United KingdomExcluding all British Overseas Territories and Crown dependencies.As of 23 March 2020, the UK government does not publish the number of recoveries. The last update on 22 March reported 135 recovered patients.^ChileIncluding the special territory of Easter Island.The Chilean Ministry of Health considered all cases as a “recovered” after 14 days since the initial symptoms of the virus, no matter the health situation of the infected or if following tests indicate the continuing presence of the virus. The only exception were casualties, which are not included as recovered.Deaths only include cases with positive PCR tests and catalogued as “COVID-19 related death” by the Civil Registry and Identification Service. This number is informed on the daily reports of the Ministry of Health. A report with the total number of deaths, including suspected cases without PCR test, is released weekly since 20 June 2020. In the latest report (28 June 2020), the number of total deaths is 8,935.^SpainExcludes serologyâ€“confirmed cases.^GermanyNot all state authorities count recoveries.Recoveries include estimations by the Robert Koch Institute.^FranceIncluding overseas regions of French Guiana, Guadeloupe, Martinique, Mayotte and RÃ©union, and collectivities of Saint BarthÃ©lemy and Saint Martin.Excluding collectivities of New Caledonia, French Polynesia and Saint Pierre and Miquelon.Recoveries only include hospitalized cases.Figures for total confirmed cases and total deaths include data from both hospital and nursing home (ESMS: Ã©tablissements sociaux et mÃ©dico-sociaux).^ChinaExcluding 100 asymptomatic cases under medical observation as of 30Â JuneÂ 2020.Asymptomatic cases were not reported before 31 March 2020.Excluding Special Administrative Regions of Hong Kong and Macau.Does not include Taiwan.^EgyptIncludes cases identified on the MS River Anuket.^ArgentinaExcluding confirmed cases on the claimed territory of the Falkland Islands. Since 11 April, the Argentine Ministry of Health includes them in their official reports.^BelgiumThe number of deaths also includes untested cases and cases in retirement homes that presumably died because of COVID-19, whilst most countries only include deaths of tested cases in hospitals.^NetherlandsThe Kingdom of the Netherlands consists of a) the Netherlands* [the country as opposed to the kingdom; listed here], which in turn includes the Caribbean Netherlands, that are made up of the special municipalities Bonaire<em>, Saba</em> and Sint Eustatius<em>; b) Aruba</em>; c) CuraÃ§ao<em>; and d) Sint Maarten</em>. All regions marked with an asterisk are listed separately.The Dutch Government agency RIVM, responsible for the constituent country the Netherlands, does not count its number of recoveries.^UkraineExcluding cases from the disputed Crimea and Sevastopol. Cases in these territories are included in the Russian total.Excluding cases from the unrecognized Donetsk and Lugansk People’s Republics.^IsraelIncluding cases from the disputed Golan Heights.Excluding cases from the Palestinian National Authority.^ Diamond Princess and JapanThe British cruise ship Diamond Princess was in Japanese waters, and the Japanese administration was asked to manage its quarantine, with the passengers having not entered Japan. Therefore, this case is included in neither the Japanese nor British official counts. The World Health Organization classifies the cases as being located”on an international conveyance“.^AzerbaijanExcluding the self-declared state of Artsakh.^MoldovaIncluding the disputed territory of Transnistria.^SerbiaExcluding cases from the disputed territory of Kosovo.^DenmarkThe autonomous territories of the Faroe Islands and Greenland are listed separately.^MoroccoIncluding cases in the disputed Western Sahara territory controlled by Morocco. There are no confirmed cases in the rest of Western Sahara.^NorwayEstimation of the number of infected:As of 23 March 2020, according to figures from just over 40 per cent of all GPs in Norway, 20,200 patients have been registered with the”corona code&quot; R991. The figure includes both cases where the patient has been diagnosed with coronavirus infection through testing, and where the GP has used the “corona code” after assessing the patient’s symptoms against the criteria by the Norwegian Institute of Public Health.As of 24 March 2020, the Norwegian Institute of Public Health estimates that between 7,120 and 23,140 Norwegians are infected with the coronavirus.^AustraliaExcluding the cases from Diamond Princess cruise ship which are classified as “on an international conveyance”. Ten cases, including one fatality recorded by the Australian government.^FinlandIncluding the autonomous region of the Ã…land Islands.The number of recoveries is an estimate based on reported cases which were reported at least two weeks ago and there is no other monitoring data on the course of the disease. The exact number of recoveries is not known, as only a small proportion of patients have been hospitalized.^DR CongoThe Democratic Republic of the Congo.^SomaliaExcluding the de facto state of Somaliland.^CubaIncludes cases on the MS Braemar.Excluding cases from Guantanamo Bay, which is governed by the United States.^ Donetsk and Luhansk People’s RepublicNote that these territories are distinct from the Ukraine-administered regions of the Donetsk and Luhansk Oblasts.^ Guam and USS Theodore Roosevelt Cases for the USS Theodore Roosevelt, currently docked at Guam, are reported separately.^CongoAlso known as the Republic of the Congo and not to be confused with the DR Congo.^Charles de GaulleIncluding cases on the escort frigate Chevalier Paul.Florence Parly, Minister of the Armed Forces, reported to the National Assembly’s National Defense and Armed Forces CommitteeÂ [fr] that 2010 sailors of the carrier battle group led by Charles de Gaulle had been tested, with 1081 tests returning positive so far. Many of these cases were aboard Charles de Gaulle, some of the cases were reportedly aboard French frigate Chevalier Paul, and it is unclear if any other ships in the battle group had cases on board.^CyprusIncluding the British Overseas Territory of Akrotiri and Dhekelia.Excluding de facto state of Northern Cyprus.^ Greg Mortimer and UruguayAlthough currently anchored off the coast of Uruguay, cases for the Greg Mortimer are currently reported separately. Six have been transferred inland for hospitalization.^GeorgiaExcluding the de facto states of Abkhazia and South Ossetia.^SomalilandCases from this de facto state are not counted by Somalia.^TaiwanIncluding cases from the ROCS Pan Shi.^Isle of ManRecoveries are presumed. Defined as “An individual testing positive for coronavirus who completes the 14 day self-isolation period from the onset of symptoms who is at home on day 15, or an individual who is discharged from hospital following more severe symptoms.”^SyriaExcluding cases from the disputed Golan Heights.^ArtsakhCases from this de facto state are not counted by Azerbaijan.^Northern CyprusCases from this de facto state are not counted by Cyprus.^South OssetiaCases from this de facto state are not counted by Georgia.^AbkhaziaCases from this de facto state are not counted by Georgia.^Saint VincentThe sovereign state of Saint Vincent and the Grenadines.^MS ZaandamIncluding cases from MS Rotterdam.The MS Rotterdam rendezvoused with the Zaandam on 26 March off the coast of Panama City to provide support and evacuate healthy passengers. Both have since docked in Florida.MS Zaandam and Rotterdam’s numbers are currently not counted in any national figures.^Coral PrincessThe cruise ship Coral Princess has tested positive cases since early AprilÂ 2020 and has since docked in Miami.Coral Princess’s numbers are currently not counted in any national figures.^HNLMS DolfijnAll 8 cases currently associated with Dolfijn were reported while the submarine was at sea in the waters between Scotland and the Netherlands.It is unclear whether the National Institute for Public Health and the Environment (RIVM) is including these cases in their total count, but neither their daily update details nor their daily epidemiological situation reports appear to have mentioned the ship, with a breakdown of cases listing the twelve provinces of the country of the Netherlands (as opposed to the kingdom) accounting for all the cases in the total count.^Figures for Tanzania are for 29 April as the country stopped publishing figures on coronavirus cases on that date. Figures as of that date were 509 cases, 21 deaths, and 183 recoveries.
-</td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -1095,7 +1201,7 @@ NA
 <td style="text-align:left;">
 Palau
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1104,8 +1210,8 @@ Oceania
 <td style="text-align:left;">
 Micronesia
 </td>
-<td style="text-align:left;">
-18,008
+<td style="text-align:right;">
+18008
 </td>
 </tr>
 <tr>
@@ -1115,7 +1221,7 @@ Micronesia
 <td style="text-align:left;">
 RÃ©union
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1124,8 +1230,8 @@ Africa
 <td style="text-align:left;">
 Eastern Africa
 </td>
-<td style="text-align:left;">
-888,927
+<td style="text-align:right;">
+888927
 </td>
 </tr>
 <tr>
@@ -1135,7 +1241,7 @@ Eastern Africa
 <td style="text-align:left;">
 Saba
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0
 </td>
 <td style="text-align:left;">
@@ -1144,7 +1250,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -1155,7 +1261,7 @@ NA
 <td style="text-align:left;">
 Saint Helena
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1164,8 +1270,8 @@ Africa
 <td style="text-align:left;">
 Western Africa
 </td>
-<td style="text-align:left;">
-6,059
+<td style="text-align:right;">
+6059
 </td>
 </tr>
 <tr>
@@ -1175,7 +1281,7 @@ Western Africa
 <td style="text-align:left;">
 Saint Vincent
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0
 </td>
 <td style="text-align:left;">
@@ -1184,7 +1290,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -1195,7 +1301,7 @@ NA
 <td style="text-align:left;">
 Saint Vincent and the Grenadines
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1204,8 +1310,8 @@ Americas
 <td style="text-align:left;">
 Caribbean
 </td>
-<td style="text-align:left;">
-110,589
+<td style="text-align:right;">
+110589
 </td>
 </tr>
 <tr>
@@ -1215,7 +1321,7 @@ Caribbean
 <td style="text-align:left;">
 Sint Eustatius
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0
 </td>
 <td style="text-align:left;">
@@ -1224,7 +1330,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -1235,7 +1341,7 @@ NA
 <td style="text-align:left;">
 Solomon Islands
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1244,8 +1350,8 @@ Oceania
 <td style="text-align:left;">
 Melanesia
 </td>
-<td style="text-align:left;">
-669,823
+<td style="text-align:right;">
+669823
 </td>
 </tr>
 <tr>
@@ -1255,7 +1361,7 @@ Melanesia
 <td style="text-align:left;">
 Somaliland
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 27
 </td>
 <td style="text-align:left;">
@@ -1264,7 +1370,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -1275,7 +1381,7 @@ NA
 <td style="text-align:left;">
 South Ossetia
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0
 </td>
 <td style="text-align:left;">
@@ -1284,8 +1390,28 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+228
+</td>
+<td style="text-align:left;">
+Tanzania
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+Africa
+</td>
+<td style="text-align:left;">
+Eastern Africa
+</td>
+<td style="text-align:right;">
+58005463
 </td>
 </tr>
 <tr>
@@ -1295,7 +1421,7 @@ NA
 <td style="text-align:left;">
 The Gambia
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 2
 </td>
 <td style="text-align:left;">
@@ -1304,7 +1430,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -1315,7 +1441,7 @@ NA
 <td style="text-align:left;">
 Tokelau
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1324,8 +1450,8 @@ Oceania
 <td style="text-align:left;">
 Polynesia
 </td>
-<td style="text-align:left;">
-1,340
+<td style="text-align:right;">
+1340
 </td>
 </tr>
 <tr>
@@ -1335,7 +1461,7 @@ Polynesia
 <td style="text-align:left;">
 Tonga
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1344,8 +1470,8 @@ Oceania
 <td style="text-align:left;">
 Polynesia
 </td>
-<td style="text-align:left;">
-110,940
+<td style="text-align:right;">
+110940
 </td>
 </tr>
 <tr>
@@ -1355,7 +1481,7 @@ Polynesia
 <td style="text-align:left;">
 Turkmenistan
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1364,8 +1490,8 @@ Asia
 <td style="text-align:left;">
 Central Asia
 </td>
-<td style="text-align:left;">
-5,942,089
+<td style="text-align:right;">
+5942089
 </td>
 </tr>
 <tr>
@@ -1375,7 +1501,7 @@ Central Asia
 <td style="text-align:left;">
 Tuvalu
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1384,8 +1510,8 @@ Oceania
 <td style="text-align:left;">
 Polynesia
 </td>
-<td style="text-align:left;">
-11,646
+<td style="text-align:right;">
+11646
 </td>
 </tr>
 <tr>
@@ -1395,7 +1521,7 @@ Polynesia
 <td style="text-align:left;">
 USS Theodore Roosevelt
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 1
 </td>
 <td style="text-align:left;">
@@ -1404,7 +1530,7 @@ NA
 <td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 </tr>
@@ -1415,7 +1541,7 @@ NA
 <td style="text-align:left;">
 Vanuatu
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1424,8 +1550,8 @@ Oceania
 <td style="text-align:left;">
 Melanesia
 </td>
-<td style="text-align:left;">
-299,882
+<td style="text-align:right;">
+299882
 </td>
 </tr>
 <tr>
@@ -1435,7 +1561,7 @@ Melanesia
 <td style="text-align:left;">
 Wallis and Futuna
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1444,8 +1570,8 @@ Oceania
 <td style="text-align:left;">
 Polynesia
 </td>
-<td style="text-align:left;">
-11,432
+<td style="text-align:right;">
+11432
 </td>
 </tr>
 <tr>
@@ -1455,7 +1581,7 @@ Polynesia
 <td style="text-align:left;">
 Western Sahara
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1464,8 +1590,8 @@ Africa
 <td style="text-align:left;">
 Northern Africa
 </td>
-<td style="text-align:left;">
-582,463
+<td style="text-align:right;">
+582463
 </td>
 </tr>
 <tr>
@@ -1475,7 +1601,7 @@ Northern Africa
 <td style="text-align:left;">
 Western Samoa
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
@@ -1484,8 +1610,8 @@ Oceania
 <td style="text-align:left;">
 Polynesia
 </td>
-<td style="text-align:left;">
-197,097
+<td style="text-align:right;">
+197097
 </td>
 </tr>
 </tbody>
@@ -1494,19 +1620,13 @@ Polynesia
 <pre class="r"><code>data=merge(covid19,poblacion)</code></pre>
 <pre class="r"><code>str(data)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    206 obs. of  5 variables:
-##  $ Pais                                    : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
-##  $ Deaths &gt;&gt; 512,331                       : chr  &quot;774&quot; &quot;62&quot; &quot;920&quot; &quot;52&quot; ...
-##  $ UN continentalregion                    : chr  &quot;Asia&quot; &quot;Europe&quot; &quot;Africa&quot; &quot;Europe&quot; ...
-##  $ UN statisticalsubregion                 : chr  &quot;Southern Asia&quot; &quot;Southern Europe&quot; &quot;Northern Africa&quot; &quot;Southern Europe&quot; ...
-##  $ Population(1 July 2019) &gt;&gt; 7,713,468,100: chr  &quot;38,041,754&quot; &quot;2,880,917&quot; &quot;43,053,054&quot; &quot;77,142&quot; ...</code></pre>
-<pre class="r"><code>names(data)=c(&#39;Pais&#39;,&#39;Z1&#39;,&#39;UN continentalregion&#39;,&#39;UN statisticalsubregion&#39;,&#39;Z2&#39;)</code></pre>
-<pre class="r"><code>data$Z1=gsub(&#39;,&#39;,&quot;&quot;,data$Z1)
-data$Z2=gsub(&#39;,&#39;,&quot;&quot;,data$Z2)</code></pre>
-<pre class="r"><code>data[,c(2,5)]=lapply(data[,c(2,5)],as.numeric)</code></pre>
-<pre><code>## Warning in lapply(data[, c(2, 5)], as.numeric): NAs introducidos por coerción</code></pre>
+##  $ Pais             : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
+##  $ Z1               : num  826 74 946 52 18 ...
+##  $ continentalregion: chr  &quot;Asia&quot; &quot;Europe&quot; &quot;Africa&quot; &quot;Europe&quot; ...
+##  $ subregion        : chr  &quot;Southern Asia&quot; &quot;Southern Europe&quot; &quot;Northern Africa&quot; &quot;Southern Europe&quot; ...
+##  $ Z2               : num  38041754 2880917 43053054 77142 31825295 ...</code></pre>
 <pre class="r"><code>data$&#39;Decesos por millón de habitantes&#39;=(data$Z1/data$Z2)*10^6</code></pre>
 <pre class="r"><code>data=data[,-c(2,5)]</code></pre>
-<pre class="r"><code>data[50,1]=&#39;Czechia&#39;</code></pre>
 
 
 

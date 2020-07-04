@@ -1,24 +1,14 @@
 
 ```{r}
 library(htmltab)
-```
-```{r}
 library(rio)
-```
-```{r}
 library(stringr)
-```
-```{r}
-library(knitr)
-```
-```{r}
+library(knitr) 
 library(kableExtra)
 ```
 ```{r}
 lkpage='https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory'
 lkpath='//*[@id="thetable"]'
-```
-```{r}
 lkpage2='https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)'
 lkpath2='//*[@id="main"]'
 ```
@@ -32,8 +22,6 @@ poblacion[,c(4,6)]=NULL
 ```
 ```{r}
 names(covid19)[names(covid19)=='Location >> World']= 'Pais'
-```
-```{r}
 names(poblacion)[names(poblacion)=='Country/Territory >> World']= 'Pais'
 ```
 ```{r}
@@ -47,6 +35,33 @@ poblacion$Pais=gsub('Â',"",poblacion$Pais)
 ```
 ```{r}
 poblacion$Pais=trimws(poblacion$Pais,whitespace = "[\\h\\v]")
+```
+```{r}
+names(covid19)=c('Pais','Z1')
+```
+```{r}
+covid19$Z1=gsub(',','',covid19$Z1)
+```
+```{r}
+covid19$Z1=gsub('No data',NA,covid19$Z1)
+```
+```{r}
+covid19[,c(2)]=as.numeric(covid19[,c(2)])
+```
+```{r}
+table(covid19$Z1, useNA = 'always')
+```
+```{r}
+names(poblacion)=c('Pais','continentalregion','subregion','Z2')
+```
+```{r}
+poblacion$Z2=gsub(',',"",poblacion$Z2)
+```
+```{r}
+poblacion$Z2=as.numeric(poblacion$Z2)
+```
+```{r}
+table(poblacion$Z2, useNA = 'always')
 ```
 ```{r}
 nrow(merge(covid19,poblacion))
@@ -70,25 +85,8 @@ data=merge(covid19,poblacion)
 str(data)
 ```
 ```{r}
-names(data)=c('Pais','Z1','UN continentalregion','UN statisticalsubregion','Z2')
-```
-```{r}
-data$Z1=gsub(',',"",data$Z1)
-data$Z2=gsub(',',"",data$Z2)
-```
-```{r}
-data[,c(2,5)]=lapply(data[,c(2,5)],as.numeric)
-```
-```{r}
 data$'Decesos por millón de habitantes'=(data$Z1/data$Z2)*10^6
 ```
 ```{r}
 data=data[,-c(2,5)]
 ```
-```{r}
-data[50,1]='Czechia'
-```
-
-
-
-
