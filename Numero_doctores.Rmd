@@ -35,6 +35,10 @@ Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
 ```
 
 ```{r}
+table(Medicos$`Numero_medicos`,useNA = "always")
+```
+
+```{r}
 #Nos  quedarnos con los paises que son de europa y america 
 ```
 
@@ -64,7 +68,7 @@ names(EuroAmer1)= c ("Pais")
 
 
 ```{r}
-Medicos_EA =merge(Medicos,EuroAmer1,by.x='Pais', by.y='Pais') 
+Medicos_EA =merge(Medicos,EuroAmer1,by.x='Pais', by.y='Pais')
 head(Medicos_EA)
 ```
 

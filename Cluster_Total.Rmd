@@ -449,9 +449,6 @@ PBI_EA =merge(pbi,EuroAmer2,by.x='Pais', by.y='Pais')
 head(PBI_EA)
 ```
 
-
-
-
 ```{r}
 DataSalud=merge(HealthExpenditure,Numerodecamas)
 ```
@@ -464,8 +461,6 @@ DataSalud=merge(DataSalud,UHC)
 ```{r}
 DataSalud=merge(DataSalud,PBI_EA)
 ```
-
-
 
 #MERGE DE SALUD Y GOBERNANZA
 
@@ -725,9 +720,6 @@ data=data[,-c(2,5)]
 data[50,1]='Czechia'
 ```
 
-
-
-
 #MERGE FINAL
 
 ```{r}
@@ -741,7 +733,86 @@ BaseoficialCOVID=na.omit(BaseoficialCOVID)
 ```
 
 
+```{r}
+#CLUSTER DE DENSIDAD
+
+row.names(BaseoficialCOVID)=BaseoficialCOVID$Pais
+BaseoficialCOVID=na.omit(BaseoficialCOVID)
+
+```
+
+```{r}
+library(cluster)
+distancia = daisy(BaseoficialCOVID[,c(4:16)],metric='gower')
+```
+
+```{r}
+COVID = cmdscale(distancia, k=2,add = T)
+```
+
+```{r}
+BaseoficialCOVID$dim1 <- COVID$points[,1]
+BaseoficialCOVID$dim2 <- COVID$points[,2]
+```
+
+```{r}
+library(factoextra)
+```
 
 
+```{r}
+baseCOVID= ggplot(BaseoficialCOVID,aes(x=dim1, y=dim2,label=row.names(BaseoficialCOVID))) 
+baseCOVID + geom_text(size=2)
+```
 
+```{r}
+#calculando los DBSCAN
+distancia.cmd= daisy(BaseoficialCOVID[,c('dim1','dim2')], metric = 'euclidean')
+```
 
+```{r}
+#Calculo de epsilon
+library(dbscan)
+kNNdistplot(distancia.cmd, k=13)
+
+abline(h=0.11, lty=2)
+```
+
+```{r}
+library(fpc)
+db.cmd = dbscan(distancia.cmd, eps=0.10, MinPts=13,method = 'dist')
+
+##OJO: ¿cual eps es mejor 0,10 - 0,11
+```
+
+```{r}
+BaseoficialCOVID$dbCMD=as.factor(db.cmd$cluster)
+```
+
+```{r}
+min(BaseoficialCOVID[,c('dim1','dim2')]); max(BaseoficialCOVID[,c('dim1','dim2')])
+```
+```{r}
+limites = c(-0.5,0.4)
+```
+
+```{r}
+library(ggrepel)
+baseCOVID= ggplot(BaseoficialCOVID,aes(x=dim1, y=dim2)) + ylim(limites) + xlim(limites) + coord_fixed()
+dbplot_COVID= baseCOVID + geom_point(aes(color=dbCMD)) 
+dbplot_COVID
+```
+
+```{r}
+dbplot_COVID + geom_text_repel(size=3,aes(label=row.names(BaseoficialCOVID)))
+```
+
+```{r}
+#Aquí sólo los atípicos:
+LABEL=ifelse(BaseoficialCOVID$dbCMD==0,row.names(BaseoficialCOVID),"")
+dbplot_COVID + geom_text_repel(aes(label=LABEL),
+                         size=3, 
+                         direction = "y", ylim = 0.30,
+                         angle=40,
+                         segment.colour = "grey")
+```

@@ -35,6 +35,10 @@ pbi$Porcentaje_PBI =as.numeric(pbi$Porcentaje_PBI)
 ```
 
 ```{r}
+table(pbi$`Porcentaje_PBI`,useNA = "always")
+```
+
+```{r}
 str(pbi)
 ```
 
