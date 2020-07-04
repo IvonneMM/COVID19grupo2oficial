@@ -1,24 +1,14 @@
 
 ```{r}
 library(htmltab)
-```
-```{r}
 library(rio)
-```
-```{r}
 library(stringr)
-```
-```{r}
 library(knitr) 
-```
-```{r}
 library(kableExtra)
 ```
 ```{r}
 lkpage='https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory'
 lkpath='//*[@id="thetable"]'
-```
-```{r}
 lkpage2='https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)'
 lkpath2='//*[@id="main"]'
 ```
@@ -32,8 +22,6 @@ poblacion[,c(4,6)]=NULL
 ```
 ```{r}
 names(covid19)[names(covid19)=='Location >> World']= 'Pais'
-```
-```{r}
 names(poblacion)[names(poblacion)=='Country/Territory >> World']= 'Pais'
 ```
 ```{r}
@@ -63,7 +51,6 @@ covid19[,c(2)]=as.numeric(covid19[,c(2)])
 ```{r}
 table(covid19$Z1, useNA = 'always')
 ```
-
 ```{r}
 names(poblacion)=c('Pais','continentalregion','subregion','Z2')
 ```
