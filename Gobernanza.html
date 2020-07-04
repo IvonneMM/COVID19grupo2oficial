@@ -366,110 +366,41 @@ summary {
 
 
 <pre class="r"><code>library(rio)</code></pre>
-<pre class="r"><code>Gobernabilidad=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(2)%20(1).xls&quot;
+<pre class="r"><code>Gobernabilidad=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(2)%20(1)%20(3).xls&quot;
 Gobernabilidad=import(Gobernabilidad)</code></pre>
 <pre class="r"><code>names(Gobernabilidad)= c (&quot;Pais&quot;, &quot;Gobernabilidad&quot;)</code></pre>
 <pre class="r"><code>Gobernabilidad$Gobernabilidad=as.numeric(Gobernabilidad$Gobernabilidad)</code></pre>
 <pre><code>## Warning: NAs introduced by coercion</code></pre>
-<pre class="r"><code>Gobernabilidad&lt;-na.omit(Gobernabilidad)
-Gobernabilidad</code></pre>
-<pre><code>##                              Pais Gobernabilidad
-## 1                         Albania      0.1147880
-## 2                         Andorra      1.9449760
-## 3                        Anguilla      0.8301269
-## 4             Antigua and Barbuda     -0.0060096
-## 5                       Argentina      0.0259878
-## 6                         Armenia     -0.0243394
-## 7                           Aruba      1.0583920
-## 8                         Austria      1.4533420
-## 9                      Azerbaijan     -0.1004674
-## 10                   Bahamas, The      0.5391499
-## 11                       Barbados      0.4269727
-## 12                        Belarus     -0.3010303
-## 13                        Belgium      1.1717480
-## 14                         Belize     -0.5938884
-## 15                        Bermuda      1.3875510
-## 16                        Bolivia     -0.3220994
-## 17         Bosnia and Herzegovina     -0.6185398
-## 18                         Brazil     -0.4474374
-## 19                       Bulgaria      0.2718757
-## 20                         Canada      1.7161080
-## 21                 Cayman Islands      1.2043660
-## 22                          Chile      1.0840340
-## 23                       Colombia     -0.0852262
-## 24                     Costa Rica      0.3781868
-## 25                        Croatia      0.4569183
-## 26                           Cuba     -0.2448378
-## 27                         Cyprus      0.9209022
-## 28                 Czech Republic      0.9222081
-## 29                        Denmark      1.8716310
-## 30                       Dominica     -0.2895034
-## 31             Dominican Republic     -0.4002573
-## 32                        Ecuador     -0.2613976
-## 33                    El Salvador     -0.4471425
-## 34                        Estonia      1.1919380
-## 35                        Finland      1.9842080
-## 36                         France      1.4805260
-## 37                  French Guiana      1.3978630
-## 38                        Georgia      0.6145709
-## 39                        Germany      1.6196330
-## 40                         Greece      0.3382609
-## 41                      Greenland      0.8380827
-## 42                        Grenada     -0.2529525
-## 43                      Guatemala     -0.6820061
-## 44                         Guyana     -0.2694839
-## 45                          Haiti     -1.9090540
-## 46                       Honduras     -0.6206585
-## 47                        Hungary      0.4873109
-## 48                        Iceland      1.4656550
-## 49                        Ireland      1.4203380
-## 50                          Italy      0.4138835
-## 51                        Jamaica      0.4967112
-## 52        Jersey, Channel Islands      1.2599510
-## 53                     Kazakhstan      0.0217204
-## 54                         Kosovo     -0.4283053
-## 55                Kyrgyz Republic     -0.6115379
-## 56                         Latvia      1.0434520
-## 57                  Liechtenstein      1.7390370
-## 58                      Lithuania      1.0723980
-## 59                     Luxembourg      1.7782210
-## 60                     Martinique      1.1088390
-## 61                         Mexico     -0.1533880
-## 62                        Moldova     -0.4665205
-## 64                     Montenegro      0.1311615
-## 65                    Netherlands      1.8504660
-## 67                      Nicaragua     -0.8024699
-## 68                North Macedonia      0.0902431
-## 69                         Norway      1.8871190
-## 70                         Panama     -0.0194520
-## 71                       Paraguay     -0.5172144
-## 72                           Peru     -0.2454309
-## 73                         Poland      0.6626508
-## 74                       Portugal      1.2089090
-## 75                    Puerto Rico     -0.1569240
-## 76                        Romania     -0.2534418
-## 77             Russian Federation     -0.0608858
-## 79                         Serbia      0.1116198
-## 80                Slovak Republic      0.7074615
-## 81                       Slovenia      1.1258060
-## 82                          Spain      1.0021360
-## 83            St. Kitts and Nevis      0.5514148
-## 84                      St. Lucia      0.1956703
-## 85 St. Vincent and the Grenadines      0.1956703
-## 86                       Suriname     -0.6553037
-## 87                         Sweden      1.8309750
-## 88                    Switzerland      2.0396210
-## 89                     Tajikistan     -1.0977040
-## 90            Trinidad and Tobago      0.1902379
-## 91                         Turkey      0.0060968
-## 92                   Turkmenistan     -1.0441020
-## 93                        Ukraine     -0.4152199
-## 94                 United Kingdom      1.3418840
-## 95                  United States      1.5769980
-## 96                        Uruguay      0.5582148
-## 97                     Uzbekistan     -0.5470828
-## 98                  Venezuela, RB     -1.5815170
-## 99          Virgin Islands (U.S.)      0.8301269</code></pre>
+<pre class="r"><code>table(Gobernabilidad$`Gobernabilidad`,useNA = &quot;always&quot;)</code></pre>
+<pre><code>## 
+##  -1.909054  -1.581517  -1.097704  -1.044102 -0.8024699 -0.6820061 -0.6553037 
+##          1          1          1          1          1          1          1 
+## -0.6206585 -0.6185398 -0.6115379 -0.5938884 -0.5470828 -0.5172144 -0.4665205 
+##          1          1          1          1          1          1          1 
+## -0.4474374 -0.4471425 -0.4283053 -0.4152199 -0.4002573 -0.3220994 -0.3010303 
+##          1          1          1          1          1          1          1 
+## -0.2895034 -0.2694839 -0.2613976 -0.2534418 -0.2529525 -0.2454309 -0.2448378 
+##          1          1          1          1          1          1          1 
+##  -0.156924  -0.153388 -0.1004674 -0.0852262 -0.0608858 -0.0243394  -0.019452 
+##          1          1          1          1          1          1          1 
+## -0.0060096  0.0060968  0.0217204  0.0259878  0.0902431  0.1116198   0.114788 
+##          1          1          1          1          1          1          1 
+##  0.1311615  0.1902379  0.1956703  0.2718757  0.3382609  0.3781868  0.4138835 
+##          1          1          2          1          1          1          1 
+##  0.4269727  0.4569183  0.4873109  0.4967112  0.5391499  0.5514148  0.5582148 
+##          1          1          1          1          1          1          1 
+##  0.6145709  0.6626508  0.7074615  0.8301269  0.8380827  0.9209022  0.9222081 
+##          1          1          1          2          1          1          1 
+##   1.002136   1.043452   1.058392   1.072398   1.084034   1.108839   1.125806 
+##          1          1          1          1          1          1          1 
+##   1.171748   1.191938   1.204366   1.208909   1.259951   1.341884   1.387551 
+##          1          1          1          1          1          1          1 
+##   1.397863   1.420338   1.453342   1.465655   1.480526   1.576998   1.619633 
+##          1          1          1          1          1          1          1 
+##   1.716108   1.739037   1.778221   1.830975   1.850466   1.871631   1.887119 
+##          1          1          1          1          1          1          1 
+##   1.944976   1.984208   2.039621       &lt;NA&gt; 
+##          1          1          1          3</code></pre>
 
 
 
