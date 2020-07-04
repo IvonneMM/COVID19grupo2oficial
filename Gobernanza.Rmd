@@ -15,4 +15,7 @@ names(Gobernabilidad)= c ("Pais", "Gobernabilidad")
 Gobernabilidad$Gobernabilidad=as.numeric(Gobernabilidad$Gobernabilidad)
 ```
 
+```{r}
+table(Gobernabilidad$`Gobernabilidad`,useNA = "always")
+```
 

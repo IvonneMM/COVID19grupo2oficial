@@ -39,6 +39,10 @@ saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento
 ```
 
 ```{r}
+table(saneamiento$`Porcentaje_Saneamiento`,useNA = "always")
+```
+
+```{r}
 library(rio)
 ```
 
