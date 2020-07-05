@@ -366,32 +366,52 @@ summary {
 
 
 <pre class="r"><code>library(htmltab)</code></pre>
-<pre class="r"><code>library(tidyr)</code></pre>
-<pre class="r"><code>library(stringr)</code></pre>
+<pre><code>## Warning: package &#39;htmltab&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>library(tidyr)
+library(stringr)</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 4.0.2</code></pre>
 <pre class="r"><code>library(rio)</code></pre>
+<pre><code>## Warning: package &#39;rio&#39; was built under R version 4.0.2</code></pre>
 <pre class="r"><code>lkpage=&#39;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html&#39;
 lkpath=&#39;//*[@id=&quot;fieldListing&quot;]&#39;</code></pre>
-<pre class="r"><code>&#39;agua potable&#39; = htmltab(doc = lkpage, which = lkpath)</code></pre>
+<pre class="r"><code>Aguapotable = htmltab(doc = lkpage, which = lkpath)</code></pre>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<pre class="r"><code>names(`agua potable`)</code></pre>
+<pre class="r"><code>names(Aguapotable)</code></pre>
 <pre><code>## [1] &quot;Country&quot;               &quot;Drinking water source&quot;</code></pre>
-<pre class="r"><code>`agua potable`=separate(`agua potable`,&quot;Drinking water source&quot;,into=c(&#39;z1&#39;,&#39;z2&#39;,&#39;z3&#39;,&#39;z4&#39;), &#39;population&#39;)</code></pre>
-<pre><code>## Warning: Expected 4 pieces. Additional pieces discarded in 208 rows [1, 2, 3, 4,
+<pre class="r"><code>Aguapotable = separate(Aguapotable,&#39;Drinking water source&#39;,into=c(&#39;Z1&#39;,&#39;Z2&#39;), &#39;total&#39;)</code></pre>
+<pre><code>## Warning: Expected 2 pieces. Additional pieces discarded in 208 rows [1, 2, 3, 4,
 ## 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
-<pre><code>## Warning: Expected 4 pieces. Missing pieces filled with `NA` in 1 rows [55].</code></pre>
-<pre class="r"><code>`agua potable`$z1=NULL
-`agua potable`$z2=NULL
-`agua potable`$z4=NULL</code></pre>
-<pre class="r"><code>`agua potable`$z3=str_extract_all(`agua potable`$z3,pattern=&quot;(\\-*\\d+\\.*\\d*)&quot;)</code></pre>
-<pre class="r"><code>`agua potable`$z3=as.numeric(`agua potable`$z3)</code></pre>
-<pre class="r"><code>str(`agua potable`)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    209 obs. of  2 variables:
-##  $ Country: chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;American Samoa&quot; ...
-##  $ z3     : num  55.3 83.6 83.6 100 100 49 5.4 97.9 99.1 100 ...</code></pre>
-<pre class="r"><code>names(`agua potable`)=c(&#39;Pais&#39;,&#39;% of population with access to improved drinking water&#39;)</code></pre>
+<pre><code>## Warning: Expected 2 pieces. Missing pieces filled with `NA` in 1 rows [55].</code></pre>
+<pre class="r"><code>Aguapotable[,c(2)]=NULL</code></pre>
+<pre class="r"><code>Aguapotable = separate(Aguapotable,&#39;Z2&#39;,into=c(&#39;Z1&#39;,&#39;Z2&#39;),&#39;%&#39;)</code></pre>
+<pre><code>## Warning: Expected 2 pieces. Additional pieces discarded in 208 rows [1, 2, 3, 4,
+## 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
+<pre class="r"><code>Aguapotable[,c(3)]=NULL</code></pre>
+<pre class="r"><code>Aguapotable[,c(2)] = gsub(&#39;:&#39;,&#39;&#39;,Aguapotable[,c(2)])
+Aguapotable[,c(2)] = trimws(Aguapotable[,c(2)],whitespace = &#39;[\\h\\v]&#39;)</code></pre>
+<pre class="r"><code>Aguapotable$Z1=as.numeric(Aguapotable$Z1)</code></pre>
+<pre class="r"><code>names(Aguapotable)=c(&#39;Pais&#39;,&#39;% of population with access to improved drinking water&#39;)</code></pre>
+<pre class="r"><code>table(Aguapotable$`% of population with access to improved drinking water`, useNA = &#39;always&#39;)</code></pre>
+<pre><code>## 
+## 31.7   40 47.9   49 50.8 51.1 51.5 52.4 54.4 54.9 55.3 55.5 55.6 57.3 57.7 57.8 
+##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
+## 57.9 58.2 58.4 58.7 62.6 63.1 63.2 64.4 65.4 66.9 68.5 71.1 71.9 73.8 74.1 75.5 
+##    1    1    2    1    1    1    1    1    1    1    2    1    1    1    1    1 
+## 75.6 75.7 75.9 76.1 76.5 76.8 76.9   77 77.9 78.5   79 79.3 80.6 80.8 81.8 81.9 
+##    2    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
+## 82.3 83.6 84.7 85.4 86.6 86.7 86.9   87 87.3 87.4 88.4 88.7   89   90 90.1 90.2 
+##    1    2    1    1    1    1    2    2    1    1    1    1    1    3    2    2 
+##   91 91.1 91.2 91.4 91.6 91.7 91.8 92.8 92.9 93.1 93.2 93.4 93.6 93.8 94.1 94.5 
+##    1    1    1    2    1    1    1    1    1    1    2    1    1    2    1    1 
+## 94.6 94.7 94.8 94.9 95.1 95.3 95.5 95.6 95.7 96.1 96.2 96.3 96.5 96.6 96.9   97 
+##    2    1    1    1    2    1    1    1    2    1    3    1    1    2    2    1 
+## 97.1 97.4 97.5 97.6 97.7 97.8 97.9   98 98.1 98.2 98.3 98.4 98.5 98.6   99 99.1 
+##    1    1    1    1    2    3    2    2    2    1    3    1    2    1    5    1 
+## 99.2 99.3 99.4 99.5 99.6 99.7 99.8 99.9  100 &lt;NA&gt; 
+##    2    1    3    3    4    5    1    3   41    1</code></pre>
 <pre class="r"><code>lkpaises=&#39;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&#39;</code></pre>
 <pre class="r"><code>datapaises=import(lkpaises)</code></pre>
-<pre class="r"><code>Aguapotable=merge(datapaises,`agua potable`)</code></pre>
+<pre class="r"><code>Agua_potable=merge(datapaises,Aguapotable)</code></pre>
 
 
 
