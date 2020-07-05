@@ -103,20 +103,20 @@ ImperiodelaLey=merge(RuleofLaw,Paisesoficial,by.x='Pais', by.y='Pais')
 ```{r}
 #MERGE 1 - de variable 1 y 2 
 
-Accountability_Corrupcion_y_violencia=merge(Corrupcion_y_violencia,VoiceandAccountability,all.x=T, all.y=T)
+Accountability_Corrupcion_y_violencia=merge(Corrupcion_y_violencia,VoiceandAccountability,by.x='Pais', by.y='Pais')
 ```
 
 
 ```{r}
 #MERGE 2  - variable 3 y 4 
 
-Gob_Ley=merge(Gobernabilidad,ImperiodelaLey, all.x=T, all.y=T)
+Gob_Ley=merge(Gobernabilidad,ImperiodelaLey,by.x='Pais', by.y='Pais')
 ```
 
 ```{r}
 #MERGE DE LA VARIABLE GOBERNANZA - VARIABLES 1, 2, 3 Y 4
 
-Gobernanza=merge(Accountability_Corrupcion_y_violencia,Gob_Ley, all.x=T, all.y=T)
+Gobernanza=merge(Accountability_Corrupcion_y_violencia,Gob_Ley, by.x='Pais', by.y='Pais')
 ```
 
 
