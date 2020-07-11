@@ -1,46 +1,44 @@
  
 ```{r} 
 library(htmltab)
-```
-```{r}
 library(tidyr)
-```
-```{r}
 library(stringr)
-```
-```{r}
 library(rio)
+library(knitr)
+library(kableExtra)
 ```
 ```{r}
 lkpage='https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html'
 lkpath='//*[@id="fieldListing"]'
 ```
 ```{r}
-'agua potable' = htmltab(doc = lkpage, which = lkpath)
+Aguapotable = htmltab(doc = lkpage, which = lkpath)
 ```
 ```{r}
-names(`agua potable`)
+names(Aguapotable)
 ```
 ```{r}
-`agua potable`=separate(`agua potable`,"Drinking water source",into=c('z1','z2','z3','z4'), 'population')
+Aguapotable = separate(Aguapotable,'Drinking water source',into=c('Z1','Z2'), 'total')
+Aguapotable[,c(2)]=NULL
 ```
 ```{r}
-`agua potable`$z1=NULL
-`agua potable`$z2=NULL
-`agua potable`$z4=NULL
+Aguapotable = separate(Aguapotable,'Z2',into=c('Z1','Z2'),'%')
+Aguapotable[,c(3)]=NULL
+```
+```{r}
+Aguapotable[,c(2)] = gsub(':','',Aguapotable[,c(2)])
+Aguapotable[,c(2)] = trimws(Aguapotable[,c(2)],whitespace = '[\\h\\v]')
 ```
 ```{r} 
-`agua potable`$z3=str_extract_all(`agua potable`$z3,pattern="(\\-*\\d+\\.*\\d*)")
-```
-```{r} 
-`agua potable`$z3=as.numeric(`agua potable`$z3)
+Aguapotable$Z1=as.numeric(Aguapotable$Z1)
 ```
 ```{r}
-str(`agua potable`)
+names(Aguapotable)=c('Pais','% of population with access to improved drinking water')
 ```
 ```{r}
-names(`agua potable`)=c('Pais','% of population with access to improved drinking water')
+table(Aguapotable$`% of population with access to improved drinking water`, useNA = 'always')
 ```
+
 ```{r}
 lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls'
 ```
@@ -48,6 +46,19 @@ lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20
 datapaises=import(lkpaises)
 ```
 ```{r}
-Aguapotable=merge(datapaises,`agua potable`)
+Agua=merge(datapaises,Aguapotable,all.x = T,all.y = T)
 ```
+```{r}
+kable(Agua[!complete.cases(Agua),],type='html')%>%
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+                  font_size = 10)
+```
+
+```{r}
+Agua=merge(datapaises,Aguapotable)
+table(Agua$`% of population with access to improved drinking water`, useNA = 'always')
+```
+
+
+
 
