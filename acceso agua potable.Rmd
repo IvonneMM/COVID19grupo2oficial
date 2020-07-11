@@ -4,6 +4,8 @@ library(htmltab)
 library(tidyr)
 library(stringr)
 library(rio)
+library(knitr)
+library(kableExtra)
 ```
 ```{r}
 lkpage='https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html'
@@ -44,5 +46,19 @@ lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20
 datapaises=import(lkpaises)
 ```
 ```{r}
-Agua_potable=merge(datapaises,Aguapotable)
+Agua=merge(datapaises,Aguapotable,all.x = T,all.y = T)
 ```
+```{r}
+kable(Agua[!complete.cases(Agua),],type='html')%>%
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+                  font_size = 10)
+```
+
+```{r}
+Agua=merge(datapaises,Aguapotable)
+table(Agua$`% of population with access to improved drinking water`, useNA = 'always')
+```
+
+
+
+
