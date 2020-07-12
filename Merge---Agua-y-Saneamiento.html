@@ -416,20 +416,26 @@ names(Aguapotable)=c(&#39;Pais&#39;,&#39;% of population with access to improved
 <div id="merge" class="section level1">
 <h1>Merge</h1>
 <pre class="r"><code>Agua=merge(datapaises,Aguapotable)</code></pre>
-<p>#Saneamiento - Ivonne Deliany Mondoñedo Mora</p>
+</div>
+<div id="saneamiento---ivonne-deliany-mondoñedo-mora" class="section level1">
+<h1>Saneamiento - Ivonne Deliany Mondoñedo Mora</h1>
 <pre class="r"><code>library(htmltab)
 Linksana=&quot;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/398.html&quot;
 Link_path_sana=&#39;//*[@id=&quot;fieldListing&quot;]&#39;
 saneamiento= htmltab (doc = Linksana,which = Link_path_sana)</code></pre>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<p>#Limpieza</p>
+</div>
+<div id="limpieza" class="section level1">
+<h1>Limpieza</h1>
 <pre class="r"><code>names(saneamiento)= c (&quot;Pais&quot;, &quot;Porcentaje_Saneamiento&quot;)
 library(tidyr)
 saneamiento$Porcentaje_Saneamiento=gsub(&quot;\\%.*&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)
 saneamiento$Porcentaje_Saneamiento=gsub(&quot;.*\\:&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)
 saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)
 saneamiento$Porcentaje_Saneamiento=trimws(saneamiento$Porcentaje_Saneamiento,whitespace = &quot;[\\h\\v]&quot;)</code></pre>
-<p>#Ver los NA’s</p>
+</div>
+<div id="ver-los-nas" class="section level1">
+<h1>Ver los NA’s</h1>
 <pre class="r"><code>table(saneamiento$`Porcentaje_Saneamiento`,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
 ##  100 16.4   18   20 20.2 22.8 24.7 27.2   28 28.5 31.2 31.3 31.4 32.8 33.5 33.6 
@@ -452,14 +458,19 @@ saneamiento$Porcentaje_Saneamiento=trimws(saneamiento$Porcentaje_Saneamiento,whi
 ##    8    2    1    2    1    4    1    1    1    1    2    1    1    3    2    3 
 ## 99.4 99.5 99.6 99.8 99.9 &lt;NA&gt; 
 ##    2    2    2    1    1    0</code></pre>
-<p>#Merge para quedarnos solo con países de Europa y América</p>
+</div>
+<div id="merge-para-quedarnos-solo-con-países-de-europa-y-américa" class="section level1">
+<h1>Merge para quedarnos solo con países de Europa y América</h1>
 <pre class="r"><code>library(rio)
 Europa_America1=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
 EuroAmer1=import(Europa_America1)
 names(EuroAmer1)= c (&quot;Pais&quot;)
 Saneamiento_EA =merge(saneamiento,EuroAmer1,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;) </code></pre>
-<p>#MERGE DE AMBAS BASES (SANEAMIENTO Y AGUA POTABLE) - Mayra Vargas</p>
-<pre class="r"><code>Aguaysaneamiento=merge(Agua,Saneamiento_EA,by.x = &quot;Pais&quot;,by.y = &quot;Pais&quot;) </code></pre>
+</div>
+<div id="merge-de-ambas-bases-saneamiento-y-agua-potable---mayra-vargas" class="section level1">
+<h1>Merge de ambas bases (saneamiento y agua potable) - Mayra Vargas</h1>
+<pre class="r"><code>Aguaysaneamiento=merge(Agua,Saneamiento_EA,all.x =T,all.y =T)
+Aguaysaneamiento$Porcentaje_Saneamiento=as.numeric(Aguaysaneamiento$Porcentaje_Saneamiento)</code></pre>
 </div>
 
 
