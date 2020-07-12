@@ -376,30 +376,31 @@ saneamiento= htmltab (doc = Linksana,which = Link_path_sana)</code></pre>
 library(tidyr)
 saneamiento$Porcentaje_Saneamiento=gsub(&quot;\\%.*&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)
 saneamiento$Porcentaje_Saneamiento=gsub(&quot;.*\\:&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)
-saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)</code></pre>
+saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)
+saneamiento$Porcentaje_Saneamiento=trimws(saneamiento$Porcentaje_Saneamiento,whitespace = &quot;[\\h\\v]&quot;)</code></pre>
 <p>#Ver los NA’s</p>
 <pre class="r"><code>table(saneamiento$`Porcentaje_Saneamiento`,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
-## 16.4   18   20 20.2 22.8 24.7 27.2   28 28.5 31.2 31.3 31.4 32.8 33.5 33.6 34.1 
-##    1    1    1    1    1    1    1    1    2    1    1    1    2    1    1    1 
-## 35.6 37.3 37.5 37.9 40.8 42.4 43.4 43.6 43.8 43.9 44.5 45.1 47.3 48.3 49.3 50.4 
+##  100 16.4   18   20 20.2 22.8 24.7 27.2   28 28.5 31.2 31.3 31.4 32.8 33.5 33.6 
+##   21    1    1    1    1    1    1    1    1    2    1    1    1    2    1    1 
+## 34.1 35.6 37.3 37.5 37.9 40.8 42.4 43.4 43.6 43.8 43.9 44.5 45.1 47.3 48.3 49.3 
 ##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
-## 51.2   52 54.5 55.6   56 56.4 57.5 57.7 58.5 59.8 60.8 61.5 61.8 62.5 62.6 63.1 
+## 50.4 51.2   52 54.5 55.6   56 56.4 57.5 57.7 58.5 59.8 60.8 61.5 61.8 62.5 62.6 
 ##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
-## 65.1 65.4 65.6 66.4   69 69.6 72.3 76.1 76.5   77 77.5 77.9 78.5 79.6 79.7 79.9 
-##    1    1    1    1    1    1    1    1    1    1    1    2    1    1    1    2 
-## 80.7 81.4 81.6 82.3 82.4 82.5 82.9 83.1 83.5 84.1 84.3 84.5 84.7 85.1 85.2 86.2 
-##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
-## 86.3 86.4 86.6 86.7 86.8   87 87.3 87.8 87.9   88 88.1 88.4 88.6 89.1 89.8 89.9 
-##    1    1    1    1    1    1    1    1    2    2    2    1    1    2    2    1 
-## 90.5 90.8 91.4 91.5 91.6   92 92.2 92.5 92.8   93 93.3 93.4 93.5 93.8 93.9 94.1 
-##    1    1    1    1    1    1    1    1    1    2    1    1    1    1    1    1 
-## 94.4 94.5 95.2 95.5 95.6   96 96.1 96.2 96.4 96.6 96.8   97 97.2 97.3 97.4 97.5 
-##    2    1    2    2    1    1    1    4    1    1    2    1    2    1    2    8 
-## 97.6 97.7 97.8 97.9   98 98.2 98.3 98.4 98.5 98.6 98.7 98.9 99.1 99.2 99.3 99.4 
-##    2    1    2    1    4    1    1    1    1    2    1    1    3    2    3    2 
-## 99.5 99.6 99.8 99.9  100 &lt;NA&gt; 
-##    2    2    1    1   21    0</code></pre>
+## 63.1 65.1 65.4 65.6 66.4   69 69.6 72.3 76.1 76.5   77 77.5 77.9 78.5 79.6 79.7 
+##    1    1    1    1    1    1    1    1    1    1    1    1    2    1    1    1 
+## 79.9 80.7 81.4 81.6 82.3 82.4 82.5 82.9 83.1 83.5 84.1 84.3 84.5 84.7 85.1 85.2 
+##    2    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
+## 86.2 86.3 86.4 86.6 86.7 86.8   87 87.3 87.8 87.9   88 88.1 88.4 88.6 89.1 89.8 
+##    1    1    1    1    1    1    1    1    1    2    2    2    1    1    2    2 
+## 89.9 90.5 90.8 91.4 91.5 91.6   92 92.2 92.5 92.8   93 93.3 93.4 93.5 93.8 93.9 
+##    1    1    1    1    1    1    1    1    1    1    2    1    1    1    1    1 
+## 94.1 94.4 94.5 95.2 95.5 95.6   96 96.1 96.2 96.4 96.6 96.8   97 97.2 97.3 97.4 
+##    1    2    1    2    2    1    1    1    4    1    1    2    1    2    1    2 
+## 97.5 97.6 97.7 97.8 97.9   98 98.2 98.3 98.4 98.5 98.6 98.7 98.9 99.1 99.2 99.3 
+##    8    2    1    2    1    4    1    1    1    1    2    1    1    3    2    3 
+## 99.4 99.5 99.6 99.8 99.9 &lt;NA&gt; 
+##    2    2    2    1    1    0</code></pre>
 <p>#Merge para quedarnos solo con países de Europa y América</p>
 <pre class="r"><code>library(rio)
 Europa_America3=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;

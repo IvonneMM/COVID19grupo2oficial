@@ -365,22 +365,23 @@ summary {
 </div>
 
 
-<p>#Gobernanza - Ivonne Deliany Mondoñedo Mora</p>
+<p>#Efectivida del gobierno - Ivonne Deliany Mondoñedo Mora</p>
 <pre class="r"><code>library(rio)
 Gobernabilidad=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(3).xlsx&quot;
-Gobernabilidad=import(Gobernabilidad)</code></pre>
+Gobernanza_EA=import(Gobernabilidad)</code></pre>
 <p>#Limpieza</p>
-<pre class="r"><code>names(Gobernabilidad)= c (&quot;Pais&quot;, &quot;Gobernabilidad&quot;)
-Gobernabilidad$Gobernabilidad=as.numeric(Gobernabilidad$Gobernabilidad)</code></pre>
+<pre class="r"><code>names(Gobernanza_EA)= c (&quot;Pais&quot;, &quot;Efectividad_gobierno&quot;)
+Gobernanza_EA$Efectividad_gobierno=as.numeric(Gobernanza_EA$Efectividad_gobierno)</code></pre>
 <pre><code>## Warning: NAs introduced by coercion</code></pre>
+<pre class="r"><code>Gobernanza_EA$Efectividad_gobierno=trimws(Gobernanza_EA$Efectividad_gobierno,whitespace = &quot;[\\h\\v]&quot;)</code></pre>
 <p>#Ver los NA’s</p>
-<pre class="r"><code>table(Gobernabilidad$`Gobernabilidad`,useNA = &quot;always&quot;)</code></pre>
+<pre class="r"><code>table(Gobernanza_EA$`Efectividad_gobierno`,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
-## 1.442308 4.807693 12.01923 14.42308 19.23077 23.55769 25.48077 27.88461 
+## 1.442308 12.01923 14.42308 19.23077 23.55769 25.48077 27.88461 28.36539 
 ##        1        1        1        1        1        1        1        1 
-## 28.36539 28.84615 30.28846 33.65385 34.13462 35.57692 36.05769 36.53846 
+## 28.84615 30.28846 33.65385 34.13462 35.57692 36.05769 36.53846 37.98077 
 ##        1        1        1        1        1        1        1        1 
-## 37.98077 38.46154 39.42308 39.90385 40.38462 40.86538 41.82692 42.78846 
+## 38.46154 39.42308 39.90385 4.807693 40.38462 40.86538 41.82692 42.78846 
 ##        1        1        1        1        1        1        1        1 
 ## 43.26923    43.75 44.23077 44.71154 47.11538 47.59615 49.03846       50 
 ##        1        1        1        1        1        1        1        1 
