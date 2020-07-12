@@ -1,4 +1,6 @@
 
+# Gonzalo Berger
+
 ```{r}
 library(htmltab)
 library(rio)
@@ -11,59 +13,27 @@ lkpage='https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory
 lkpath='//*[@id="thetable"]'
 lkpage2='https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)'
 lkpath2='//*[@id="main"]'
-```
-```{r}
 covid19=htmltab(doc=lkpage,which = lkpath)
 poblacion=htmltab(doc=lkpage2,which = lkpath2)
-```
-```{r}
 covid19[,c(2,4)]=NULL
 poblacion[,c(4,6)]=NULL
-```
-```{r}
 names(covid19)[names(covid19)=='Location >> World']= 'Pais'
 names(poblacion)[names(poblacion)=='Country/Territory >> World']= 'Pais'
-```
-```{r}
 poblacion$Pais=str_split(poblacion$Pais,pattern='\\(',simplify = T)[,1]
-```
-```{r}
 poblacion$Pais=trimws(poblacion$Pais,whitespace = "[\\h\\v]")
-```
-```{r}
 poblacion$Pais=gsub('Â',"",poblacion$Pais)
-```
-```{r}
 poblacion$Pais=trimws(poblacion$Pais,whitespace = "[\\h\\v]")
-```
-```{r}
 names(covid19)=c('Pais','Muertes_confirmadas')
-```
-```{r}
 covid19$Muertes_confirmadas=gsub(',','',covid19$Muertes_confirmadas)
-```
-```{r}
 covid19$Muertes_confirmadas=gsub('No data',NA,covid19$Muertes_confirmadas)
-```
-```{r}
 covid19=covid19[-c(229:230),]
-```
-```{r}
 covid19[,c(2)]=as.numeric(covid19[,c(2)])
-```
-```{r}
 table(covid19$Muertes_confirmadas, useNA = 'always')
 ```
 ```{r}
 names(poblacion)=c('Pais','continentalregion','subregion','Poblacion_2019')
-```
-```{r}
 poblacion$Poblacion_2019=gsub(',',"",poblacion$Poblacion_2019)
-```
-```{r}
 poblacion$Poblacion_2019=as.numeric(poblacion$Poblacion_2019)
-```
-```{r}
 table(poblacion$Poblacion_2019, useNA = 'always')
 ```
 ```{r}
@@ -71,28 +41,23 @@ nrow(merge(covid19,poblacion))
 ```
 ```{r}
 data=merge(covid19,poblacion,all.x=T,all.y=T)
-```
-```{r}
 kable(data[!complete.cases(data),],type='html')%>%
     kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'),
                   font_size = 10)
 ```
-
 ```{r}
 covid19[covid19$Pais=='Saint Vincent','Pais']='Saint Vincent and the Grenadines'
 ```
+# Merge
 ```{r}
 data=merge(covid19,poblacion)
 ```
-```{r}
-str(data)
-```
+# Estandarizar
 ```{r}
 data$'Decesos por millón de habitantes'=(data$Muertes_confirmadas/data$Poblacion_2019)*10^6
-```
-```{r}
 data=data[,-c(2,5)]
 ```
+# NA
 ```{r}
 table(data$`Decesos por millón de habitantes`, useNA = 'always')
 ```
