@@ -394,10 +394,10 @@ pbi$Porcentaje_PBI=trimws(pbi$Porcentaje_PBI,whitespace = &quot;[\\h\\v]&quot;)<
 ##    3    2    1    2    1    1    1</code></pre>
 <p>#Merge para quedarnos solo con países de Europa y América</p>
 <pre class="r"><code>library(rio)
-Europa_America2=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
+Europa_America2=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
 EuroAmer2=import(Europa_America2)
 names(EuroAmer2)= c (&quot;Pais&quot;)
-PBI_EA=merge(pbi,EuroAmer2)</code></pre>
+PBI_EA =merge(pbi,EuroAmer2,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;) </code></pre>
 
 
 

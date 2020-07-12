@@ -2,15 +2,25 @@
 ```{r}
 library(rio)
 Gobernabilidad="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(3).xlsx"
-Gobernanza_EA=import(Gobernabilidad)
+Gobernanza=import(Gobernabilidad)
 ```
 #Limpieza 
 ```{r}
-names(Gobernanza_EA)= c ("Pais", "Efectividad_gobierno")
-Gobernanza_EA$Efectividad_gobierno=as.numeric(Gobernanza_EA$Efectividad_gobierno)
-Gobernanza_EA$Efectividad_gobierno=trimws(Gobernanza_EA$Efectividad_gobierno,whitespace = "[\\h\\v]")
+names(Gobernanza)= c ("Pais", "Efectividad_gobierno")
+Gobernanza$Efectividad_gobierno=as.numeric(Gobernanza$Efectividad_gobierno)
+Gobernanza$Efectividad_gobierno=trimws(Gobernanza$Efectividad_gobierno,whitespace = "[\\h\\v]")
+Gobernanza[Gobernanza$Pais=='Russian','Pais']='Russia'
 ```
 #Ver los NA's 
 ```{r}
-table(Gobernanza_EA$`Efectividad_gobierno`,useNA = "always")
+table(Gobernanza$`Efectividad_gobierno`,useNA = "always")
 ```
+#Merge para quedarnos solo con países de Europa y América
+```{r}
+library(rio)
+Europa_America4="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
+EuroAmer4=import(Europa_America4)
+names(EuroAmer4)= c ("Pais")
+Gobernanza_EA =merge(Gobernanza,EuroAmer4,by.x='Pais', by.y='Pais') 
+```
+

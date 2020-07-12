@@ -403,10 +403,10 @@ saneamiento$Porcentaje_Saneamiento=trimws(saneamiento$Porcentaje_Saneamiento,whi
 ##    2    2    2    1    1    0</code></pre>
 <p>#Merge para quedarnos solo con países de Europa y América</p>
 <pre class="r"><code>library(rio)
-Europa_America3=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
-EuroAmer3=import(Europa_America3)
-names(EuroAmer3)= c (&quot;Pais&quot;)
-Saneamiento_EA =merge(saneamiento,EuroAmer3,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;) </code></pre>
+Europa_America1=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
+EuroAmer1=import(Europa_America1)
+names(EuroAmer1)= c (&quot;Pais&quot;)
+Saneamiento_EA =merge(saneamiento,EuroAmer1,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;) </code></pre>
 
 
 

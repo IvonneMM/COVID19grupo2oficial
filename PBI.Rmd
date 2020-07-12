@@ -20,10 +20,10 @@ table(pbi$`Porcentaje_PBI`,useNA = "always")
 #Merge para quedarnos solo con países de Europa y América 
 ```{r}
 library(rio)
-Europa_America2="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+Europa_America2="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 EuroAmer2=import(Europa_America2)
 names(EuroAmer2)= c ("Pais")
-PBI_EA=merge(pbi,EuroAmer2)
+PBI_EA =merge(pbi,EuroAmer2,by.x='Pais', by.y='Pais') 
 ```
 
 
