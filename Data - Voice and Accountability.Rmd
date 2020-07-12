@@ -23,7 +23,7 @@ table(VoiceandAcc$VoiceandAccountability,useNA = "always")
 #MERGE
 ```{r}
 library(rio)
-lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 Paisesoficial=import(lkpaises)
 VoiceandAccountability = merge(VoiceandAcc,Paisesoficial,by.x='Pais',by.y='Pais')
 ```

@@ -4,14 +4,11 @@ output:
   pdf_document: default
 ---
 #BASE DE DATOS DE ESTADO DE DERECHO: Rango de Percentil (Rule of Law: Percentil Rank)- Mayra Vargas
-
-
 ```{r}
 library(rio)
 lkRofLaw= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Rule%20of%20Law%20Percentile%20Rank.xlsx"
 RuleofLaw= import(lkRofLaw)
 ```
-
 #LIMPIEZA
 ```{r}
 RuleofLaw[,c(2,3,4)] = NULL
@@ -21,14 +18,13 @@ names(RuleofLaw)=c("Pais","RuleofLaw")
 RuleofLaw$RuleofLaw=as.numeric(RuleofLaw$RuleofLaw)
 str(RuleofLaw)
 ```
-
 #NA
 ```{r}
 table(RuleofLaw$RuleofLaw,useNA = "always")
 ```
-#MERGE
+#MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA LATINA
 ```{r}
-lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 Paisesoficial=import(lkpaises)
-ImperiodelaLey=merge(RuleofLaw,Paisesoficial,by.x='Pais', by.y='Pais')
+Imperiodelaley=merge(RuleofLaw,Paisesoficial,by.x = 'Pais',by.y = 'Pais')
 ```

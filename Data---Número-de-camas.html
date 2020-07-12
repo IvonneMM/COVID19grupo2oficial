@@ -397,9 +397,9 @@ str(camas)</code></pre>
 ##    1    1    1    1    4    1    1    2    3    1    1    2    1    1    1    2 
 ##  8.3  8.7  8.8   11 11.5 13.2 13.4 13.8 &lt;NA&gt; 
 ##    1    1    1    1    1    1    1    1    2</code></pre>
-<p>#MERGE</p>
+<p>#MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA LATINA</p>
 <pre class="r"><code>library(rio)
-lkpais = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
+lkpais = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
 Paisesoficial=import(lkpais)
 Numerodecamas=merge(camas,Paisesoficial,by.x=&#39;Pais&#39;,by.y=&#39;Pais&#39;)</code></pre>
 

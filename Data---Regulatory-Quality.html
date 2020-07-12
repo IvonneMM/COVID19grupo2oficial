@@ -375,7 +375,7 @@ names(Regqual)=c(&quot;Pais&quot;,&quot;RegulatoryQuality&quot;)</code></pre>
 <pre class="r"><code>Regqual$RegulatoryQuality=as.numeric(Regqual$RegulatoryQuality)</code></pre>
 <pre><code>## Warning: NAs introducidos por coerción</code></pre>
 <pre class="r"><code>str(Regqual)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    104 obs. of  2 variables:
+<pre><code>## &#39;data.frame&#39;:    99 obs. of  2 variables:
 ##  $ Pais             : chr  &quot;Albania&quot; &quot;Andorra&quot; &quot;Anguilla&quot; &quot;Antigua and Barbuda&quot; ...
 ##  $ RegulatoryQuality: num  63.5 85.1 77.4 66.8 42.3 ...</code></pre>
 <p>#NA</p>
@@ -404,9 +404,9 @@ names(Regqual)=c(&quot;Pais&quot;,&quot;RegulatoryQuality&quot;)</code></pre>
 ##  91.82692  92.30769  92.78846     93.75  94.23077  94.71154  95.19231  95.67308 
 ##         1         1         1         1         1         1         1         1 
 ##  96.15385  96.63461  97.11539  97.59615  99.03846      &lt;NA&gt; 
-##         1         1         1         1         1         8</code></pre>
+##         1         1         1         1         1         3</code></pre>
 <p>#MERGE</p>
-<pre class="r"><code>lkpaises = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
+<pre class="r"><code>lkpaises = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
 Paisesoficial=import(lkpaises)
 RegulatoryQuality=merge(Regqual,Paisesoficial,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;)</code></pre>
 

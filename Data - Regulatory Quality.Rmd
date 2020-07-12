@@ -1,13 +1,10 @@
-
 #BASE DE DATOS DE REGULATORY QUALITY - Mayra Vargas
-
 
 ```{r}
 library(rio)
 lkregulatoryq= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Regulatory%20Quality%20-%20Percentile%20Rank.xlsx"
 Regqual= import(lkregulatoryq)
 ```
-
 #LIMPIEZA
 ```{r}
 Regqual[,c(2,3,4)] = NULL
@@ -17,14 +14,13 @@ names(Regqual)=c("Pais","RegulatoryQuality")
 Regqual$RegulatoryQuality=as.numeric(Regqual$RegulatoryQuality)
 str(Regqual)
 ```
-
 #NA
 ```{r}
 table(Regqual$RegulatoryQuality,useNA = "always")
 ```
 #MERGE
 ```{r}
-lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 Paisesoficial=import(lkpaises)
 RegulatoryQuality=merge(Regqual,Paisesoficial,by.x='Pais', by.y='Pais')
 ```
