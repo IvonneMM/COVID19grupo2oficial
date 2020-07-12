@@ -4,7 +4,7 @@ output:
   html_document: default
   word_document: default
 ---
-#BASE DE DATOS: CAMAS POR 1000 HABITANTES (Mayra Vargas)
+# BASE DE DATOS: CAMAS POR 1000 HABITANTES (Mayra Vargas)
 
 ```{r}
 library(htmltab)
@@ -13,7 +13,7 @@ linkPath_cama='//*[@id="fieldListing"]'
 camas = htmltab(doc = linkCIA_cama,
                 which = linkPath_cama)
 ```
-#LIMPIEZA
+# LIMPIEZA
 ```{r}
 library(tidyr)
 camas=separate(camas,`Hospital bed density`,into = c("oficial","delete")," ")
@@ -22,11 +22,11 @@ names(camas)=c("Pais","numero de camas por 1000 hab")
 camas$`numero de camas por 1000 hab`=as.numeric(camas$`numero de camas por 1000 hab`)
 str(camas)
 ```
-#NA
+# NA
 ```{r}
 table(camas$`numero de camas por 1000 hab`,useNA = "always")
 ```
-#MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA LATINA
+# MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA LATINA
 ```{r}
 library(rio)
 lkpais = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
@@ -34,7 +34,7 @@ Paisesoficial=import(lkpais)
 Numerodecamas=merge(camas,Paisesoficial,by.x='Pais',by.y='Pais')
 ```
 
-#BASE DE DATOS DE GASTO ACTUAL EN SALUD (Current Health Expenditure - CHE) - Mayra Vargas
+# BASE DE DATOS DE GASTO ACTUAL EN SALUD (Current Health Expenditure - CHE) - Mayra Vargas
 
 ```{r}
 library(htmltab)
@@ -43,7 +43,7 @@ linkPath_che='//*[@id="fieldListing"]'
 che= htmltab(doc = linkCIA_che,
              which = linkPath_che)
 ```
-#LIMPIEZA
+# LIMPIEZA
 ```{r}
 library(tidyr)
 che=separate(che,`Current Health Expenditure`,into = c("oficial","delete"),"%")
@@ -52,12 +52,12 @@ names(che)=c("Pais","CHE")
 che$CHE=as.numeric(che$CHE)
 str(che)
 ```
-#NA
+# NA
 ```{r}
 table(che$CHE,useNA = "always")
 ```
 
-#MERGE
+# MERGE
 ```{r}
 library(rio)
 lkpaises= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
@@ -99,7 +99,7 @@ LinkDoc="https://www.cia.gov/library/publications/resources/the-world-factbook/f
 Link_path_doc='//*[@id="fieldListing"]'
 Medicos= htmltab (doc = LinkDoc,which = Link_path_doc)
 ```
-#Limpieza
+# Limpieza
 ```{r}
 names(Medicos)
 names(Medicos)= c ("Pais", "Numero_medicos")
@@ -108,11 +108,11 @@ Medicos=separate(Medicos,Numero_medicos,into=c("Numero_medicos",'delete'), "\\ "
 Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
 Medicos$Numero_medicos=trimws(Medicos$Numero_medicos,whitespace = "[\\h\\v]")
 ```
-#Ver los NA's
+# Ver los NA's
 ```{r}
 table(Medicos$`Numero_medicos`,useNA = "always")
 ```
-#Merge para quedarnos solo con países de Europa y América 
+# Merge para quedarnos solo con países de Europa y América 
 ```{r}
 library(rio)
 Europa_America3="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
@@ -120,14 +120,14 @@ EuroAmer3=import(Europa_America3)
 names(EuroAmer3)= c ("Pais")
 Doctores_EA =merge(Medicos,EuroAmer3,by.x='Pais', by.y='Pais') 
 ```
-#PBI - Ivonne Deliany Mondoñedo Mora
+# PBI - Ivonne Deliany Mondoñedo Mora
 ```{r}
 library(htmltab)
 Linkpbi="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/409.html"
 Link_path_pbi='//*[@id="fieldListing"]'
 pbi= htmltab (doc = Linkpbi,which = Link_path_pbi)
 ```
-#Limpieza
+# Limpieza
 ```{r}
 names(pbi)= c ("Pais", "Porcentaje_PBI")
 library(tidyr)
@@ -135,11 +135,11 @@ pbi=separate(pbi,Porcentaje_PBI,into=c("Porcentaje_PBI",'delete'), "\\%")[,-3]
 pbi$Porcentaje_PBI =as.numeric(pbi$Porcentaje_PBI)
 pbi$Porcentaje_PBI=trimws(pbi$Porcentaje_PBI,whitespace = "[\\h\\v]")
 ```
-#Ver los NA's 
+# Ver los NA's 
 ```{r}
 table(pbi$`Porcentaje_PBI`,useNA = "always")
 ```
-#Merge para quedarnos solo con países de Europa y América 
+# Merge para quedarnos solo con países de Europa y América 
 ```{r}
 library(rio)
 Europa_America2="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
@@ -149,10 +149,12 @@ PBI_EA =merge(pbi,EuroAmer2,by.x='Pais', by.y='Pais')
 ```
 # Merge de las variables de salud (Gonzalo Berger)
 ```{r}
-NumerodecamasHealthExpenditure = merge(Numerodecamas,HealthExpenditure)
-UHCNumerodecamasHealthExpenditure = merge(UHC,NumerodecamasHealthExpenditure)
-Doctores_EAUHCNumerodecamasHealthExpenditure = merge(Doctores_EA,UHCNumerodecamasHealthExpenditure)
-DataSalud = merge(PBI_EA,Doctores_EAUHCNumerodecamasHealthExpenditure)
+NumerodecamasHealthExpenditure = merge(Numerodecamas,HealthExpenditure,all.x=T,all.y=T)
+UHCNumerodecamasHealthExpenditure = merge(UHC,NumerodecamasHealthExpenditure,all.x=T,all.y=T)
+Doctores_EAUHCNumerodecamasHealthExpenditure = merge(Doctores_EA,UHCNumerodecamasHealthExpenditure,all.x=T,all.y=T)
+DataSalud = merge(PBI_EA,Doctores_EAUHCNumerodecamasHealthExpenditure,all.x=T,all.y=T)
+DataSalud$Porcentaje_PBI=as.numeric(DataSalud$Porcentaje_PBI)
+DataSalud$Numero_medicos=as.numeric(DataSalud$Numero_medicos)
 ```
 
 
