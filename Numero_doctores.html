@@ -379,7 +379,8 @@ library(tidyr)
 Medicos=separate(Medicos,Numero_medicos,into=c(&quot;Numero_medicos&quot;,&#39;delete&#39;), &quot;\\ &quot;)[,-3]</code></pre>
 <pre><code>## Warning: Expected 2 pieces. Additional pieces discarded in 198 rows [1, 2, 3, 4,
 ## 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
-<pre class="r"><code>Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)</code></pre>
+<pre class="r"><code>Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
+Medicos$Numero_medicos=trimws(Medicos$Numero_medicos,whitespace = &quot;[\\h\\v]&quot;)</code></pre>
 <p>#Ver los NA’s</p>
 <pre class="r"><code>table(Medicos$`Numero_medicos`,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
@@ -405,10 +406,10 @@ Medicos=separate(Medicos,Numero_medicos,into=c(&quot;Numero_medicos&quot;,&#39;d
 ##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    4</code></pre>
 <p>#Merge para quedarnos solo con países de Europa y América</p>
 <pre class="r"><code>library(rio)
-Europa_America1=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
-EuroAmer1=import(Europa_America1)
-names(EuroAmer1)= c (&quot;Pais&quot;)
-Medicos_EA =merge(Medicos,EuroAmer1,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;)</code></pre>
+Europa_America3=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
+EuroAmer3=import(Europa_America3)
+names(EuroAmer3)= c (&quot;Pais&quot;)
+Doctores_EA =merge(Medicos,EuroAmer3,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;) </code></pre>
 
 
 

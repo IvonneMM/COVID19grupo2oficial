@@ -5,13 +5,13 @@ library(htmltab)
 library(tidyr)
 library(stringr)
 library(rio)
-library(knitr)
-library(kableExtra)
 ```
 ```{r}
 lkpage='https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html'
 lkpath='//*[@id="fieldListing"]'
 Aguapotable = htmltab(doc = lkpage, which = lkpath)
+lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls'
+datapaises=import(lkpaises) 
 Aguapotable = separate(Aguapotable,'Drinking water source',into=c('Z1','Z2'), 'total')
 Aguapotable[,c(2)]=NULL
 Aguapotable = separate(Aguapotable,'Z2',into=c('Z1','Z2'),'%')
@@ -20,20 +20,14 @@ Aguapotable[,c(2)] = gsub(':','',Aguapotable[,c(2)])
 Aguapotable[,c(2)] = trimws(Aguapotable[,c(2)],whitespace = '[\\h\\v]')
 Aguapotable$Z1=as.numeric(Aguapotable$Z1)
 names(Aguapotable)=c('Pais','% of population with access to improved drinking water')
+```
+# NA
+```{r}
 table(Aguapotable$`% of population with access to improved drinking water`, useNA = 'always')
 ```
-```{r}
-lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls'
-datapaises=import(lkpaises)
-Agua=merge(datapaises,Aguapotable,all.x = T,all.y = T)
-kable(Agua[!complete.cases(Agua),],type='html')%>%
-    kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-                  font_size = 10)
-```
-# Merge + NA
+# Merge
 ```{r}
 Agua=merge(datapaises,Aguapotable)
-table(Agua$`% of population with access to improved drinking water`, useNA = 'always')
 ```
 
 

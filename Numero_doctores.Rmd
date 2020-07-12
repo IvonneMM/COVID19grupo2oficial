@@ -21,9 +21,9 @@ table(Medicos$`Numero_medicos`,useNA = "always")
 #Merge para quedarnos solo con países de Europa y América 
 ```{r}
 library(rio)
-Europa_America1="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
-EuroAmer1=import(Europa_America1)
-names(EuroAmer1)= c ("Pais")
-Numero_medicos_EA =merge(Medicos,EuroAmer1,by.x='Pais', by.y='Pais')
+Europa_America3="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
+EuroAmer3=import(Europa_America3)
+names(EuroAmer3)= c ("Pais")
+Doctores_EA =merge(Medicos,EuroAmer3,by.x='Pais', by.y='Pais') 
 ```
 
