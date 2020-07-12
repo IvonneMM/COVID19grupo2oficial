@@ -365,21 +365,22 @@ summary {
 </div>
 
 
-<pre class="r"><code>#Limpieza de tabla de número de doctores</code></pre>
-<pre class="r"><code>library(htmltab)</code></pre>
-<pre class="r"><code>LinkDoc=&quot;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/359.html&quot;
-
-Link_path_doc='//*[@id=&quot;fieldListing&quot;]'</code></pre>
-<pre class="r"><code>Medicos= htmltab (doc = LinkDoc,which = Link_path_doc)</code></pre>
+<p>#Número de doctores - Ivonne Deliany Mondoñedo Mora</p>
+<pre class="r"><code>library(htmltab)
+LinkDoc=&quot;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/359.html&quot;
+Link_path_doc=&#39;//*[@id=&quot;fieldListing&quot;]&#39;
+Medicos= htmltab (doc = LinkDoc,which = Link_path_doc)</code></pre>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
+<p>#Limpieza</p>
 <pre class="r"><code>names(Medicos)</code></pre>
 <pre><code>## [1] &quot;Country&quot;            &quot;Physicians density&quot;</code></pre>
-<pre class="r"><code>names(Medicos)= c (&quot;Pais&quot;, &quot;Numero_medicos&quot;)</code></pre>
-<pre class="r"><code>library(tidyr)</code></pre>
-<pre class="r"><code>Medicos=separate(Medicos,Numero_medicos,into=c(&quot;Numero_medicos&quot;,'delete'), &quot;\\ &quot;)[,-3]</code></pre>
+<pre class="r"><code>names(Medicos)= c (&quot;Pais&quot;, &quot;Numero_medicos&quot;)
+library(tidyr)
+Medicos=separate(Medicos,Numero_medicos,into=c(&quot;Numero_medicos&quot;,&#39;delete&#39;), &quot;\\ &quot;)[,-3]</code></pre>
 <pre><code>## Warning: Expected 2 pieces. Additional pieces discarded in 198 rows [1, 2, 3, 4,
 ## 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
 <pre class="r"><code>Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)</code></pre>
+<p>#Ver los NA’s</p>
 <pre class="r"><code>table(Medicos$`Numero_medicos`,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
 ## 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09  0.1 0.11 0.12 0.13 0.14 0.16 0.17 0.18 
@@ -402,24 +403,12 @@ Link_path_doc='//*[@id=&quot;fieldListing&quot;]'</code></pre>
 ##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
 ## 4.21 4.24 4.31 4.34 4.46 4.59 4.63 5.05  5.1 5.14  5.4 6.15 6.56 8.19 &lt;NA&gt; 
 ##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    4</code></pre>
-<pre class="r"><code>#Nos  quedarnos con los paises que son de europa y america </code></pre>
-<pre class="r"><code>library(rio)</code></pre>
-<pre class="r"><code>Europa_America1=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
-
-EuroAmer1=import(Europa_America1)</code></pre>
-<pre class="r"><code>names(EuroAmer1)</code></pre>
-<pre><code>## [1] &quot;Pais&quot;</code></pre>
-<pre class="r"><code>names(EuroAmer1)= c (&quot;Pais&quot;)</code></pre>
-<pre class="r"><code>Medicos_EA =merge(Medicos,EuroAmer1,by.x='Pais', by.y='Pais')
-head(Medicos_EA)</code></pre>
-<pre><code>##                  Pais Numero_medicos
-## 1             Albania           1.20
-## 2             Andorra           3.33
-## 3 Antigua and Barbuda           2.76
-## 4           Argentina           3.96
-## 5             Armenia           2.90
-## 6             Austria           5.14</code></pre>
-<pre class="r"><code>## salen 81 paises </code></pre>
+<p>#Merge para quedarnos solo con países de Europa y América</p>
+<pre class="r"><code>library(rio)
+Europa_America1=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
+EuroAmer1=import(Europa_America1)
+names(EuroAmer1)= c (&quot;Pais&quot;)
+Medicos_EA =merge(Medicos,EuroAmer1,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;)</code></pre>
 
 
 

@@ -365,20 +365,19 @@ summary {
 </div>
 
 
-<pre class="r"><code>#Saneamiento</code></pre>
-<pre class="r"><code>library(htmltab)</code></pre>
-<pre class="r"><code>Linksana=&quot;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/398.html&quot;
-
-Link_path_sana='//*[@id=&quot;fieldListing&quot;]'</code></pre>
-<pre class="r"><code>saneamiento= htmltab (doc = Linksana,which = Link_path_sana)</code></pre>
+<p>#Saneamiento - Ivonne Deliany Mondoñedo Mora</p>
+<pre class="r"><code>library(htmltab)
+Linksana=&quot;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/398.html&quot;
+Link_path_sana=&#39;//*[@id=&quot;fieldListing&quot;]&#39;
+saneamiento= htmltab (doc = Linksana,which = Link_path_sana)</code></pre>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<pre class="r"><code>names(saneamiento)</code></pre>
-<pre><code>## [1] &quot;Country&quot;                    &quot;Sanitation facility access&quot;</code></pre>
-<pre class="r"><code>names(saneamiento)= c (&quot;Pais&quot;, &quot;Porcentaje_Saneamiento&quot;)</code></pre>
-<pre class="r"><code>library(tidyr)</code></pre>
-<pre class="r"><code>saneamiento$Porcentaje_Saneamiento=gsub(&quot;\\%.*&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)</code></pre>
-<pre class="r"><code>saneamiento$Porcentaje_Saneamiento=gsub(&quot;.*\\:&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)</code></pre>
-<pre class="r"><code>saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)</code></pre>
+<p>#Limpieza</p>
+<pre class="r"><code>names(saneamiento)= c (&quot;Pais&quot;, &quot;Porcentaje_Saneamiento&quot;)
+library(tidyr)
+saneamiento$Porcentaje_Saneamiento=gsub(&quot;\\%.*&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)
+saneamiento$Porcentaje_Saneamiento=gsub(&quot;.*\\:&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)
+saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)</code></pre>
+<p>#Ver los NA’s</p>
 <pre class="r"><code>table(saneamiento$`Porcentaje_Saneamiento`,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
 ## 16.4   18   20 20.2 22.8 24.7 27.2   28 28.5 31.2 31.3 31.4 32.8 33.5 33.6 34.1 
@@ -401,22 +400,12 @@ Link_path_sana='//*[@id=&quot;fieldListing&quot;]'</code></pre>
 ##    2    1    2    1    4    1    1    1    1    2    1    1    3    2    3    2 
 ## 99.5 99.6 99.8 99.9  100 &lt;NA&gt; 
 ##    2    2    1    1   21    0</code></pre>
-<pre class="r"><code>library(rio)</code></pre>
-<pre class="r"><code>Europa_America3=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
-
-EuroAmer3=import(Europa_America3)</code></pre>
-<pre class="r"><code>names(EuroAmer3)</code></pre>
-<pre><code>## [1] &quot;Pais&quot;</code></pre>
-<pre class="r"><code>names(EuroAmer3)= c (&quot;Pais&quot;)</code></pre>
-<pre class="r"><code>Saneamiento_EA =merge(saneamiento,EuroAmer3,by.x='Pais', by.y='Pais') 
-head(Saneamiento_EA)</code></pre>
-<pre><code>##                  Pais Porcentaje_Saneamiento
-## 1             Albania                   95.5
-## 2             Andorra                  100.0
-## 3 Antigua and Barbuda                   91.4
-## 4           Argentina                   96.2
-## 5             Armenia                   96.2
-## 6             Austria                  100.0</code></pre>
+<p>#Merge para quedarnos solo con países de Europa y América</p>
+<pre class="r"><code>library(rio)
+Europa_America3=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
+EuroAmer3=import(Europa_America3)
+names(EuroAmer3)= c (&quot;Pais&quot;)
+Saneamiento_EA =merge(saneamiento,EuroAmer3,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;) </code></pre>
 
 
 
