@@ -7,6 +7,8 @@ library(knitr)
 library(kableExtra)
 lkcorrup='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx'
 datacorrup=import(lkcorrup)
+lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls'
+datapaises=import(lkpaises) 
 datacorrup[c(2:4)]=NULL
 datacorrup=datacorrup[c(1:99),]
 names(datacorrup)=c('Pais','Control de la corrupción')
@@ -17,28 +19,18 @@ dataviolence[c(2:4)]=NULL
 dataviolence=dataviolence[c(1:99),]
 names(dataviolence)=c('Pais','Estabilidad política y ausencia de violencia/terrorismo')
 dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`=as.numeric(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`)
+```
+# NA
+```{r}
 table(datacorrup$`Control de la corrupción`, useNA = 'always')
 ```
 ```{r}
 table(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`, useNA = 'always')
 ```
+# Merge
 ```{r}
 corrupcionyviolencia=merge(datacorrup,dataviolence)
-```
-```{r}
-lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls'
-datapaises=import(lkpaises) 
-CorrupcionyViolencia=merge(corrupcionyviolencia,datapaises,all.x=T, all.y=T)
-kable(CorrupcionyViolencia[!complete.cases(CorrupcionyViolencia),],type='html')%>%
-    kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-                  font_size = 10)
-```
-
-# Merge + NA
-```{r}
-CorrupcionyViolencia=merge(datapaises,corrupcionyviolencia)
-table(CorrupcionyViolencia$`Control de la corrupción`, useNA = 'always')
-table(CorrupcionyViolencia$`Estabilidad política y ausencia de violencia/terrorismo`, useNA = 'always')
+CORRUPVIOLENCIA=merge(datapaises,corrupcionyviolencia) 
 ```
 
 
