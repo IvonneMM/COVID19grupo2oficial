@@ -15,6 +15,8 @@ lkpage2='https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_N
 lkpath2='//*[@id="main"]'
 covid19=htmltab(doc=lkpage,which = lkpath)
 poblacion=htmltab(doc=lkpage2,which = lkpath2)
+lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls'
+datapaises=import(lkpaises)
 covid19[,c(2,4)]=NULL
 poblacion[,c(4,6)]=NULL
 names(covid19)[names(covid19)=='Location >> World']= 'Pais'
@@ -37,14 +39,13 @@ covid19[covid19$Pais=='Saint Vincent','Pais']='Saint Vincent and the Grenadines'
 ```{r}
 table(covid19$Muertes_confirmadas, useNA = 'always')
 ```
-# Merge
+# Merge y estandarización
 ```{r}
 data=merge(covid19,poblacion)
-```
-# Estandarizar
-```{r}
 data$'Decesos por millón de habitantes'=(data$Muertes_confirmadas/data$Poblacion_2019)*10^6
 data=data[,-c(2,5)]
+dataCovid=merge(data,datapaises)
 ```
+
 
 
