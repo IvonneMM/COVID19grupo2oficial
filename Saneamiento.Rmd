@@ -12,6 +12,7 @@ library(tidyr)
 saneamiento$Porcentaje_Saneamiento=gsub("\\%.*","",saneamiento$Porcentaje_Saneamiento)
 saneamiento$Porcentaje_Saneamiento=gsub(".*\\:","",saneamiento$Porcentaje_Saneamiento)
 saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)
+saneamiento$Porcentaje_Saneamiento=trimws(saneamiento$Porcentaje_Saneamiento,whitespace = "[\\h\\v]")
 ```
 #Ver los NA's 
 ```{r}

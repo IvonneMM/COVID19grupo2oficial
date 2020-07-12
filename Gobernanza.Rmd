@@ -1,16 +1,16 @@
-#Gobernanza - Ivonne Deliany Mondoñedo Mora
+#Efectivida del gobierno - Ivonne Deliany Mondoñedo Mora
 ```{r}
 library(rio)
 Gobernabilidad="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(3).xlsx"
-Gobernabilidad=import(Gobernabilidad)
+Gobernanza_EA=import(Gobernabilidad)
 ```
 #Limpieza 
 ```{r}
-names(Gobernabilidad)= c ("Pais", "Gobernabilidad")
-Gobernabilidad$Gobernabilidad=as.numeric(Gobernabilidad$Gobernabilidad)
+names(Gobernanza_EA)= c ("Pais", "Efectividad_gobierno")
+Gobernanza_EA$Efectividad_gobierno=as.numeric(Gobernanza_EA$Efectividad_gobierno)
+Gobernanza_EA$Efectividad_gobierno=trimws(Gobernanza_EA$Efectividad_gobierno,whitespace = "[\\h\\v]")
 ```
 #Ver los NA's 
 ```{r}
-table(Gobernabilidad$`Gobernabilidad`,useNA = "always")
+table(Gobernanza_EA$`Efectividad_gobierno`,useNA = "always")
 ```
-

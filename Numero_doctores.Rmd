@@ -12,6 +12,7 @@ names(Medicos)= c ("Pais", "Numero_medicos")
 library(tidyr)
 Medicos=separate(Medicos,Numero_medicos,into=c("Numero_medicos",'delete'), "\\ ")[,-3]
 Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
+Medicos$Numero_medicos=trimws(Medicos$Numero_medicos,whitespace = "[\\h\\v]")
 ```
 #Ver los NA's
 ```{r}
@@ -23,6 +24,6 @@ library(rio)
 Europa_America1="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
 EuroAmer1=import(Europa_America1)
 names(EuroAmer1)= c ("Pais")
-Medicos_EA =merge(Medicos,EuroAmer1,by.x='Pais', by.y='Pais')
+Numero_medicos_EA =merge(Medicos,EuroAmer1,by.x='Pais', by.y='Pais')
 ```
 

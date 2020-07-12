@@ -11,8 +11,9 @@ names(pbi)= c ("Pais", "Porcentaje_PBI")
 library(tidyr)
 pbi=separate(pbi,Porcentaje_PBI,into=c("Porcentaje_PBI",'delete'), "\\%")[,-3]
 pbi$Porcentaje_PBI =as.numeric(pbi$Porcentaje_PBI)
+pbi$Porcentaje_PBI=trimws(pbi$Porcentaje_PBI,whitespace = "[\\h\\v]")
 ```
-
+#Ver los NA's 
 ```{r}
 table(pbi$`Porcentaje_PBI`,useNA = "always")
 ```
