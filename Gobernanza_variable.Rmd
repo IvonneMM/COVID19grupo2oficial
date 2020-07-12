@@ -1,6 +1,6 @@
-#VARIABLE INDEPENDIENTE DE GOBERNANZA
+# VARIABLE INDEPENDIENTE DE GOBERNANZA
 
-#Variable 1 
+# Variable 1 
 # Limpieza de las bases de datos: Estabilidad y ausencia de violencia + Control de Corrupción (Gonzalo Berger)
 ```{r}
 library(rio)
@@ -33,25 +33,25 @@ corrupcionyviolencia=merge(datacorrup,dataviolence)
 CORRUPVIOLENCIA=merge(datapaises,corrupcionyviolencia) 
 ``` 
 
-#Variable 2
-#BASE DE DATOS DE LA BASE DE DATOS VOZ Y RENDICIÓN DE CUENTAS: RANGO DE PORCENTAJE (Voice and Accountability: PErcentile Rank) Mayra Vargas
+# Variable 2
+# Base de datos de la base de datos voz y rendición de cuentas: rango de porcentaje (Voice and Accountability: PErcentile Rank) Mayra Vargas
 ```{r}
 library(rio)
 lXvoandac="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Voice%20and%20Accountability%20Percentile%20Rank.xlsx"
 VoiceandAcc=import(lXvoandac)
 ```
-#LIMPIEZA
+# Limpieza
 ```{r}
 VoiceandAcc[,c(2,3,4)]=NULL
 names(VoiceandAcc)=c("Pais","VoiceandAccountability")
 VoiceandAcc$VoiceandAccountability=as.numeric(VoiceandAcc$VoiceandAccountability)
 str(VoiceandAcc)
 ```
-#NA
+# NA
 ```{r}
 table(VoiceandAcc$VoiceandAccountability,useNA = "always")
 ```
-#MERGE
+# Merge
 ```{r}
 library(rio)
 lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
@@ -59,25 +59,25 @@ Paisesoficial=import(lkpaises)
 VoiceandAccountability = merge(VoiceandAcc,Paisesoficial,by.x='Pais',by.y='Pais')
 ```
 
-#Variable 3
-#Efectivida del gobierno - Ivonne Deliany Mondoñedo Mora
+# Variable 3
+# Efectivida del gobierno - Ivonne Deliany Mondoñedo Mora
 ```{r}
 library(rio)
 Gobernabilidad="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(3).xlsx"
 Gobernanza=import(Gobernabilidad)
 ```
-#Limpieza 
+# Limpieza 
 ```{r}
 names(Gobernanza)= c ("Pais", "Efectividad_gobierno")
 Gobernanza$Efectividad_gobierno=as.numeric(Gobernanza$Efectividad_gobierno)
 Gobernanza$Efectividad_gobierno=trimws(Gobernanza$Efectividad_gobierno,whitespace = "[\\h\\v]")
 Gobernanza[Gobernanza$Pais=='Russian','Pais']='Russia'
 ```
-#Ver los NA's 
+# Ver los NA's 
 ```{r}
 table(Gobernanza$`Efectividad_gobierno`,useNA = "always")
 ```
-#Merge para quedarnos solo con países de Europa y América
+# Merge para quedarnos solo con países de Europa y América
 ```{r}
 library(rio)
 Europa_America4="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
@@ -86,41 +86,38 @@ names(EuroAmer4)= c ("Pais")
 Gobernanza_EA=merge(Gobernanza,EuroAmer4,by.x='Pais', by.y='Pais') 
 ```
 
-#Variable 4
-#BASE DE DATOS DE ESTADO DE DERECHO: Rango de Percentil (Rule of Law: Percentil Rank)- Mayra Vargas
+# Variable 4
+# Base de datos de estado de derecho: Rango de Percentil (Rule of Law: Percentil Rank)- Mayra Vargas
 ```{r}
 library(rio)
 lkRofLaw= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Rule%20of%20Law%20Percentile%20Rank.xlsx"
 RuleofLaw= import(lkRofLaw)
 ```
-#LIMPIEZA
+# Limpieza
 ```{r}
 RuleofLaw[,c(2,3,4)] = NULL
 names(RuleofLaw)=c("Pais","RuleofLaw")
-```
-```{r}
 RuleofLaw$RuleofLaw=as.numeric(RuleofLaw$RuleofLaw)
-str(RuleofLaw)
 ```
-#NA
+# NA
 ```{r}
 table(RuleofLaw$RuleofLaw,useNA = "always")
 ```
-#MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA LATINA
+#Merge para quedarnos con los países de Europa y América Latina
 ```{r}
 lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 Paisesoficial=import(lkpaises)
 Imperiodelaley=merge(RuleofLaw,Paisesoficial,by.x = 'Pais',by.y = 'Pais')
 ```
 
-#Variable 5 
-#BASE DE DATOS DE REGULATORY QUALITY - Mayra Vargas
+# Variable 5 
+# Base de datos de regulatory quality - Mayra Vargas
 ```{r}
 library(rio)
 lkregulatoryq= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Regulatory%20Quality%20-%20Percentile%20Rank.xlsx"
 Regqual= import(lkregulatoryq)
 ```
-#LIMPIEZA
+# Limpieza
 ```{r}
 Regqual[,c(2,3,4)] = NULL
 names(Regqual)=c("Pais","RegulatoryQuality")
@@ -130,31 +127,32 @@ Regqual[Regqual$Pais=='Venezuela, RB','Pais']='Venezuela'
 Regqual$RegulatoryQuality=as.numeric(Regqual$RegulatoryQuality)
 str(Regqual)
 ```
-#NA
+# NA
 ```{r}
 table(Regqual$RegulatoryQuality,useNA = "always")
 ```
-#MERGE
+# MERGE
 ```{r}
 lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 Paisesoficial=import(lkpaises)
 RegulatoryQuality=merge(Regqual,Paisesoficial,by.x='Pais', by.y='Pais')
 ```
 
-#Merge para unir las variables de Gobernanza - Ivonne Mondoñedo Mora 
-#Merge 1 - variables 1 y 2 
+
+# MERGE PARA UNIR LAS VARIABLES DE GOBERNANZA - Ivonne Mondoñedo Mora 
+# Merge 1 - variables 1 y 2 
 ```{r}
 Accountability_Corrupcion_Violencia=merge(CORRUPVIOLENCIA,VoiceandAccountability,all.x=T, all.y=T)
 ```
-#Merge 2- variables 3 y 4 
+# Merge 2- variables 3 y 4 
 ```{r}
 Gob_Ley=merge(Gobernanza_EA,Imperiodelaley,all.x=T, all.y=T)
 ```
-#Merge 3 - variables 1, 2, 3 y 4
+# Merge 3 - variables 1, 2, 3 y 4
 ```{r}
 Accountability_Corrupcion_Violencia_Gob_Ley=merge(Accountability_Corrupcion_Violencia,Gob_Ley, all.x=T, all.y=T)
 ```
-#Merge 4 - variables 1, 2, 3, 4 y 5
+# Merge 4 - variables 1, 2, 3, 4 y 5
 ```{r}
 Merge_Gobernanza=merge(Accountability_Corrupcion_Violencia_Gob_Ley,RegulatoryQuality, all.x=T, all.y=T)
 Merge_Gobernanza$Efectividad_gobierno=as.numeric(Merge_Gobernanza$Efectividad_gobierno)

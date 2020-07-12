@@ -365,18 +365,117 @@ summary {
 </div>
 
 
-<pre class="r"><code>#VARIABLE 1 - ACCOUNTABILITY
-
-library(rio)
-lXLSX=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Voice%20and%20Accountability%20Percentile%20Rank.xlsx&quot;
-
-VoiceandAcc=import(lXLSX)
-
-VoiceandAcc[,c(2,3,4)]=NULL
-
-VoiceandAcc$`2018 [YR2018]`=as.numeric(VoiceandAcc$`2018 [YR2018]`)</code></pre>
+<div id="variable-independiente-de-gobernanza" class="section level1">
+<h1>VARIABLE INDEPENDIENTE DE GOBERNANZA</h1>
+</div>
+<div id="variable-1" class="section level1">
+<h1>Variable 1</h1>
+</div>
+<div id="limpieza-de-las-bases-de-datos-estabilidad-y-ausencia-de-violencia-control-de-corrupción-gonzalo-berger" class="section level1">
+<h1>Limpieza de las bases de datos: Estabilidad y ausencia de violencia + Control de Corrupción (Gonzalo Berger)</h1>
+<pre class="r"><code>library(rio)
+lkcorrup=&#39;https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx&#39;
+datacorrup=import(lkcorrup)
+lkpaises=&#39;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&#39;
+datapaises=import(lkpaises) 
+datacorrup[c(2:4)]=NULL
+datacorrup=datacorrup[c(1:99),]
+names(datacorrup)=c(&#39;Pais&#39;,&#39;Control de la corrupción&#39;)
+datacorrup$`Control de la corrupción`=as.numeric(datacorrup$`Control de la corrupción`)</code></pre>
 <pre><code>## Warning: NAs introduced by coercion</code></pre>
-<pre class="r"><code>table(VoiceandAcc$`2018 [YR2018]`,useNA = &quot;always&quot;)</code></pre>
+<pre class="r"><code>lkviolence=&#39;https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_Indicators_political_stability_and_absence_of_violence.xlsx&#39;
+dataviolence=import(lkviolence)
+dataviolence[c(2:4)]=NULL
+dataviolence=dataviolence[c(1:99),]
+names(dataviolence)=c(&#39;Pais&#39;,&#39;Estabilidad política y ausencia de violencia/terrorismo&#39;)
+dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`=as.numeric(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`)</code></pre>
+<pre><code>## Warning: NAs introduced by coercion</code></pre>
+</div>
+<div id="na" class="section level1">
+<h1>NA</h1>
+<pre class="r"><code>table(datacorrup$`Control de la corrupción`, useNA = &#39;always&#39;)</code></pre>
+<pre><code>## 
+## 4.807693     6.25 8.173077 9.615385     12.5 12.98077 16.34615 18.26923 
+##        1        1        1        1        1        1        1        1 
+##    18.75 20.67308 21.15385 21.63461 22.11539 24.51923 25.96154 28.84615 
+##        1        1        1        1        1        1        1        1 
+## 29.32692 29.80769 31.73077 32.21154 32.69231 34.61538 35.09615 35.57692 
+##        1        1        1        1        1        1        1        1 
+## 36.05769 40.38462 41.82692 42.30769 42.78846    43.75 44.23077 44.71154 
+##        1        1        1        1        1        1        1        1 
+## 46.63462 48.07692 49.03846       50 50.96154 51.92308 52.40385 54.32692 
+##        1        1        1        1        1        1        1        1 
+## 55.76923 58.17308 59.13462 59.61538 60.09615 61.05769 62.01923 63.46154 
+##        1        1        1        1        1        1        1        1 
+## 64.42308 66.34615 66.82692 67.78846 68.26923    68.75 69.23077 69.71154 
+##        1        1        1        1        1        1        1        1 
+## 70.19231 70.67308 72.59615 73.55769 74.03846 74.51923 76.44231 78.84615 
+##        1        1        1        1        1        1        1        1 
+## 80.28846 80.76923    81.25 81.73077 82.69231 83.17308 84.13461 86.53846 
+##        1        1        1        1        1        1        1        4 
+## 87.01923     87.5 87.98077 88.46154 88.94231 89.90385 90.38461 90.86539 
+##        1        1        1        1        1        1        1        1 
+## 91.34615 93.26923    93.75 94.71154 95.19231 95.67308 96.15385 96.63461 
+##        1        1        1        1        1        1        1        1 
+## 97.11539 97.59615 98.07692 98.55769      100     &lt;NA&gt; 
+##        1        1        1        1        1        3</code></pre>
+<pre class="r"><code>table(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`, useNA = &#39;always&#39;)</code></pre>
+<pre><code>## 
+## 6.190476 9.047619       10 17.61905 18.09524       20 20.95238 23.33333 
+##        1        1        1        1        1        1        1        1 
+## 24.28572 25.23809 25.71428 26.66667 27.14286 29.04762       30 30.47619 
+##        1        1        1        1        1        1        1        1 
+## 30.95238 31.90476 32.85714 33.33333 35.71429 37.14286 38.09524 39.52381 
+##        1        1        1        1        1        1        1        1 
+## 40.95238 42.38095 43.33333 45.23809 45.71429 46.19048 46.66667 47.61905 
+##        1        1        1        1        1        1        1        1 
+## 48.09524 48.57143 49.04762 49.52381       50 50.95238 51.90476 54.76191 
+##        1        1        1        1        1        1        1        1 
+## 55.23809 56.19048 57.61905 58.09524 58.57143 59.04762 59.52381 60.47619 
+##        1        1        1        1        1        1        1        1 
+## 60.95238 61.42857 61.90476 62.38095 62.85714 63.80952  64.7619 65.71429 
+##        1        1        1        1        1        1        1        1 
+## 66.19048 66.66666 67.61905       70 70.47619 72.38095 72.85714 73.33334 
+##        1        1        1        1        1        1        1        1 
+## 73.80952 76.19048 77.61905 78.09524 78.57143       80 80.47619 80.95238 
+##        1        1        1        1        1        1        1        1 
+## 81.42857 81.90476 82.38095 84.28571  84.7619  85.2381 85.71429 86.19048 
+##        1        1        1        2        1        1        1        1 
+## 87.14286 87.61905 89.04762 89.52381       90 90.47619 90.95238 93.33334 
+##        1        1        1        1        1        1        1        1 
+## 94.28571  95.2381 95.71429 96.19048 96.66666 97.61905 98.09524 99.52381 
+##        1        1        1        1        1        1        1        1 
+##      100     &lt;NA&gt; 
+##        1        1</code></pre>
+</div>
+<div id="merge" class="section level1">
+<h1>Merge</h1>
+<pre class="r"><code>corrupcionyviolencia=merge(datacorrup,dataviolence)
+CORRUPVIOLENCIA=merge(datapaises,corrupcionyviolencia) </code></pre>
+</div>
+<div id="variable-2" class="section level1">
+<h1>Variable 2</h1>
+</div>
+<div id="base-de-datos-de-la-base-de-datos-voz-y-rendición-de-cuentas-rango-de-porcentaje-voice-and-accountability-percentile-rank-mayra-vargas" class="section level1">
+<h1>Base de datos de la base de datos voz y rendición de cuentas: rango de porcentaje (Voice and Accountability: PErcentile Rank) Mayra Vargas</h1>
+<pre class="r"><code>library(rio)
+lXvoandac=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Voice%20and%20Accountability%20Percentile%20Rank.xlsx&quot;
+VoiceandAcc=import(lXvoandac)</code></pre>
+</div>
+<div id="limpieza" class="section level1">
+<h1>Limpieza</h1>
+<pre class="r"><code>VoiceandAcc[,c(2,3,4)]=NULL
+names(VoiceandAcc)=c(&quot;Pais&quot;,&quot;VoiceandAccountability&quot;)
+VoiceandAcc$VoiceandAccountability=as.numeric(VoiceandAcc$VoiceandAccountability)</code></pre>
+<pre><code>## Warning: NAs introduced by coercion</code></pre>
+<pre class="r"><code>str(VoiceandAcc)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    99 obs. of  2 variables:
+##  $ Pais                  : chr  &quot;Albania&quot; &quot;Andorra&quot; &quot;Anguilla&quot; &quot;Antigua and Barbuda&quot; ...
+##  $ VoiceandAccountability: num  53.2 83.3 NA 69.5 67 ...</code></pre>
+</div>
+<div id="na-1" class="section level1">
+<h1>NA</h1>
+<pre class="r"><code>table(VoiceandAcc$VoiceandAccountability,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
 ## 0.9852217  4.926108  6.403941  7.881773  9.852217  10.34483  11.82266  15.76355 
 ##         1         1         1         1         1         1         1         1 
@@ -402,101 +501,87 @@ VoiceandAcc$`2018 [YR2018]`=as.numeric(VoiceandAcc$`2018 [YR2018]`)</code></pre>
 ##         1         1         1         1         1         1         1         1 
 ##  99.01478       100      &lt;NA&gt; 
 ##         1         1         5</code></pre>
-<pre class="r"><code>names(VoiceandAcc)=c(&quot;Pais&quot;,&quot;VoiceandAccountability&quot;)
-
-library(rio)
-lkXLSX = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
-Paisesoficial=import(lkXLSX)
-
-VoiceandAccountability = merge(VoiceandAcc,Paisesoficial,by.x='Pais',by.y='Pais')</code></pre>
-<pre class="r"><code># VARIABLE 2 - CORRUPCION Y VIOLENCIA
-
-library(rio)
-lkcorrup='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx'
-
-datacorrup=import(lkcorrup)
-
-datacorrup[c(2:4)]=NULL
-
-datacorrup=datacorrup[c(1:99),]
-
-names(datacorrup)=c('Pais','Control de la corrupción')
-
-datacorrup$`Control de la corrupción`=as.numeric(datacorrup$`Control de la corrupción`)</code></pre>
+</div>
+<div id="merge-1" class="section level1">
+<h1>Merge</h1>
+<pre class="r"><code>library(rio)
+lkpaises = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
+Paisesoficial=import(lkpaises)
+VoiceandAccountability = merge(VoiceandAcc,Paisesoficial,by.x=&#39;Pais&#39;,by.y=&#39;Pais&#39;)</code></pre>
+</div>
+<div id="variable-3" class="section level1">
+<h1>Variable 3</h1>
+</div>
+<div id="efectivida-del-gobierno---ivonne-deliany-mondoñedo-mora" class="section level1">
+<h1>Efectivida del gobierno - Ivonne Deliany Mondoñedo Mora</h1>
+<pre class="r"><code>library(rio)
+Gobernabilidad=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(3).xlsx&quot;
+Gobernanza=import(Gobernabilidad)</code></pre>
+</div>
+<div id="limpieza-1" class="section level1">
+<h1>Limpieza</h1>
+<pre class="r"><code>names(Gobernanza)= c (&quot;Pais&quot;, &quot;Efectividad_gobierno&quot;)
+Gobernanza$Efectividad_gobierno=as.numeric(Gobernanza$Efectividad_gobierno)</code></pre>
 <pre><code>## Warning: NAs introduced by coercion</code></pre>
-<pre class="r"><code>lkviolence='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_Indicators_political_stability_and_absence_of_violence.xlsx'
-
-dataviolence=import(lkviolence)
-
-dataviolence[c(2:4)]=NULL
-
-dataviolence=dataviolence[c(1:99),]
-
-names(dataviolence)=c('Pais','Estabilidad política y ausencia de violencia/terrorismo')
-
-dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`=as.numeric(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`)</code></pre>
-<pre><code>## Warning: NAs introduced by coercion</code></pre>
-<pre class="r"><code>corrupcion_y_violencia=merge(datacorrup,dataviolence)
-
-lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls'
-
-datapaises=import(lkpaises)
-
-Corrupcion_y_violencia=merge(datapaises,corrupcion_y_violencia)</code></pre>
-<pre class="r"><code>#VARIABLE 3 - EFECTIVIDAD DEL GOBIERNO
-
-library(rio)
-
-Gobernabilidad=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(2)%20(1)%20(3).xls&quot;
-Gobernabilidad=import(Gobernabilidad)
-
-names(Gobernabilidad)= c (&quot;Pais&quot;, &quot;Gobernabilidad&quot;)
-
-Gobernabilidad$Gobernabilidad=as.numeric(Gobernabilidad$Gobernabilidad)</code></pre>
-<pre><code>## Warning: NAs introduced by coercion</code></pre>
-<pre class="r"><code>table(Gobernabilidad$`Gobernabilidad`,useNA = &quot;always&quot;)</code></pre>
+<pre class="r"><code>Gobernanza$Efectividad_gobierno=trimws(Gobernanza$Efectividad_gobierno,whitespace = &quot;[\\h\\v]&quot;)
+Gobernanza[Gobernanza$Pais==&#39;Russian&#39;,&#39;Pais&#39;]=&#39;Russia&#39;</code></pre>
+</div>
+<div id="ver-los-nas" class="section level1">
+<h1>Ver los NA’s</h1>
+<pre class="r"><code>table(Gobernanza$`Efectividad_gobierno`,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
-##  -1.909054  -1.581517  -1.097704  -1.044102 -0.8024699 -0.6820061 -0.6553037 
-##          1          1          1          1          1          1          1 
-## -0.6206585 -0.6185398 -0.6115379 -0.5938884 -0.5470828 -0.5172144 -0.4665205 
-##          1          1          1          1          1          1          1 
-## -0.4474374 -0.4471425 -0.4283053 -0.4152199 -0.4002573 -0.3220994 -0.3010303 
-##          1          1          1          1          1          1          1 
-## -0.2895034 -0.2694839 -0.2613976 -0.2534418 -0.2529525 -0.2454309 -0.2448378 
-##          1          1          1          1          1          1          1 
-##  -0.156924  -0.153388 -0.1004674 -0.0852262 -0.0608858 -0.0243394  -0.019452 
-##          1          1          1          1          1          1          1 
-## -0.0060096  0.0060968  0.0217204  0.0259878  0.0902431  0.1116198   0.114788 
-##          1          1          1          1          1          1          1 
-##  0.1311615  0.1902379  0.1956703  0.2718757  0.3382609  0.3781868  0.4138835 
-##          1          1          2          1          1          1          1 
-##  0.4269727  0.4569183  0.4873109  0.4967112  0.5391499  0.5514148  0.5582148 
-##          1          1          1          1          1          1          1 
-##  0.6145709  0.6626508  0.7074615  0.8301269  0.8380827  0.9209022  0.9222081 
-##          1          1          1          2          1          1          1 
-##   1.002136   1.043452   1.058392   1.072398   1.084034   1.108839   1.125806 
-##          1          1          1          1          1          1          1 
-##   1.171748   1.191938   1.204366   1.208909   1.259951   1.341884   1.387551 
-##          1          1          1          1          1          1          1 
-##   1.397863   1.420338   1.453342   1.465655   1.480526   1.576998   1.619633 
-##          1          1          1          1          1          1          1 
-##   1.716108   1.739037   1.778221   1.830975   1.850466   1.871631   1.887119 
-##          1          1          1          1          1          1          1 
-##   1.944976   1.984208   2.039621       &lt;NA&gt; 
-##          1          1          1          3</code></pre>
-<pre class="r"><code>#VARIABLE 4 - IMPERIO DE LA LEY
-
-library(rio)
-
-lkXLSX= &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Rule%20of%20Law%20Percentile%20Rank.xlsx&quot;
-
-RuleofLaw= import(lkXLSX)
-
-RuleofLaw[,c(2,3,4)] = NULL
-
-RuleofLaw$`2018 [YR2018]`=as.numeric(RuleofLaw$`2018 [YR2018]`)</code></pre>
+## 1.442308 12.01923 14.42308 19.23077 23.55769 25.48077 27.88461 28.36539 
+##        1        1        1        1        1        1        1        1 
+## 28.84615 30.28846 33.65385 34.13462 35.57692 36.05769 36.53846 37.98077 
+##        1        1        1        1        1        1        1        1 
+## 38.46154 39.42308 39.90385 4.807693 40.38462 40.86538 41.82692 42.78846 
+##        1        1        1        1        1        1        1        1 
+## 43.26923    43.75 44.23077 44.71154 47.11538 47.59615 49.03846       50 
+##        1        1        1        1        1        1        1        1 
+## 50.96154 51.44231 51.92308 52.88462 53.84615 54.32692 54.80769 55.76923 
+##        1        1        1        1        1        1        1        1 
+## 56.73077 57.69231 58.17308 60.57692 61.53846 62.98077 65.86539 67.78846 
+##        1        1        1        1        2        1        1        1 
+## 68.26923    68.75 69.23077 70.19231 70.67308 71.63461 72.59615 73.07692 
+##        1        1        1        1        1        1        1        1 
+## 74.03846       75 75.48077 76.44231 76.92308 77.88461 78.36539 79.32692 
+##        1        1        1        2        1        1        1        1 
+## 79.80769 80.28846 80.76923 81.73077 82.69231 83.17308 83.65385 84.61539 
+##        1        1        1        1        1        1        1        1 
+## 85.57692 86.53846     87.5 87.98077 88.94231 89.42308 89.90385 90.86539 
+##        1        1        1        1        1        1        1        1 
+## 91.34615 91.82692 92.30769 93.26923 94.71154 95.19231 95.67308 96.15385 
+##        1        1        1        1        1        1        1        1 
+## 96.63461 97.11539 97.59615 98.55769 99.03846 99.51923     &lt;NA&gt; 
+##        1        1        1        1        1        1        3</code></pre>
+</div>
+<div id="merge-para-quedarnos-solo-con-países-de-europa-y-américa" class="section level1">
+<h1>Merge para quedarnos solo con países de Europa y América</h1>
+<pre class="r"><code>library(rio)
+Europa_America4=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
+EuroAmer4=import(Europa_America4)
+names(EuroAmer4)= c (&quot;Pais&quot;)
+Gobernanza_EA=merge(Gobernanza,EuroAmer4,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;) </code></pre>
+</div>
+<div id="variable-4" class="section level1">
+<h1>Variable 4</h1>
+</div>
+<div id="base-de-datos-de-estado-de-derecho-rango-de-percentil-rule-of-law-percentil-rank--mayra-vargas" class="section level1">
+<h1>Base de datos de estado de derecho: Rango de Percentil (Rule of Law: Percentil Rank)- Mayra Vargas</h1>
+<pre class="r"><code>library(rio)
+lkRofLaw= &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Rule%20of%20Law%20Percentile%20Rank.xlsx&quot;
+RuleofLaw= import(lkRofLaw)</code></pre>
+</div>
+<div id="limpieza-2" class="section level1">
+<h1>Limpieza</h1>
+<pre class="r"><code>RuleofLaw[,c(2,3,4)] = NULL
+names(RuleofLaw)=c(&quot;Pais&quot;,&quot;RuleofLaw&quot;)
+RuleofLaw$RuleofLaw=as.numeric(RuleofLaw$RuleofLaw)</code></pre>
 <pre><code>## Warning: NAs introduced by coercion</code></pre>
-<pre class="r"><code>table(RuleofLaw$`2018 [YR2018]`,useNA = &quot;always&quot;)</code></pre>
+</div>
+<div id="na-2" class="section level1">
+<h1>NA</h1>
+<pre class="r"><code>table(RuleofLaw$RuleofLaw,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
 ##        0     6.25 7.692307 9.615385 12.98077 13.46154 14.90385 15.86539 
 ##        1        1        1        1        1        1        1        1 
@@ -522,22 +607,87 @@ RuleofLaw$`2018 [YR2018]`=as.numeric(RuleofLaw$`2018 [YR2018]`)</code></pre>
 ##        1        1        1        1        2        1        1        1 
 ## 96.63461 97.59615 98.55769 99.03846 99.51923      100     &lt;NA&gt; 
 ##        1        1        1        1        1        1        3</code></pre>
-<pre class="r"><code>names(RuleofLaw)=c(&quot;Pais&quot;,&quot;RuleofLaw&quot;)
-
-lkXLSX = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
-
-Paisesoficial=import(lkXLSX)
-
-ImperiodelaLey=merge(RuleofLaw,Paisesoficial,by.x='Pais', by.y='Pais')</code></pre>
-<pre class="r"><code>#MERGE 1 - de variable 1 y 2 
-
-Accountability_Corrupcion_y_violencia=merge(Corrupcion_y_violencia,VoiceandAccountability,all.x=T, all.y=T)</code></pre>
-<pre class="r"><code>#MERGE 2  - variable 3 y 4 
-
-Gob_Ley=merge(Gobernabilidad,ImperiodelaLey, all.x=T, all.y=T)</code></pre>
-<pre class="r"><code>#MERGE DE LA VARIABLE GOBERNANZA - VARIABLES 1, 2, 3 Y 4
-
-Gobernanza=merge(Accountability_Corrupcion_y_violencia,Gob_Ley, all.x=T, all.y=T)</code></pre>
+<p>#Merge para quedarnos con los países de Europa y América Latina</p>
+<pre class="r"><code>lkpaises = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
+Paisesoficial=import(lkpaises)
+Imperiodelaley=merge(RuleofLaw,Paisesoficial,by.x = &#39;Pais&#39;,by.y = &#39;Pais&#39;)</code></pre>
+</div>
+<div id="variable-5" class="section level1">
+<h1>Variable 5</h1>
+</div>
+<div id="base-de-datos-de-regulatory-quality---mayra-vargas" class="section level1">
+<h1>Base de datos de regulatory quality - Mayra Vargas</h1>
+<pre class="r"><code>library(rio)
+lkregulatoryq= &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Regulatory%20Quality%20-%20Percentile%20Rank.xlsx&quot;
+Regqual= import(lkregulatoryq)</code></pre>
+</div>
+<div id="limpieza-3" class="section level1">
+<h1>Limpieza</h1>
+<pre class="r"><code>Regqual[,c(2,3,4)] = NULL
+names(Regqual)=c(&quot;Pais&quot;,&quot;RegulatoryQuality&quot;)</code></pre>
+<pre class="r"><code>Regqual[Regqual$Pais==&#39;Venezuela, RB&#39;,&#39;Pais&#39;]=&#39;Venezuela&#39;
+Regqual$RegulatoryQuality=as.numeric(Regqual$RegulatoryQuality)</code></pre>
+<pre><code>## Warning: NAs introduced by coercion</code></pre>
+<pre class="r"><code>str(Regqual)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    99 obs. of  2 variables:
+##  $ Pais             : chr  &quot;Albania&quot; &quot;Andorra&quot; &quot;Anguilla&quot; &quot;Antigua and Barbuda&quot; ...
+##  $ RegulatoryQuality: num  63.5 85.1 77.4 66.8 42.3 ...</code></pre>
+</div>
+<div id="na-3" class="section level1">
+<h1>NA</h1>
+<pre class="r"><code>table(Regqual$RegulatoryQuality,useNA = &quot;always&quot;)</code></pre>
+<pre><code>## 
+## 0.4807692  2.884615      6.25  8.653846  12.01923      12.5  15.86539  16.34615 
+##         1         1         1         1         1         1         1         1 
+##        25  25.96154  26.44231  28.84615  31.73077  32.21154  34.61538  37.01923 
+##         1         1         1         1         1         1         1         1 
+##  37.98077  39.90385  40.38462  41.34615  42.30769  44.23077  45.19231  45.67308 
+##         1         1         1         1         1         1         1         1 
+##  48.55769  50.48077  51.92308  52.40385  53.84615  55.28846     56.25  57.69231 
+##         1         1         1         1         1         1         1         1 
+##  60.09615  60.57692  61.05769  62.01923      62.5  62.98077  63.46154  63.94231 
+##         1         1         1         1         1         1         1         1 
+##  64.42308  65.38461  65.86539  66.34615  66.82692  67.30769  68.26923  69.23077 
+##         1         1         1         1         1         1         1         1 
+##  69.71154  70.19231  71.15385  71.63461  72.11539  72.59615  73.07692  73.55769 
+##         1         1         1         1         1         1         1         1 
+##        75  75.48077  75.96154  77.40385  77.88461  78.36539  78.84615  79.32692 
+##         1         1         1         3         1         1         1         1 
+##  80.28846  80.76923     81.25  82.69231  83.17308  83.65385  85.09615  85.57692 
+##         1         1         1         1         1         1         2         1 
+##  86.05769  87.01923      87.5  88.94231  89.90385  90.38461  90.86539  91.34615 
+##         1         1         1         1         1         1         1         1 
+##  91.82692  92.30769  92.78846     93.75  94.23077  94.71154  95.19231  95.67308 
+##         1         1         1         1         1         1         1         1 
+##  96.15385  96.63461  97.11539  97.59615  99.03846      &lt;NA&gt; 
+##         1         1         1         1         1         3</code></pre>
+</div>
+<div id="merge-2" class="section level1">
+<h1>MERGE</h1>
+<pre class="r"><code>lkpaises = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
+Paisesoficial=import(lkpaises)
+RegulatoryQuality=merge(Regqual,Paisesoficial,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;)</code></pre>
+</div>
+<div id="merge-para-unir-las-variables-de-gobernanza---ivonne-mondoñedo-mora" class="section level1">
+<h1>MERGE PARA UNIR LAS VARIABLES DE GOBERNANZA - Ivonne Mondoñedo Mora</h1>
+</div>
+<div id="merge-1---variables-1-y-2" class="section level1">
+<h1>Merge 1 - variables 1 y 2</h1>
+<pre class="r"><code>Accountability_Corrupcion_Violencia=merge(CORRUPVIOLENCIA,VoiceandAccountability,all.x=T, all.y=T)</code></pre>
+</div>
+<div id="merge-2--variables-3-y-4" class="section level1">
+<h1>Merge 2- variables 3 y 4</h1>
+<pre class="r"><code>Gob_Ley=merge(Gobernanza_EA,Imperiodelaley,all.x=T, all.y=T)</code></pre>
+</div>
+<div id="merge-3---variables-1-2-3-y-4" class="section level1">
+<h1>Merge 3 - variables 1, 2, 3 y 4</h1>
+<pre class="r"><code>Accountability_Corrupcion_Violencia_Gob_Ley=merge(Accountability_Corrupcion_Violencia,Gob_Ley, all.x=T, all.y=T)</code></pre>
+</div>
+<div id="merge-4---variables-1-2-3-4-y-5" class="section level1">
+<h1>Merge 4 - variables 1, 2, 3, 4 y 5</h1>
+<pre class="r"><code>Merge_Gobernanza=merge(Accountability_Corrupcion_Violencia_Gob_Ley,RegulatoryQuality, all.x=T, all.y=T)
+Merge_Gobernanza$Efectividad_gobierno=as.numeric(Merge_Gobernanza$Efectividad_gobierno)</code></pre>
+</div>
 
 
 
