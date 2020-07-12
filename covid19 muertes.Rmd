@@ -5,8 +5,6 @@
 library(htmltab)
 library(rio)
 library(stringr)
-library(knitr) 
-library(kableExtra)
 ```
 ```{r}
 lkpage='https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory'
