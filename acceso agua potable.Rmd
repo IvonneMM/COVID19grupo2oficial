@@ -5,8 +5,6 @@ library(htmltab)
 library(tidyr)
 library(stringr)
 library(rio)
-library(knitr)
-library(kableExtra)
 ```
 ```{r}
 lkpage='https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html'
