@@ -1,5 +1,5 @@
 
-# Gonzalo Berger
+# Limpieza: Muertes confirmadas por millón de habitantes (Gonzalo Berger)
 
 ```{r}
 library(htmltab)
