@@ -1,20 +1,15 @@
+#Gobernanza - Ivonne Deliany Mondoñedo Mora
 ```{r}
 library(rio)
-```
-
-```{r}
-Gobernabilidad="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(2)%20(1)%20(3).xls"
+Gobernabilidad="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(3).xlsx"
 Gobernabilidad=import(Gobernabilidad)
 ```
-
+#Limpieza 
 ```{r}
 names(Gobernabilidad)= c ("Pais", "Gobernabilidad")
-```
-
-```{r}
 Gobernabilidad$Gobernabilidad=as.numeric(Gobernabilidad$Gobernabilidad)
 ```
-
+#Ver los NA's 
 ```{r}
 table(Gobernabilidad$`Gobernabilidad`,useNA = "always")
 ```
