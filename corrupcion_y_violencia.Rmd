@@ -3,7 +3,7 @@
 
 ```{r}
 library(rio)
-``` 
+```
 ```{r}
 lkcorrup='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx'
 datacorrup=import(lkcorrup)
@@ -31,7 +31,7 @@ table(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`, u
 ```{r}
 corrupcionyviolencia=merge(datacorrup,dataviolence)
 CORRUPVIOLENCIA=merge(datapaises,corrupcionyviolencia) 
-```
+``` 
 
 
 
