@@ -365,7 +365,8 @@ summary {
 </div>
 
 
-<p>#BASE DE DATOS: CAMAS POR 1000 HABITANTES (Mayra Vargas)</p>
+<div id="base-de-datos-camas-por-1000-habitantes-mayra-vargas" class="section level1">
+<h1>BASE DE DATOS: CAMAS POR 1000 HABITANTES (Mayra Vargas)</h1>
 <pre class="r"><code>library(htmltab)</code></pre>
 <pre><code>## Warning: package &#39;htmltab&#39; was built under R version 4.0.2</code></pre>
 <pre class="r"><code>linkCIA_cama = &quot;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/360.html&quot;
@@ -373,7 +374,9 @@ linkPath_cama=&#39;//*[@id=&quot;fieldListing&quot;]&#39;
 camas = htmltab(doc = linkCIA_cama,
                 which = linkPath_cama)</code></pre>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<p>#LIMPIEZA</p>
+</div>
+<div id="limpieza" class="section level1">
+<h1>LIMPIEZA</h1>
 <pre class="r"><code>library(tidyr)
 camas=separate(camas,`Hospital bed density`,into = c(&quot;oficial&quot;,&quot;delete&quot;),&quot; &quot;)</code></pre>
 <pre><code>## Warning: Expected 2 pieces. Additional pieces discarded in 180 rows [1, 2, 3, 4,
@@ -385,7 +388,9 @@ str(camas)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    182 obs. of  2 variables:
 ##  $ Pais                        : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
 ##  $ numero de camas por 1000 hab: num  0.5 2.9 1.9 2.5 3.8 5 4.2 3.8 7.6 4.7 ...</code></pre>
-<p>#NA</p>
+</div>
+<div id="na" class="section level1">
+<h1>NA</h1>
 <pre class="r"><code>table(camas$`numero de camas por 1000 hab`,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
 ##  0.1  0.2  0.3  0.4  0.5  0.6  0.7  0.8  0.9    1  1.1  1.2  1.3  1.4  1.5  1.6 
@@ -398,20 +403,26 @@ str(camas)</code></pre>
 ##    1    1    1    1    4    1    1    2    3    1    1    2    1    1    1    2 
 ##  8.3  8.7  8.8   11 11.5 13.2 13.4 13.8 &lt;NA&gt; 
 ##    1    1    1    1    1    1    1    1    2</code></pre>
-<p>#MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA LATINA</p>
+</div>
+<div id="merge-para-quedarnos-con-los-países-de-europa-y-américa-latina" class="section level1">
+<h1>MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA LATINA</h1>
 <pre class="r"><code>library(rio)</code></pre>
 <pre><code>## Warning: package &#39;rio&#39; was built under R version 4.0.2</code></pre>
 <pre class="r"><code>lkpais = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
 Paisesoficial=import(lkpais)
 Numerodecamas=merge(camas,Paisesoficial,by.x=&#39;Pais&#39;,by.y=&#39;Pais&#39;)</code></pre>
-<p>#BASE DE DATOS DE GASTO ACTUAL EN SALUD (Current Health Expenditure - CHE) - Mayra Vargas</p>
+</div>
+<div id="base-de-datos-de-gasto-actual-en-salud-current-health-expenditure---che---mayra-vargas" class="section level1">
+<h1>BASE DE DATOS DE GASTO ACTUAL EN SALUD (Current Health Expenditure - CHE) - Mayra Vargas</h1>
 <pre class="r"><code>library(htmltab)
 linkCIA_che = &quot;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/409.html&quot;
 linkPath_che=&#39;//*[@id=&quot;fieldListing&quot;]&#39;
 che= htmltab(doc = linkCIA_che,
              which = linkPath_che)</code></pre>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<p>#LIMPIEZA</p>
+</div>
+<div id="limpieza-1" class="section level1">
+<h1>LIMPIEZA</h1>
 <pre class="r"><code>library(tidyr)
 che=separate(che,`Current Health Expenditure`,into = c(&quot;oficial&quot;,&quot;delete&quot;),&quot;%&quot;)
 che$delete=NULL
@@ -421,7 +432,9 @@ str(che)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    193 obs. of  2 variables:
 ##  $ Pais: chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
 ##  $ CHE : num  11.8 6.7 6.4 10.3 2.8 4.5 9.1 10.4 9.2 10.4 ...</code></pre>
-<p>#NA</p>
+</div>
+<div id="na-1" class="section level1">
+<h1>NA</h1>
 <pre class="r"><code>table(che$CHE,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
 ##  1.2  1.8  2.3  2.4  2.5  2.6  2.8  2.9    3  3.1  3.2  3.3  3.5  3.6  3.7  3.8 
@@ -436,11 +449,14 @@ str(che)</code></pre>
 ##    1    2    1    1    1    2    2    3    1    1    1    2    1    1    1    1 
 ##   12 12.3 12.4 13.4 16.4 17.1 &lt;NA&gt; 
 ##    1    1    1    1    1    2    1</code></pre>
-<p>#MERGE</p>
+</div>
+<div id="merge" class="section level1">
+<h1>MERGE</h1>
 <pre class="r"><code>library(rio)
 lkpaises= &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
 Paisesoficial=import(lkpaises)
 HealthExpenditure=merge(che,Paisesoficial,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;)</code></pre>
+</div>
 <div id="limpieza-de-la-base-de-datos-asistencia-sanitaria-universal-gonzalo-berger" class="section level1">
 <h1>Limpieza de la base de datos: Asistencia sanitaria universal (Gonzalo Berger)</h1>
 <pre class="r"><code>library(rio)</code></pre>
@@ -458,7 +474,7 @@ datauhc[datauhc$Pais==&#39;Czech Republic&#39;,&#39;Pais&#39;]=&#39;Czechia&#39;
 datauhc[datauhc$Pais==&#39;Slovak Republic&#39;,&#39;Pais&#39;]=&#39;Slovakia&#39;
 datauhc[datauhc$Pais==&#39;Russian Federation&#39;,&#39;Pais&#39;]=&#39;Russia&#39;</code></pre>
 </div>
-<div id="na" class="section level1">
+<div id="na-2" class="section level1">
 <h1>NA</h1>
 <pre class="r"><code>table(datauhc$`Asistencia sanitaria universal`, useNA = &#39;always&#39;)</code></pre>
 <pre><code>## 
@@ -471,7 +487,7 @@ datauhc[datauhc$Pais==&#39;Russian Federation&#39;,&#39;Pais&#39;]=&#39;Russia&#
 ##   84   86   87   89 &lt;NA&gt; 
 ##    3    4    4    1   34</code></pre>
 </div>
-<div id="merge" class="section level1">
+<div id="merge-1" class="section level1">
 <h1>Merge</h1>
 <pre class="r"><code>UHC=merge(datapaises,datauhc)</code></pre>
 <p>#Número de doctores - Ivonne Deliany Mondoñedo Mora</p>
@@ -480,7 +496,9 @@ LinkDoc=&quot;https://www.cia.gov/library/publications/resources/the-world-factb
 Link_path_doc=&#39;//*[@id=&quot;fieldListing&quot;]&#39;
 Medicos= htmltab (doc = LinkDoc,which = Link_path_doc)</code></pre>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<p>#Limpieza</p>
+</div>
+<div id="limpieza-2" class="section level1">
+<h1>Limpieza</h1>
 <pre class="r"><code>names(Medicos)</code></pre>
 <pre><code>## [1] &quot;Country&quot;            &quot;Physicians density&quot;</code></pre>
 <pre class="r"><code>names(Medicos)= c (&quot;Pais&quot;, &quot;Numero_medicos&quot;)
@@ -490,7 +508,9 @@ Medicos=separate(Medicos,Numero_medicos,into=c(&quot;Numero_medicos&quot;,&#39;d
 ## 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
 <pre class="r"><code>Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
 Medicos$Numero_medicos=trimws(Medicos$Numero_medicos,whitespace = &quot;[\\h\\v]&quot;)</code></pre>
-<p>#Ver los NA’s</p>
+</div>
+<div id="ver-los-nas" class="section level1">
+<h1>Ver los NA’s</h1>
 <pre class="r"><code>table(Medicos$`Numero_medicos`,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
 ## 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09  0.1 0.11 0.12 0.13 0.14 0.16 0.17 0.18 
@@ -513,25 +533,33 @@ Medicos$Numero_medicos=trimws(Medicos$Numero_medicos,whitespace = &quot;[\\h\\v]
 ##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
 ## 4.21 4.24 4.31 4.34 4.46 4.59 4.63 5.05  5.1 5.14  5.4 6.15 6.56 8.19 &lt;NA&gt; 
 ##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    4</code></pre>
-<p>#Merge para quedarnos solo con países de Europa y América</p>
+</div>
+<div id="merge-para-quedarnos-solo-con-países-de-europa-y-américa" class="section level1">
+<h1>Merge para quedarnos solo con países de Europa y América</h1>
 <pre class="r"><code>library(rio)
 Europa_America3=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
 EuroAmer3=import(Europa_America3)
 names(EuroAmer3)= c (&quot;Pais&quot;)
 Doctores_EA =merge(Medicos,EuroAmer3,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;) </code></pre>
-<p>#PBI - Ivonne Deliany Mondoñedo Mora</p>
+</div>
+<div id="pbi---ivonne-deliany-mondoñedo-mora" class="section level1">
+<h1>PBI - Ivonne Deliany Mondoñedo Mora</h1>
 <pre class="r"><code>library(htmltab)
 Linkpbi=&quot;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/409.html&quot;
 Link_path_pbi=&#39;//*[@id=&quot;fieldListing&quot;]&#39;
 pbi= htmltab (doc = Linkpbi,which = Link_path_pbi)</code></pre>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<p>#Limpieza</p>
+</div>
+<div id="limpieza-3" class="section level1">
+<h1>Limpieza</h1>
 <pre class="r"><code>names(pbi)= c (&quot;Pais&quot;, &quot;Porcentaje_PBI&quot;)
 library(tidyr)
 pbi=separate(pbi,Porcentaje_PBI,into=c(&quot;Porcentaje_PBI&quot;,&#39;delete&#39;), &quot;\\%&quot;)[,-3]
 pbi$Porcentaje_PBI =as.numeric(pbi$Porcentaje_PBI)
 pbi$Porcentaje_PBI=trimws(pbi$Porcentaje_PBI,whitespace = &quot;[\\h\\v]&quot;)</code></pre>
-<p>#Ver los NA’s</p>
+</div>
+<div id="ver-los-nas-1" class="section level1">
+<h1>Ver los NA’s</h1>
 <pre class="r"><code>table(pbi$`Porcentaje_PBI`,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
 ##  1.2  1.8   10 10.1 10.3 10.4 10.6 10.8 10.9   11 11.2 11.3 11.7 11.8   12 12.3 
@@ -546,7 +574,9 @@ pbi$Porcentaje_PBI=trimws(pbi$Porcentaje_PBI,whitespace = &quot;[\\h\\v]&quot;)<
 ##    3    1    3    1    1    2    3    3    2    1    3    1    2    2    3    1 
 ##  9.2  9.3  9.5  9.6  9.8  9.9 &lt;NA&gt; 
 ##    3    2    1    2    1    1    1</code></pre>
-<p>#Merge para quedarnos solo con países de Europa y América</p>
+</div>
+<div id="merge-para-quedarnos-solo-con-países-de-europa-y-américa-1" class="section level1">
+<h1>Merge para quedarnos solo con países de Europa y América</h1>
 <pre class="r"><code>library(rio)
 Europa_America2=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
 EuroAmer2=import(Europa_America2)
@@ -555,10 +585,12 @@ PBI_EA =merge(pbi,EuroAmer2,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;) </code></p
 </div>
 <div id="merge-de-las-variables-de-salud-gonzalo-berger" class="section level1">
 <h1>Merge de las variables de salud (Gonzalo Berger)</h1>
-<pre class="r"><code>NumerodecamasHealthExpenditure = merge(Numerodecamas,HealthExpenditure)
-UHCNumerodecamasHealthExpenditure = merge(UHC,NumerodecamasHealthExpenditure)
-Doctores_EAUHCNumerodecamasHealthExpenditure = merge(Doctores_EA,UHCNumerodecamasHealthExpenditure)
-DataSalud = merge(PBI_EA,Doctores_EAUHCNumerodecamasHealthExpenditure)</code></pre>
+<pre class="r"><code>NumerodecamasHealthExpenditure = merge(Numerodecamas,HealthExpenditure,all.x=T,all.y=T)
+UHCNumerodecamasHealthExpenditure = merge(UHC,NumerodecamasHealthExpenditure,all.x=T,all.y=T)
+Doctores_EAUHCNumerodecamasHealthExpenditure = merge(Doctores_EA,UHCNumerodecamasHealthExpenditure,all.x=T,all.y=T)
+DataSalud = merge(PBI_EA,Doctores_EAUHCNumerodecamasHealthExpenditure,all.x=T,all.y=T)
+DataSalud$Porcentaje_PBI=as.numeric(DataSalud$Porcentaje_PBI)
+DataSalud$Numero_medicos=as.numeric(DataSalud$Numero_medicos)</code></pre>
 </div>
 
 
