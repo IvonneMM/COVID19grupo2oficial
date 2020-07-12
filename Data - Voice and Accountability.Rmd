@@ -1,62 +1,30 @@
-LIMPIEZA DE BASE DE DATOS DE LA BASE DE DATOS VOZ Y RENDICIÓN DE CUENTAS: RANGO DE PORCENTAJE (Voice and Accountability: PErcentile Rank)
-
-1.Trayendo la base de datos desde GitHub
+#BASE DE DATOS DE LA BASE DE DATOS VOZ Y RENDICIÓN DE CUENTAS: RANGO DE PORCENTAJE (Voice and Accountability: PErcentile Rank)
 
 ```{r}
 library(rio)
-lXLSX="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Voice%20and%20Accountability%20Percentile%20Rank.xlsx"
-
-VoiceandAcc=import(lXLSX)
+lXvoandac="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Voice%20and%20Accountability%20Percentile%20Rank.xlsx"
+VoiceandAcc=import(lXvoandac)
 ```
 
-2.Eliminando columnnas innnecesarias
-
+#LIMPIEZA
 ```{r}
 VoiceandAcc[,c(2,3,4)]=NULL
-```
-
-3. Revisamos la tabla
-
-```{r}
-str(VoiceandAcc)
-```
-
-4.Convertimos chr a numérico
-
-```{r}
-VoiceandAcc$`2018 [YR2018]`=as.numeric(VoiceandAcc$`2018 [YR2018]`)
-```
-
-5. vemos la tabla
-
-```{r}
-str(VoiceandAcc)
-```
-
-6.Visualizamos los NA's
-```{r}
-table(VoiceandAcc$`2018 [YR2018]`,useNA = "always")
-```
-
-
-7.Cambiamos los nombres de las columnas
-
-```{r}
 names(VoiceandAcc)=c("Pais","VoiceandAccountability")
 ```
-
-8.Traemos la base de Excel para que con el Merge quitemos los países innecesarios
-
 ```{r}
-library(rio)
-lkXLSX = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
-Paisesoficial=import(lkXLSX)
+VoiceandAcc$VoiceandAccountability=as.numeric(VoiceandAcc$VoiceandAccountability)
+str(VoiceandAcc)
+```
+#NA
+```{r}
+table(VoiceandAcc$VoiceandAccountability,useNA = "always")
 ```
 
-9.Hacemos el Merge
-
-
+#MERGE
 ```{r}
+library(rio)
+lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
+Paisesoficial=import(lkpaises)
 VoiceandAccountability = merge(VoiceandAcc,Paisesoficial,by.x='Pais',by.y='Pais')
 ```
 

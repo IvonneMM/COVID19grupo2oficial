@@ -365,33 +365,21 @@ summary {
 </div>
 
 
-<p>LIMPIEZA DE BASE DE DATOS DE LA BASE DE DATOS VOZ Y RENDICIÓN DE CUENTAS: RANGO DE PORCENTAJE (Voice and Accountability: PErcentile Rank)</p>
-<p>1.Trayendo la base de datos desde GitHub</p>
+<p>#BASE DE DATOS DE LA BASE DE DATOS VOZ Y RENDICIÓN DE CUENTAS: RANGO DE PORCENTAJE (Voice and Accountability: PErcentile Rank)</p>
 <pre class="r"><code>library(rio)
-lXLSX=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Voice%20and%20Accountability%20Percentile%20Rank.xlsx&quot;
-
-VoiceandAcc=import(lXLSX)</code></pre>
-<p>2.Eliminando columnnas innnecesarias</p>
-<pre class="r"><code>VoiceandAcc[,c(2,3,4)]=NULL</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Revisamos la tabla</li>
-</ol>
-<pre class="r"><code>str(VoiceandAcc)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    99 obs. of  2 variables:
-##  $ Country Name : chr  &quot;Albania&quot; &quot;Andorra&quot; &quot;Anguilla&quot; &quot;Antigua and Barbuda&quot; ...
-##  $ 2018 [YR2018]: chr  &quot;53.201970000000003&quot; &quot;83.251230000000007&quot; &quot;..&quot; &quot;69.458129999999997&quot; ...</code></pre>
-<p>4.Convertimos chr a numérico</p>
-<pre class="r"><code>VoiceandAcc$`2018 [YR2018]`=as.numeric(VoiceandAcc$`2018 [YR2018]`)</code></pre>
+lXvoandac=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Voice%20and%20Accountability%20Percentile%20Rank.xlsx&quot;
+VoiceandAcc=import(lXvoandac)</code></pre>
+<p>#LIMPIEZA</p>
+<pre class="r"><code>VoiceandAcc[,c(2,3,4)]=NULL
+names(VoiceandAcc)=c(&quot;Pais&quot;,&quot;VoiceandAccountability&quot;)</code></pre>
+<pre class="r"><code>VoiceandAcc$VoiceandAccountability=as.numeric(VoiceandAcc$VoiceandAccountability)</code></pre>
 <pre><code>## Warning: NAs introducidos por coerción</code></pre>
-<ol start="5" style="list-style-type: decimal">
-<li>vemos la tabla</li>
-</ol>
 <pre class="r"><code>str(VoiceandAcc)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    99 obs. of  2 variables:
-##  $ Country Name : chr  &quot;Albania&quot; &quot;Andorra&quot; &quot;Anguilla&quot; &quot;Antigua and Barbuda&quot; ...
-##  $ 2018 [YR2018]: num  53.2 83.3 NA 69.5 67 ...</code></pre>
-<p>6.Visualizamos los NA’s</p>
-<pre class="r"><code>table(VoiceandAcc$`2018 [YR2018]`,useNA = &quot;always&quot;)</code></pre>
+##  $ Pais                  : chr  &quot;Albania&quot; &quot;Andorra&quot; &quot;Anguilla&quot; &quot;Antigua and Barbuda&quot; ...
+##  $ VoiceandAccountability: num  53.2 83.3 NA 69.5 67 ...</code></pre>
+<p>#NA</p>
+<pre class="r"><code>table(VoiceandAcc$VoiceandAccountability,useNA = &quot;always&quot;)</code></pre>
 <pre><code>## 
 ## 0.9852217  4.926108  6.403941  7.881773  9.852217  10.34483  11.82266  15.76355 
 ##         1         1         1         1         1         1         1         1 
@@ -417,14 +405,11 @@ VoiceandAcc=import(lXLSX)</code></pre>
 ##         1         1         1         1         1         1         1         1 
 ##  99.01478       100      &lt;NA&gt; 
 ##         1         1         5</code></pre>
-<p>7.Cambiamos los nombres de las columnas</p>
-<pre class="r"><code>names(VoiceandAcc)=c(&quot;Pais&quot;,&quot;VoiceandAccountability&quot;)</code></pre>
-<p>8.Traemos la base de Excel para que con el Merge quitemos los países innecesarios</p>
+<p>#MERGE</p>
 <pre class="r"><code>library(rio)
-lkXLSX = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
-Paisesoficial=import(lkXLSX)</code></pre>
-<p>9.Hacemos el Merge</p>
-<pre class="r"><code>VoiceandAccountability = merge(VoiceandAcc,Paisesoficial,by.x=&#39;Pais&#39;,by.y=&#39;Pais&#39;)</code></pre>
+lkpaises = &quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
+Paisesoficial=import(lkpaises)
+VoiceandAccountability = merge(VoiceandAcc,Paisesoficial,by.x=&#39;Pais&#39;,by.y=&#39;Pais&#39;)</code></pre>
 
 
 
