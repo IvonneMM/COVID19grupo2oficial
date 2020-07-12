@@ -3,6 +3,8 @@
 
 ```{r}
 library(rio)
+```
+```{r}
 lkcorrup='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx'
 datacorrup=import(lkcorrup)
 lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls'
