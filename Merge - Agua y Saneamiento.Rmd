@@ -31,14 +31,14 @@ table(Aguapotable$`% of population with access to improved drinking water`, useN
 Agua=merge(datapaises,Aguapotable)
 ```
 
-#Saneamiento - Ivonne Deliany Mondoñedo Mora
+# Saneamiento - Ivonne Deliany Mondoñedo Mora
 ```{r}
 library(htmltab)
 Linksana="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/398.html"
 Link_path_sana='//*[@id="fieldListing"]'
 saneamiento= htmltab (doc = Linksana,which = Link_path_sana)
 ```
-#Limpieza 
+# Limpieza 
 ```{r}
 names(saneamiento)= c ("Pais", "Porcentaje_Saneamiento")
 library(tidyr)
@@ -47,11 +47,11 @@ saneamiento$Porcentaje_Saneamiento=gsub(".*\\:","",saneamiento$Porcentaje_Saneam
 saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)
 saneamiento$Porcentaje_Saneamiento=trimws(saneamiento$Porcentaje_Saneamiento,whitespace = "[\\h\\v]")
 ```
-#Ver los NA's 
+# Ver los NA's 
 ```{r}
 table(saneamiento$`Porcentaje_Saneamiento`,useNA = "always")
 ```
-#Merge para quedarnos solo con países de Europa y América 
+# Merge para quedarnos solo con países de Europa y América 
 ```{r}
 library(rio)
 Europa_America1="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
@@ -60,8 +60,9 @@ names(EuroAmer1)= c ("Pais")
 Saneamiento_EA =merge(saneamiento,EuroAmer1,by.x='Pais', by.y='Pais') 
 ```
 
-#MERGE DE AMBAS BASES (SANEAMIENTO Y AGUA POTABLE) - Mayra Vargas
+# Merge de ambas bases (saneamiento y agua potable) - Mayra Vargas
 ```{r}
-Aguaysaneamiento=merge(Agua,Saneamiento_EA,by.x = "Pais",by.y = "Pais") 
+Aguaysaneamiento=merge(Agua,Saneamiento_EA,all.x =T,all.y =T)
+Aguaysaneamiento$Porcentaje_Saneamiento=as.numeric(Aguaysaneamiento$Porcentaje_Saneamiento)
 ```
 
