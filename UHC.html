@@ -374,14 +374,19 @@ summary {
 </div>
 
 
-<pre class="r"><code>library(rio) </code></pre>
+<div id="limpieza-de-la-base-de-datos-asistencia-sanitaria-universal-gonzalo-berger" class="section level1">
+<h1>Limpieza de la base de datos: Asistencia sanitaria universal (Gonzalo Berger)</h1>
+<pre class="r"><code>library(rio)</code></pre>
 <pre><code>## Warning: package &#39;rio&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>library(knitr)
+library(kableExtra)</code></pre>
+<pre><code>## Warning: package &#39;kableExtra&#39; was built under R version 4.0.2</code></pre>
 <pre class="r"><code>UHClk=&#39;https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_World_Development_Indicators.xlsx&#39;
-datauhc=import(UHClk)</code></pre>
-<pre class="r"><code>datauhc[,c(1:2,4:13,15:16)]=NULL
-datauhc=datauhc[-c(218:269),]</code></pre>
-<pre class="r"><code>names(datauhc)=c(&#39;Pais&#39;,&#39;Asistencia sanitaria universal&#39;)</code></pre>
-<pre class="r"><code>datauhc$`Asistencia sanitaria universal`=as.numeric(datauhc$`Asistencia sanitaria universal`)</code></pre>
+datauhc=import(UHClk)
+datauhc[,c(1:2,4:13,15:16)]=NULL
+datauhc=datauhc[-c(218:269),]
+names(datauhc)=c(&#39;Pais&#39;,&#39;Asistencia sanitaria universal&#39;)
+datauhc$`Asistencia sanitaria universal`=as.numeric(datauhc$`Asistencia sanitaria universal`)</code></pre>
 <pre><code>## Warning: NAs introducidos por coerción</code></pre>
 <pre class="r"><code>table(datauhc$`Asistencia sanitaria universal`, useNA = &#39;always&#39;)</code></pre>
 <pre><code>## 
@@ -394,12 +399,9 @@ datauhc=datauhc[-c(218:269),]</code></pre>
 ##   84   86   87   89 &lt;NA&gt; 
 ##    3    4    4    1   34</code></pre>
 <pre class="r"><code>lkpaises=&#39;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&#39;
-datapaises=import(lkpaises)</code></pre>
-<pre class="r"><code>UHC=merge(datauhc,datapaises,all.x=T,all.y=T,by.x=&#39;Pais&#39;,by.y=&#39;Pais&#39;)</code></pre>
-<pre class="r"><code>library(knitr)
-library(kableExtra)</code></pre>
-<pre><code>## Warning: package &#39;kableExtra&#39; was built under R version 4.0.2</code></pre>
-<pre class="r"><code>kable(UHC[!complete.cases(UHC),],type=&#39;html&#39;)%&gt;%
+datapaises=import(lkpaises)
+UHC=merge(datauhc,datapaises,all.x=T,all.y=T,by.x=&#39;Pais&#39;,by.y=&#39;Pais&#39;)
+kable(UHC[!complete.cases(UHC),],type=&#39;html&#39;)%&gt;%
     kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;, &quot;responsive&quot;),
                   font_size = 10)</code></pre>
 <table class="table table-striped table-hover table-condensed table-responsive" style="font-size: 10px; margin-left: auto; margin-right: auto;">
@@ -884,13 +886,20 @@ NA
 datauhc[datauhc$Pais==&#39;Czech Republic&#39;,&#39;Pais&#39;]=&#39;Czechia&#39;
 datauhc[datauhc$Pais==&#39;Slovak Republic&#39;,&#39;Pais&#39;]=&#39;Slovakia&#39;
 datauhc[datauhc$Pais==&#39;Russian Federation&#39;,&#39;Pais&#39;]=&#39;Russia&#39;</code></pre>
+</div>
+<div id="merge" class="section level1">
+<h1>Merge</h1>
 <pre class="r"><code>UHC=merge(datapaises,datauhc)</code></pre>
+</div>
+<div id="na" class="section level1">
+<h1>NA</h1>
 <pre class="r"><code>table(UHC$`Asistencia sanitaria universal`, useNA = &#39;always&#39;)</code></pre>
 <pre><code>## 
 ##   49   55   59   61   64   65   66   68   69   70   71   72   73   74   75   76 
 ##    1    1    1    1    1    4    2    3    3    1    3    3    3    7    4    8 
 ##   77   78   79   80   81   82   83   84   86   87   89 &lt;NA&gt; 
 ##    5    3    4    1    1    3    5    3    2    2    1    7</code></pre>
+</div>
 
 
 
