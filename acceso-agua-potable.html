@@ -374,6 +374,8 @@ summary {
 </div>
 
 
+<div id="limpieza-de-la-base-acceso-a-agua-potable-gonzalo-berger" class="section level1">
+<h1>Limpieza de la base: Acceso a agua potable (Gonzalo Berger)</h1>
 <pre class="r"><code>library(htmltab)</code></pre>
 <pre><code>## Warning: package &#39;htmltab&#39; was built under R version 4.0.2</code></pre>
 <pre class="r"><code>library(tidyr)
@@ -385,25 +387,23 @@ library(stringr)</code></pre>
 library(kableExtra)</code></pre>
 <pre><code>## Warning: package &#39;kableExtra&#39; was built under R version 4.0.2</code></pre>
 <pre class="r"><code>lkpage=&#39;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html&#39;
-lkpath=&#39;//*[@id=&quot;fieldListing&quot;]&#39;</code></pre>
-<pre class="r"><code>Aguapotable = htmltab(doc = lkpage, which = lkpath)</code></pre>
+lkpath=&#39;//*[@id=&quot;fieldListing&quot;]&#39;
+Aguapotable = htmltab(doc = lkpage, which = lkpath)</code></pre>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<pre class="r"><code>names(Aguapotable)</code></pre>
-<pre><code>## [1] &quot;Country&quot;               &quot;Drinking water source&quot;</code></pre>
 <pre class="r"><code>Aguapotable = separate(Aguapotable,&#39;Drinking water source&#39;,into=c(&#39;Z1&#39;,&#39;Z2&#39;), &#39;total&#39;)</code></pre>
 <pre><code>## Warning: Expected 2 pieces. Additional pieces discarded in 208 rows [1, 2, 3, 4,
 ## 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
 <pre><code>## Warning: Expected 2 pieces. Missing pieces filled with `NA` in 1 rows [55].</code></pre>
-<pre class="r"><code>Aguapotable[,c(2)]=NULL</code></pre>
-<pre class="r"><code>Aguapotable = separate(Aguapotable,&#39;Z2&#39;,into=c(&#39;Z1&#39;,&#39;Z2&#39;),&#39;%&#39;)</code></pre>
+<pre class="r"><code>Aguapotable[,c(2)]=NULL
+Aguapotable = separate(Aguapotable,&#39;Z2&#39;,into=c(&#39;Z1&#39;,&#39;Z2&#39;),&#39;%&#39;)</code></pre>
 <pre><code>## Warning: Expected 2 pieces. Additional pieces discarded in 208 rows [1, 2, 3, 4,
 ## 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
-<pre class="r"><code>Aguapotable[,c(3)]=NULL</code></pre>
-<pre class="r"><code>Aguapotable[,c(2)] = gsub(&#39;:&#39;,&#39;&#39;,Aguapotable[,c(2)])
-Aguapotable[,c(2)] = trimws(Aguapotable[,c(2)],whitespace = &#39;[\\h\\v]&#39;)</code></pre>
-<pre class="r"><code>Aguapotable$Z1=as.numeric(Aguapotable$Z1)</code></pre>
-<pre class="r"><code>names(Aguapotable)=c(&#39;Pais&#39;,&#39;% of population with access to improved drinking water&#39;)</code></pre>
-<pre class="r"><code>table(Aguapotable$`% of population with access to improved drinking water`, useNA = &#39;always&#39;)</code></pre>
+<pre class="r"><code>Aguapotable[,c(3)]=NULL
+Aguapotable[,c(2)] = gsub(&#39;:&#39;,&#39;&#39;,Aguapotable[,c(2)])
+Aguapotable[,c(2)] = trimws(Aguapotable[,c(2)],whitespace = &#39;[\\h\\v]&#39;)
+Aguapotable$Z1=as.numeric(Aguapotable$Z1)
+names(Aguapotable)=c(&#39;Pais&#39;,&#39;% of population with access to improved drinking water&#39;)
+table(Aguapotable$`% of population with access to improved drinking water`, useNA = &#39;always&#39;)</code></pre>
 <pre><code>## 
 ## 31.7   40 47.9   49 50.8 51.1 51.5 52.4 54.4 54.9 55.3 55.5 55.6 57.3 57.7 57.8 
 ##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
@@ -421,10 +421,10 @@ Aguapotable[,c(2)] = trimws(Aguapotable[,c(2)],whitespace = &#39;[\\h\\v]&#39;)<
 ##    1    1    1    1    2    3    2    2    2    1    3    1    2    1    5    1 
 ## 99.2 99.3 99.4 99.5 99.6 99.7 99.8 99.9  100 &lt;NA&gt; 
 ##    2    1    3    3    4    5    1    3   41    1</code></pre>
-<pre class="r"><code>lkpaises=&#39;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&#39;</code></pre>
-<pre class="r"><code>datapaises=import(lkpaises)</code></pre>
-<pre class="r"><code>Agua=merge(datapaises,Aguapotable,all.x = T,all.y = T)</code></pre>
-<pre class="r"><code>kable(Agua[!complete.cases(Agua),],type=&#39;html&#39;)%&gt;%
+<pre class="r"><code>lkpaises=&#39;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&#39;
+datapaises=import(lkpaises)
+Agua=merge(datapaises,Aguapotable,all.x = T,all.y = T)
+kable(Agua[!complete.cases(Agua),],type=&#39;html&#39;)%&gt;%
     kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;, &quot;responsive&quot;),
                   font_size = 10)</code></pre>
 <table class="table table-striped table-hover table-condensed table-responsive" style="font-size: 10px; margin-left: auto; margin-right: auto;">
@@ -498,6 +498,9 @@ NA
 </tr>
 </tbody>
 </table>
+</div>
+<div id="merge-na" class="section level1">
+<h1>Merge + NA</h1>
 <pre class="r"><code>Agua=merge(datapaises,Aguapotable)
 table(Agua$`% of population with access to improved drinking water`, useNA = &#39;always&#39;)</code></pre>
 <pre><code>## 
@@ -507,6 +510,7 @@ table(Agua$`% of population with access to improved drinking water`, useNA = &#3
 ##    1    1    2    1    1    1    2    1    1    2    1    1    3    1    1    1 
 ## 99.2 99.3 99.4 99.5 99.6 99.7 99.8 99.9  100 &lt;NA&gt; 
 ##    2    1    2    2    2    4    1    1   28    1</code></pre>
+</div>
 
 
 
