@@ -372,7 +372,8 @@ Regqual= import(lkregulatoryq)</code></pre>
 <p>#LIMPIEZA</p>
 <pre class="r"><code>Regqual[,c(2,3,4)] = NULL
 names(Regqual)=c(&quot;Pais&quot;,&quot;RegulatoryQuality&quot;)</code></pre>
-<pre class="r"><code>Regqual$RegulatoryQuality=as.numeric(Regqual$RegulatoryQuality)</code></pre>
+<pre class="r"><code>Regqual[Regqual$Pais==&#39;Venezuela, RB&#39;,&#39;Pais&#39;]=&#39;Venezuela&#39;
+Regqual$RegulatoryQuality=as.numeric(Regqual$RegulatoryQuality)</code></pre>
 <pre><code>## Warning: NAs introducidos por coerción</code></pre>
 <pre class="r"><code>str(Regqual)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    99 obs. of  2 variables:

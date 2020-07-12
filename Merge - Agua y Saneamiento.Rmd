@@ -1,146 +1,67 @@
 #MERGE ENTRE ACCESO A AGUA POTABLE Y SANEAMIENTO
  
-#BASE DE ACCESO A AGUA POTABLE
-
- 
+# Limpieza de la base: Acceso a agua potable (Gonzalo Berger)
 ```{r} 
 library(htmltab)
-```
-```{r}
 library(tidyr)
-```
-```{r}
 library(stringr)
-```
-```{r}
 library(rio)
 ```
 ```{r}
 lkpage='https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html'
 lkpath='//*[@id="fieldListing"]'
+Aguapotable = htmltab(doc = lkpage, which = lkpath)
+lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls'
+datapaises=import(lkpaises) 
+Aguapotable = separate(Aguapotable,'Drinking water source',into=c('Z1','Z2'), 'total')
+Aguapotable[,c(2)]=NULL
+Aguapotable = separate(Aguapotable,'Z2',into=c('Z1','Z2'),'%')
+Aguapotable[,c(3)]=NULL
+Aguapotable[,c(2)] = gsub(':','',Aguapotable[,c(2)])
+Aguapotable[,c(2)] = trimws(Aguapotable[,c(2)],whitespace = '[\\h\\v]')
+Aguapotable$Z1=as.numeric(Aguapotable$Z1)
+names(Aguapotable)=c('Pais','% of population with access to improved drinking water')
 ```
+# NA
 ```{r}
-'agua potable' = htmltab(doc = lkpage, which = lkpath)
+table(Aguapotable$`% of population with access to improved drinking water`, useNA = 'always')
 ```
+# Merge
 ```{r}
-names(`agua potable`)
-```
-```{r}
-`agua potable`=separate(`agua potable`,"Drinking water source",into=c('z1','z2','z3','z4'), 'population')
-```
-```{r}
-`agua potable`$z1=NULL
-`agua potable`$z2=NULL
-`agua potable`$z4=NULL
-```
-```{r} 
-`agua potable`$z3=str_extract_all(`agua potable`$z3,pattern="(\\-*\\d+\\.*\\d*)")
-```
-```{r} 
-`agua potable`$z3=as.numeric(`agua potable`$z3)
-```
-```{r}
-str(`agua potable`)
-```
-```{r}
-names(`agua potable`)=c('Pais','% of population with access to improved drinking water')
-```
-```{r}
-lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls'
-```
-```{r}
-datapaises=import(lkpaises)
-```
-```{r}
-Aguapotable=merge(datapaises,`agua potable`)
+Agua=merge(datapaises,Aguapotable)
 ```
 
-
-#BASE DE SANEAMIENTO
-
-```{r}
-#Saneamiento
-```
-
+#Saneamiento - Ivonne Deliany Mondoñedo Mora
 ```{r}
 library(htmltab)
-```
-
-```{r}
 Linksana="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/398.html"
-
 Link_path_sana='//*[@id="fieldListing"]'
-```
-
-```{r}
 saneamiento= htmltab (doc = Linksana,which = Link_path_sana)
 ```
-
+#Limpieza 
 ```{r}
-names(saneamiento)
 names(saneamiento)= c ("Pais", "Porcentaje_Saneamiento")
-```
-
-
-```{r}
 library(tidyr)
-```
-
-```{r}
 saneamiento$Porcentaje_Saneamiento=gsub("\\%.*","",saneamiento$Porcentaje_Saneamiento)
-```
-
-```{r}
 saneamiento$Porcentaje_Saneamiento=gsub(".*\\:","",saneamiento$Porcentaje_Saneamiento)
-```
-
-```{r}
-table(saneamiento$saneamiento, useNA= 'always')
-```
-
-```{r}
-saneamiento<-na.omit(saneamiento)
-```
-
-```{r}
-str(saneamiento)
-```
-
-```{r}
 saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)
+saneamiento$Porcentaje_Saneamiento=trimws(saneamiento$Porcentaje_Saneamiento,whitespace = "[\\h\\v]")
 ```
-
+#Ver los NA's 
 ```{r}
-saneamiento<-na.omit(saneamiento)
+table(saneamiento$`Porcentaje_Saneamiento`,useNA = "always")
 ```
-
+#Merge para quedarnos solo con países de Europa y América 
 ```{r}
 library(rio)
+Europa_America1="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
+EuroAmer1=import(Europa_America1)
+names(EuroAmer1)= c ("Pais")
+Saneamiento_EA =merge(saneamiento,EuroAmer1,by.x='Pais', by.y='Pais') 
 ```
 
+#MERGE DE AMBAS BASES (SANEAMIENTO Y AGUA POTABLE) - Mayra Vargas
 ```{r}
-Europa_America3="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls"
-
-EuroAmer3=import(Europa_America3)
-```
-
-```{r}
-names(EuroAmer3)
-```
-
-```{r}
-names(EuroAmer3)= c ("Pais")
-```
-
-```{r}
-Saneamiento_EA =merge(saneamiento,EuroAmer3,by.x='Pais', by.y='Pais') 
-head(Saneamiento_EA)
-```
-
-#MERGE DE AMBAS BASES
-
- 
-```{r}
-Aguaysaneamiento=merge(Aguapotable,Saneamiento_EA,by.x = "Pais",by.y = "Pais") 
+Aguaysaneamiento=merge(Agua,Saneamiento_EA,by.x = "Pais",by.y = "Pais") 
 ```
 

@@ -366,77 +366,101 @@ summary {
 
 
 <p>#MERGE ENTRE ACCESO A AGUA POTABLE Y SANEAMIENTO</p>
-<p>#BASE DE ACCESO A AGUA POTABLE</p>
-<pre class="r"><code>library(htmltab)</code></pre>
-<pre class="r"><code>library(tidyr)</code></pre>
-<pre class="r"><code>library(stringr)</code></pre>
-<pre class="r"><code>library(rio)</code></pre>
+<div id="limpieza-de-la-base-acceso-a-agua-potable-gonzalo-berger" class="section level1">
+<h1>Limpieza de la base: Acceso a agua potable (Gonzalo Berger)</h1>
+<pre class="r"><code>library(htmltab)
+library(tidyr)
+library(stringr)
+library(rio)</code></pre>
 <pre class="r"><code>lkpage=&#39;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html&#39;
-lkpath=&#39;//*[@id=&quot;fieldListing&quot;]&#39;</code></pre>
-<pre class="r"><code>&#39;agua potable&#39; = htmltab(doc = lkpage, which = lkpath)</code></pre>
+lkpath=&#39;//*[@id=&quot;fieldListing&quot;]&#39;
+Aguapotable = htmltab(doc = lkpage, which = lkpath)</code></pre>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<pre class="r"><code>names(`agua potable`)</code></pre>
-<pre><code>## [1] &quot;Country&quot;               &quot;Drinking water source&quot;</code></pre>
-<pre class="r"><code>`agua potable`=separate(`agua potable`,&quot;Drinking water source&quot;,into=c(&#39;z1&#39;,&#39;z2&#39;,&#39;z3&#39;,&#39;z4&#39;), &#39;population&#39;)</code></pre>
-<pre><code>## Warning: Expected 4 pieces. Additional pieces discarded in 208 rows [1, 2, 3, 4,
+<pre class="r"><code>lkpaises=&#39;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&#39;
+datapaises=import(lkpaises) 
+Aguapotable = separate(Aguapotable,&#39;Drinking water source&#39;,into=c(&#39;Z1&#39;,&#39;Z2&#39;), &#39;total&#39;)</code></pre>
+<pre><code>## Warning: Expected 2 pieces. Additional pieces discarded in 208 rows [1, 2, 3, 4,
 ## 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
-<pre><code>## Warning: Expected 4 pieces. Missing pieces filled with `NA` in 1 rows [55].</code></pre>
-<pre class="r"><code>`agua potable`$z1=NULL
-`agua potable`$z2=NULL
-`agua potable`$z4=NULL</code></pre>
-<pre class="r"><code>`agua potable`$z3=str_extract_all(`agua potable`$z3,pattern=&quot;(\\-*\\d+\\.*\\d*)&quot;)</code></pre>
-<pre class="r"><code>`agua potable`$z3=as.numeric(`agua potable`$z3)</code></pre>
-<pre class="r"><code>str(`agua potable`)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    209 obs. of  2 variables:
-##  $ Country: chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;American Samoa&quot; ...
-##  $ z3     : num  55.3 83.6 83.6 100 100 49 5.4 97.9 99.1 100 ...</code></pre>
-<pre class="r"><code>names(`agua potable`)=c(&#39;Pais&#39;,&#39;% of population with access to improved drinking water&#39;)</code></pre>
-<pre class="r"><code>lkpaises=&#39;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&#39;</code></pre>
-<pre class="r"><code>datapaises=import(lkpaises)</code></pre>
-<pre class="r"><code>Aguapotable=merge(datapaises,`agua potable`)</code></pre>
-<p>#BASE DE SANEAMIENTO</p>
-<pre class="r"><code>#Saneamiento</code></pre>
-<pre class="r"><code>library(htmltab)</code></pre>
-<pre class="r"><code>Linksana=&quot;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/398.html&quot;
-
-Link_path_sana=&#39;//*[@id=&quot;fieldListing&quot;]&#39;</code></pre>
-<pre class="r"><code>saneamiento= htmltab (doc = Linksana,which = Link_path_sana)</code></pre>
-<pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<pre class="r"><code>names(saneamiento)</code></pre>
-<pre><code>## [1] &quot;Country&quot;                    &quot;Sanitation facility access&quot;</code></pre>
-<pre class="r"><code>names(saneamiento)= c (&quot;Pais&quot;, &quot;Porcentaje_Saneamiento&quot;)</code></pre>
-<pre class="r"><code>library(tidyr)</code></pre>
-<pre class="r"><code>saneamiento$Porcentaje_Saneamiento=gsub(&quot;\\%.*&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)</code></pre>
-<pre class="r"><code>saneamiento$Porcentaje_Saneamiento=gsub(&quot;.*\\:&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)</code></pre>
-<pre class="r"><code>table(saneamiento$saneamiento, useNA= &#39;always&#39;)</code></pre>
+<pre><code>## Warning: Expected 2 pieces. Missing pieces filled with `NA` in 1 rows [55].</code></pre>
+<pre class="r"><code>Aguapotable[,c(2)]=NULL
+Aguapotable = separate(Aguapotable,&#39;Z2&#39;,into=c(&#39;Z1&#39;,&#39;Z2&#39;),&#39;%&#39;)</code></pre>
+<pre><code>## Warning: Expected 2 pieces. Additional pieces discarded in 208 rows [1, 2, 3, 4,
+## 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
+<pre class="r"><code>Aguapotable[,c(3)]=NULL
+Aguapotable[,c(2)] = gsub(&#39;:&#39;,&#39;&#39;,Aguapotable[,c(2)])
+Aguapotable[,c(2)] = trimws(Aguapotable[,c(2)],whitespace = &#39;[\\h\\v]&#39;)
+Aguapotable$Z1=as.numeric(Aguapotable$Z1)
+names(Aguapotable)=c(&#39;Pais&#39;,&#39;% of population with access to improved drinking water&#39;)</code></pre>
+</div>
+<div id="na" class="section level1">
+<h1>NA</h1>
+<pre class="r"><code>table(Aguapotable$`% of population with access to improved drinking water`, useNA = &#39;always&#39;)</code></pre>
 <pre><code>## 
-## &lt;NA&gt; 
-##    0</code></pre>
-<pre class="r"><code>saneamiento&lt;-na.omit(saneamiento)</code></pre>
-<pre class="r"><code>str(saneamiento)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    209 obs. of  2 variables:
-##  $ Pais                  : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;American Samoa&quot; ...
-##  $ Porcentaje_Saneamiento: chr  &quot;45.1&quot; &quot;95.5&quot; &quot;89.8&quot; &quot;62.5&quot; ...</code></pre>
-<pre class="r"><code>saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)</code></pre>
-<pre class="r"><code>saneamiento&lt;-na.omit(saneamiento)</code></pre>
-<pre class="r"><code>library(rio)</code></pre>
-<pre class="r"><code>Europa_America3=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1).xls&quot;
-
-EuroAmer3=import(Europa_America3)</code></pre>
-<pre class="r"><code>names(EuroAmer3)</code></pre>
-<pre><code>## [1] &quot;Pais&quot;</code></pre>
-<pre class="r"><code>names(EuroAmer3)= c (&quot;Pais&quot;)</code></pre>
-<pre class="r"><code>Saneamiento_EA =merge(saneamiento,EuroAmer3,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;) 
-head(Saneamiento_EA)</code></pre>
-<pre><code>##                  Pais Porcentaje_Saneamiento
-## 1             Albania                   95.5
-## 2             Andorra                  100.0
-## 3 Antigua and Barbuda                   91.4
-## 4           Argentina                   96.2
-## 5             Armenia                   96.2
-## 6             Austria                  100.0</code></pre>
-<p>#MERGE DE AMBAS BASES</p>
-<pre class="r"><code>Aguaysaneamiento=merge(Aguapotable,Saneamiento_EA,by.x = &quot;Pais&quot;,by.y = &quot;Pais&quot;) </code></pre>
+## 31.7   40 47.9   49 50.8 51.1 51.5 52.4 54.4 54.9 55.3 55.5 55.6 57.3 57.7 57.8 
+##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
+## 57.9 58.2 58.4 58.7 62.6 63.1 63.2 64.4 65.4 66.9 68.5 71.1 71.9 73.8 74.1 75.5 
+##    1    1    2    1    1    1    1    1    1    1    2    1    1    1    1    1 
+## 75.6 75.7 75.9 76.1 76.5 76.8 76.9   77 77.9 78.5   79 79.3 80.6 80.8 81.8 81.9 
+##    2    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
+## 82.3 83.6 84.7 85.4 86.6 86.7 86.9   87 87.3 87.4 88.4 88.7   89   90 90.1 90.2 
+##    1    2    1    1    1    1    2    2    1    1    1    1    1    3    2    2 
+##   91 91.1 91.2 91.4 91.6 91.7 91.8 92.8 92.9 93.1 93.2 93.4 93.6 93.8 94.1 94.5 
+##    1    1    1    2    1    1    1    1    1    1    2    1    1    2    1    1 
+## 94.6 94.7 94.8 94.9 95.1 95.3 95.5 95.6 95.7 96.1 96.2 96.3 96.5 96.6 96.9   97 
+##    2    1    1    1    2    1    1    1    2    1    3    1    1    2    2    1 
+## 97.1 97.4 97.5 97.6 97.7 97.8 97.9   98 98.1 98.2 98.3 98.4 98.5 98.6   99 99.1 
+##    1    1    1    1    2    3    2    2    2    1    3    1    2    1    5    1 
+## 99.2 99.3 99.4 99.5 99.6 99.7 99.8 99.9  100 &lt;NA&gt; 
+##    2    1    3    3    4    5    1    3   41    1</code></pre>
+</div>
+<div id="merge" class="section level1">
+<h1>Merge</h1>
+<pre class="r"><code>Agua=merge(datapaises,Aguapotable)</code></pre>
+<p>#Saneamiento - Ivonne Deliany Mondoñedo Mora</p>
+<pre class="r"><code>library(htmltab)
+Linksana=&quot;https://www.cia.gov/library/publications/resources/the-world-factbook/fields/398.html&quot;
+Link_path_sana=&#39;//*[@id=&quot;fieldListing&quot;]&#39;
+saneamiento= htmltab (doc = Linksana,which = Link_path_sana)</code></pre>
+<pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
+<p>#Limpieza</p>
+<pre class="r"><code>names(saneamiento)= c (&quot;Pais&quot;, &quot;Porcentaje_Saneamiento&quot;)
+library(tidyr)
+saneamiento$Porcentaje_Saneamiento=gsub(&quot;\\%.*&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)
+saneamiento$Porcentaje_Saneamiento=gsub(&quot;.*\\:&quot;,&quot;&quot;,saneamiento$Porcentaje_Saneamiento)
+saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)
+saneamiento$Porcentaje_Saneamiento=trimws(saneamiento$Porcentaje_Saneamiento,whitespace = &quot;[\\h\\v]&quot;)</code></pre>
+<p>#Ver los NA’s</p>
+<pre class="r"><code>table(saneamiento$`Porcentaje_Saneamiento`,useNA = &quot;always&quot;)</code></pre>
+<pre><code>## 
+##  100 16.4   18   20 20.2 22.8 24.7 27.2   28 28.5 31.2 31.3 31.4 32.8 33.5 33.6 
+##   21    1    1    1    1    1    1    1    1    2    1    1    1    2    1    1 
+## 34.1 35.6 37.3 37.5 37.9 40.8 42.4 43.4 43.6 43.8 43.9 44.5 45.1 47.3 48.3 49.3 
+##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
+## 50.4 51.2   52 54.5 55.6   56 56.4 57.5 57.7 58.5 59.8 60.8 61.5 61.8 62.5 62.6 
+##    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
+## 63.1 65.1 65.4 65.6 66.4   69 69.6 72.3 76.1 76.5   77 77.5 77.9 78.5 79.6 79.7 
+##    1    1    1    1    1    1    1    1    1    1    1    1    2    1    1    1 
+## 79.9 80.7 81.4 81.6 82.3 82.4 82.5 82.9 83.1 83.5 84.1 84.3 84.5 84.7 85.1 85.2 
+##    2    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
+## 86.2 86.3 86.4 86.6 86.7 86.8   87 87.3 87.8 87.9   88 88.1 88.4 88.6 89.1 89.8 
+##    1    1    1    1    1    1    1    1    1    2    2    2    1    1    2    2 
+## 89.9 90.5 90.8 91.4 91.5 91.6   92 92.2 92.5 92.8   93 93.3 93.4 93.5 93.8 93.9 
+##    1    1    1    1    1    1    1    1    1    1    2    1    1    1    1    1 
+## 94.1 94.4 94.5 95.2 95.5 95.6   96 96.1 96.2 96.4 96.6 96.8   97 97.2 97.3 97.4 
+##    1    2    1    2    2    1    1    1    4    1    1    2    1    2    1    2 
+## 97.5 97.6 97.7 97.8 97.9   98 98.2 98.3 98.4 98.5 98.6 98.7 98.9 99.1 99.2 99.3 
+##    8    2    1    2    1    4    1    1    1    1    2    1    1    3    2    3 
+## 99.4 99.5 99.6 99.8 99.9 &lt;NA&gt; 
+##    2    2    2    1    1    0</code></pre>
+<p>#Merge para quedarnos solo con países de Europa y América</p>
+<pre class="r"><code>library(rio)
+Europa_America1=&quot;https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls&quot;
+EuroAmer1=import(Europa_America1)
+names(EuroAmer1)= c (&quot;Pais&quot;)
+Saneamiento_EA =merge(saneamiento,EuroAmer1,by.x=&#39;Pais&#39;, by.y=&#39;Pais&#39;) </code></pre>
+<p>#MERGE DE AMBAS BASES (SANEAMIENTO Y AGUA POTABLE) - Mayra Vargas</p>
+<pre class="r"><code>Aguaysaneamiento=merge(Agua,Saneamiento_EA,by.x = &quot;Pais&quot;,by.y = &quot;Pais&quot;) </code></pre>
+</div>
 
 
 
