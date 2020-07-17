@@ -457,22 +457,26 @@ fviz_cluster(object = list(data=g.distcovid, cluster = Datacovidof$clusterPAM),
              ellipse.type = 'convex')
 
 ```
+
 # Jerarquización 
 ```{r}
 fviz_nbclust(Datacovidof[,c(4:17)], hcut,diss=g.distcovid,method = 'gap_stat',k.max = 10,verbose = F)
 ```
+
 # Aglomerativo - Agnes
 ```{r}
 res.agCOVID = hcut(g.distcovid, k = 2,hc_func='agnes',hc_method = 'ward.D')
 Datacovidof$clusterAG=res.agCOVID$cluster
 fviz_dend(res.agCOVID,k=2, cex = 0.7, horiz = T) 
 ```
+
 # Divisivo - Diana
 ```{r}
 res.diaCOVID = hcut(g.distcovid, k = 2,hc_func='diana')
 Datacovidof$clusterDIV=res.diaCOVID$cluster
 fviz_dend(res.diaCOVID, cex = 0.7,horiz = T)
 ```
+
 # Estrategia basada en densiadad
 ```{r}
 row.names(Datacovidof)=Datacovidof$Pais
