@@ -465,7 +465,7 @@ fviz_nbclust(Datacovidof[,c(4:17)], hcut,diss=g.distcovid,method = 'gap_stat',k.
 ```{r}
 res.agCOVID = hcut(g.distcovid, k = 2,hc_func='agnes',hc_method = 'ward.D')
 Datacovidof$clusterAG=res.agCOVID$cluster
-fviz_dend(res.agCOVID,k=2, cex = 0.7, horiz = T)
+fviz_dend(res.agCOVID,k=2, cex = 0.7, horiz = T) 
 ```
 # Divisivo - Diana
 ```{r}
