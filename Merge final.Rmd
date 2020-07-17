@@ -1,8 +1,6 @@
-# MERGE TOTAL
+# Limpieza
 
-# VARIABLES DE SALUD
 # BASE DE DATOS: CAMAS POR 1000 HABITANTES (Mayra Vargas)
-
 ```{r}
 library(htmltab)
 linkCIA_cama = "https://www.cia.gov/library/publications/resources/the-world-factbook/fields/360.html"
@@ -63,7 +61,6 @@ HealthExpenditure=merge(che,Paisesoficial,by.x='Pais', by.y='Pais')
 ```
 
 # Limpieza de la base de datos: Asistencia sanitaria universal (Gonzalo Berger) 
-
 ```{r}
 library(rio)
 ```
@@ -104,6 +101,7 @@ library(tidyr)
 Medicos=separate(Medicos,Numero_medicos,into=c("Numero_medicos",'delete'), "\\ ")[,-3]
 Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
 Medicos$Numero_medicos=trimws(Medicos$Numero_medicos,whitespace = "[\\h\\v]")
+Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
 ```
 # Ver los NA's
 ```{r}
@@ -117,42 +115,42 @@ EuroAmer3=import(Europa_America3)
 names(EuroAmer3)= c ("Pais")
 Doctores_EA =merge(Medicos,EuroAmer3,by.x='Pais', by.y='Pais') 
 ```
-# PBI - Ivonne Deliany Mondoñedo Mora
+#che_per_capita - Ivonne Deliany Mondoñedo Mora
 ```{r}
-library(htmltab)
-Linkpbi="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/409.html"
-Link_path_pbi='//*[@id="fieldListing"]'
-pbi= htmltab (doc = Linkpbi,which = Link_path_pbi)
+library(rio)
+Linkche_per_capita="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Current-health-expenditure-per-capita-current-US.xls"
+che_per_capita= import(Linkche_per_capita)
 ```
-# Limpieza
+#Limpieza
 ```{r}
-names(pbi)= c ("Pais", "Porcentaje_PBI")
+che_per_capita[c(2)]=NULL
+names(che_per_capita)= c ("Pais", "Porcentaje_che_per_capita")
 library(tidyr)
-pbi=separate(pbi,Porcentaje_PBI,into=c("Porcentaje_PBI",'delete'), "\\%")[,-3]
-pbi$Porcentaje_PBI =as.numeric(pbi$Porcentaje_PBI)
-pbi$Porcentaje_PBI=trimws(pbi$Porcentaje_PBI,whitespace = "[\\h\\v]")
+che_per_capita=separate(che_per_capita,Porcentaje_che_per_capita,into=c("Porcentaje_che_per_capita",'delete'), "\\%")[,-3]
+che_per_capita$Porcentaje_che_per_capita=trimws(che_per_capita$Porcentaje_che_per_capita,whitespace = "[\\h\\v]")
+che_per_capita[,c(2)]=as.numeric(che_per_capita[,c(2)])
 ```
-# Ver los NA's 
+#Ver los NA's 
 ```{r}
-table(pbi$`Porcentaje_PBI`,useNA = "always")
+table(che_per_capita$`Porcentaje_che_per_capita`,useNA = "always")
 ```
-# Merge para quedarnos solo con países de Europa y América 
+#Merge para quedarnos solo con países de Europa y América 
 ```{r}
 library(rio)
 Europa_America2="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 EuroAmer2=import(Europa_America2)
 names(EuroAmer2)= c ("Pais")
-PBI_EA =merge(pbi,EuroAmer2,by.x='Pais', by.y='Pais') 
+che_per_capita_EA =merge(che_per_capita,EuroAmer2,by.x='Pais', by.y='Pais') 
 ```
+
 # Merge de las variables de salud (Gonzalo Berger)
 ```{r}
-NumerodecamasHealthExpenditure = merge(Numerodecamas,HealthExpenditure,all.x=T,all.y=T)
-UHCNumerodecamasHealthExpenditure = merge(UHC,NumerodecamasHealthExpenditure,all.x=T,all.y=T)
-Doctores_EAUHCNumerodecamasHealthExpenditure = merge(Doctores_EA,UHCNumerodecamasHealthExpenditure,all.x=T,all.y=T)
-DataSalud = merge(PBI_EA,Doctores_EAUHCNumerodecamasHealthExpenditure,all.x=T,all.y=T)
-DataSalud$Porcentaje_PBI=as.numeric(DataSalud$Porcentaje_PBI)
-DataSalud$Numero_medicos=as.numeric(DataSalud$Numero_medicos)
+camasCHE = merge(Numerodecamas,HealthExpenditure,all.x=T,all.y=T)
+UHCcamasCHE = merge(UHC,camasCHE,all.x=T,all.y=T)
+DoctoresUHCcamasCHE = merge(Doctores_EA,UHCcamasCHE,all.x=T,all.y=T)
+DataSalud = merge (che_per_capita_EA,DoctoresUHCcamasCHE,all.x=T,all.y=T)
 ```
+
 
 # GOBERNANZA
 # Variable 1 
@@ -433,4 +431,3 @@ merge2=merge(Aguaysaneamiento,merge1,all.x = T,all.y = T)
 ```{r}
 Datacovidof=merge(dataCovid,merge2,all.x = T,all.y = T)
 ```
-
