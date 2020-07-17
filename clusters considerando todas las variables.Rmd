@@ -434,7 +434,7 @@ Datacovidof=merge(dataCovid,merge2,all.x = T,all.y = T)
 ```
 
 
-# Cluster basado en densidad considerando todas las variables (Gonzalo Berger)
+# Clusters considerando todas las variables (Gonzalo Berger)
 # No jarárquico - Partición
 ```{r}
 library(cluster)
