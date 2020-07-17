@@ -1,0 +1,462 @@
+
+# Limpieza
+
+# BASE DE DATOS: CAMAS POR 1000 HABITANTES (Mayra Vargas)
+```{r}
+library(htmltab)
+linkCIA_cama = "https://www.cia.gov/library/publications/resources/the-world-factbook/fields/360.html"
+linkPath_cama='//*[@id="fieldListing"]'
+camas = htmltab(doc = linkCIA_cama,
+                which = linkPath_cama)
+```
+# LIMPIEZA
+```{r}
+library(tidyr)
+camas=separate(camas,`Hospital bed density`,into = c("oficial","delete")," ")
+camas$delete=NULL
+names(camas)=c("Pais","numero de camas por 1000 hab")
+camas$`numero de camas por 1000 hab`=as.numeric(camas$`numero de camas por 1000 hab`)
+str(camas)
+```
+# NA
+```{r}
+table(camas$`numero de camas por 1000 hab`,useNA = "always")
+```
+# MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA LATINA
+```{r}
+library(rio)
+lkpais = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
+Paisesoficial=import(lkpais)
+Numerodecamas=merge(camas,Paisesoficial,by.x='Pais',by.y='Pais')
+```
+
+# BASE DE DATOS DE GASTO ACTUAL EN SALUD (Current Health Expenditure - CHE) - Mayra Vargas
+
+```{r}
+library(htmltab)
+linkCIA_che = "https://www.cia.gov/library/publications/resources/the-world-factbook/fields/409.html"
+linkPath_che='//*[@id="fieldListing"]'
+che= htmltab(doc = linkCIA_che,
+             which = linkPath_che)
+```
+# LIMPIEZA
+```{r}
+library(tidyr)
+che=separate(che,`Current Health Expenditure`,into = c("oficial","delete"),"%")
+che$delete=NULL
+names(che)=c("Pais","CHE")
+che$CHE=as.numeric(che$CHE)
+str(che)
+```
+# NA
+```{r}
+table(che$CHE,useNA = "always")
+```
+
+# MERGE
+```{r}
+library(rio)
+lkpaises= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
+Paisesoficial=import(lkpaises)
+HealthExpenditure=merge(che,Paisesoficial,by.x='Pais', by.y='Pais')
+```
+
+# Limpieza de la base de datos: Asistencia sanitaria universal (Gonzalo Berger) 
+```{r}
+library(rio)
+```
+```{r}
+UHClk='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_World_Development_Indicators.xlsx'
+datauhc=import(UHClk)
+lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls'
+datapaises=import(lkpaises)
+datauhc[,c(1:2,4:13,15:16)]=NULL
+datauhc=datauhc[-c(218:269),]
+names(datauhc)=c('Pais','Asistencia sanitaria universal')
+datauhc$`Asistencia sanitaria universal`=as.numeric(datauhc$`Asistencia sanitaria universal`)
+datauhc[datauhc$Pais=='Venezuela, RB','Pais']='Venezuela'
+datauhc[datauhc$Pais=='Czech Republic','Pais']='Czechia'
+datauhc[datauhc$Pais=='Slovak Republic','Pais']='Slovakia'
+datauhc[datauhc$Pais=='Russian Federation','Pais']='Russia'
+```
+# NA
+```{r}
+table(datauhc$`Asistencia sanitaria universal`, useNA = 'always')
+```
+# Merge
+```{r}
+UHC=merge(datapaises,datauhc)
+```
+#Número de doctores - Ivonne Deliany Mondoñedo Mora
+```{r}
+library(htmltab)
+LinkDoc="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/359.html"
+Link_path_doc='//*[@id="fieldListing"]'
+Medicos= htmltab (doc = LinkDoc,which = Link_path_doc)
+```
+# Limpieza
+```{r}
+names(Medicos)
+names(Medicos)= c ("Pais", "Numero_medicos")
+library(tidyr)
+Medicos=separate(Medicos,Numero_medicos,into=c("Numero_medicos",'delete'), "\\ ")[,-3]
+Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
+Medicos$Numero_medicos=trimws(Medicos$Numero_medicos,whitespace = "[\\h\\v]")
+Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
+```
+# Ver los NA's
+```{r}
+table(Medicos$`Numero_medicos`,useNA = "always")
+```
+# Merge para quedarnos solo con países de Europa y América 
+```{r}
+library(rio)
+Europa_America3="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
+EuroAmer3=import(Europa_America3)
+names(EuroAmer3)= c ("Pais")
+Doctores_EA =merge(Medicos,EuroAmer3,by.x='Pais', by.y='Pais') 
+```
+#che_per_capita - Ivonne Deliany Mondoñedo Mora
+```{r}
+library(rio)
+Linkche_per_capita="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Current-health-expenditure-per-capita-current-US.xls"
+che_per_capita= import(Linkche_per_capita)
+```
+#Limpieza
+```{r}
+che_per_capita[c(2)]=NULL
+names(che_per_capita)= c ("Pais", "Porcentaje_che_per_capita")
+library(tidyr)
+che_per_capita=separate(che_per_capita,Porcentaje_che_per_capita,into=c("Porcentaje_che_per_capita",'delete'), "\\%")[,-3]
+che_per_capita$Porcentaje_che_per_capita=trimws(che_per_capita$Porcentaje_che_per_capita,whitespace = "[\\h\\v]")
+che_per_capita[,c(2)]=as.numeric(che_per_capita[,c(2)])
+```
+#Ver los NA's 
+```{r}
+table(che_per_capita$`Porcentaje_che_per_capita`,useNA = "always")
+```
+#Merge para quedarnos solo con países de Europa y América 
+```{r}
+library(rio)
+Europa_America2="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
+EuroAmer2=import(Europa_America2)
+names(EuroAmer2)= c ("Pais")
+che_per_capita_EA =merge(che_per_capita,EuroAmer2,by.x='Pais', by.y='Pais') 
+```
+
+# Merge de las variables de salud (Gonzalo Berger)
+```{r}
+camasCHE = merge(Numerodecamas,HealthExpenditure,all.x=T,all.y=T)
+UHCcamasCHE = merge(UHC,camasCHE,all.x=T,all.y=T)
+DoctoresUHCcamasCHE = merge(Doctores_EA,UHCcamasCHE,all.x=T,all.y=T)
+DataSalud = merge (che_per_capita_EA,DoctoresUHCcamasCHE,all.x=T,all.y=T)
+```
+
+
+# GOBERNANZA
+# Variable 1 
+# Limpieza de las bases de datos: Estabilidad y ausencia de violencia + Control de Corrupción (Gonzalo Berger)
+```{r}
+library(rio)
+lkcorrup='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx'
+datacorrup=import(lkcorrup)
+lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls'
+datapaises=import(lkpaises) 
+datacorrup[c(2:4)]=NULL
+datacorrup=datacorrup[c(1:99),]
+names(datacorrup)=c('Pais','Control de la corrupción')
+datacorrup$`Control de la corrupción`=as.numeric(datacorrup$`Control de la corrupción`)
+
+lkviolence='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_Indicators_political_stability_and_absence_of_violence.xlsx'
+dataviolence=import(lkviolence)
+dataviolence[c(2:4)]=NULL
+dataviolence=dataviolence[c(1:99),]
+names(dataviolence)=c('Pais','Estabilidad política y ausencia de violencia/terrorismo')
+dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`=as.numeric(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`)
+```
+# NA
+```{r}
+table(datacorrup$`Control de la corrupción`, useNA = 'always')
+```
+```{r}
+table(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`, useNA = 'always')
+```
+# Merge
+```{r}
+corrupcionyviolencia=merge(datacorrup,dataviolence)
+CORRUPVIOLENCIA=merge(datapaises,corrupcionyviolencia) 
+``` 
+
+# Variable 2
+# Base de datos de la base de datos voz y rendición de cuentas: rango de porcentaje (Voice and Accountability: PErcentile Rank) Mayra Vargas
+```{r}
+library(rio)
+lXvoandac="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Voice%20and%20Accountability%20Percentile%20Rank.xlsx"
+VoiceandAcc=import(lXvoandac)
+```
+# Limpieza
+```{r}
+VoiceandAcc[,c(2,3,4)]=NULL
+names(VoiceandAcc)=c("Pais","VoiceandAccountability")
+VoiceandAcc$VoiceandAccountability=as.numeric(VoiceandAcc$VoiceandAccountability)
+str(VoiceandAcc)
+```
+# NA
+```{r}
+table(VoiceandAcc$VoiceandAccountability,useNA = "always")
+```
+# Merge
+```{r}
+library(rio)
+lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
+Paisesoficial=import(lkpaises)
+VoiceandAccountability = merge(VoiceandAcc,Paisesoficial,by.x='Pais',by.y='Pais')
+```
+
+# Variable 3
+# Efectivida del gobierno - Ivonne Deliany Mondoñedo Mora
+```{r}
+library(rio)
+Gobernabilidad="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(3).xlsx"
+Gobernanza=import(Gobernabilidad)
+```
+# Limpieza 
+```{r}
+names(Gobernanza)= c ("Pais", "Efectividad_gobierno")
+Gobernanza$Efectividad_gobierno=as.numeric(Gobernanza$Efectividad_gobierno)
+Gobernanza$Efectividad_gobierno=trimws(Gobernanza$Efectividad_gobierno,whitespace = "[\\h\\v]")
+Gobernanza[Gobernanza$Pais=='Russian','Pais']='Russia'
+```
+# Ver los NA's 
+```{r}
+table(Gobernanza$`Efectividad_gobierno`,useNA = "always")
+```
+# Merge para quedarnos solo con países de Europa y América
+```{r}
+library(rio)
+Europa_America4="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
+EuroAmer4=import(Europa_America4)
+names(EuroAmer4)= c ("Pais")
+Gobernanza_EA=merge(Gobernanza,EuroAmer4,by.x='Pais', by.y='Pais') 
+```
+
+# Variable 4
+# Base de datos de estado de derecho: Rango de Percentil (Rule of Law: Percentil Rank)- Mayra Vargas
+```{r}
+library(rio)
+lkRofLaw= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Rule%20of%20Law%20Percentile%20Rank.xlsx"
+RuleofLaw= import(lkRofLaw)
+```
+# Limpieza
+```{r}
+RuleofLaw[,c(2,3,4)] = NULL
+names(RuleofLaw)=c("Pais","RuleofLaw")
+RuleofLaw$RuleofLaw=as.numeric(RuleofLaw$RuleofLaw)
+```
+# NA
+```{r}
+table(RuleofLaw$RuleofLaw,useNA = "always")
+```
+#Merge para quedarnos con los países de Europa y América Latina
+```{r}
+lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
+Paisesoficial=import(lkpaises)
+Imperiodelaley=merge(RuleofLaw,Paisesoficial,by.x = 'Pais',by.y = 'Pais')
+```
+
+# Variable 5 
+# Base de datos de regulatory quality - Mayra Vargas
+```{r}
+library(rio)
+lkregulatoryq= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Regulatory%20Quality%20-%20Percentile%20Rank.xlsx"
+Regqual= import(lkregulatoryq)
+```
+# Limpieza
+```{r}
+Regqual[,c(2,3,4)] = NULL
+names(Regqual)=c("Pais","RegulatoryQuality")
+```
+```{r}
+Regqual[Regqual$Pais=='Venezuela, RB','Pais']='Venezuela'
+Regqual$RegulatoryQuality=as.numeric(Regqual$RegulatoryQuality)
+str(Regqual)
+```
+# NA
+```{r}
+table(Regqual$RegulatoryQuality,useNA = "always")
+```
+# MERGE
+```{r}
+lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
+Paisesoficial=import(lkpaises)
+RegulatoryQuality=merge(Regqual,Paisesoficial,by.x='Pais', by.y='Pais')
+```
+
+
+# MERGE PARA UNIR LAS VARIABLES DE GOBERNANZA - Ivonne Mondoñedo Mora 
+# Merge 1 - variables 1 y 2 
+```{r}
+Accountability_Corrupcion_Violencia=merge(CORRUPVIOLENCIA,VoiceandAccountability,all.x=T, all.y=T)
+```
+# Merge 2- variables 3 y 4 
+```{r}
+Gob_Ley=merge(Gobernanza_EA,Imperiodelaley,all.x=T, all.y=T)
+```
+# Merge 3 - variables 1, 2, 3 y 4
+```{r}
+Accountability_Corrupcion_Violencia_Gob_Ley=merge(Accountability_Corrupcion_Violencia,Gob_Ley, all.x=T, all.y=T)
+```
+# Merge 4 - variables 1, 2, 3, 4 y 5
+```{r}
+Merge_Gobernanza=merge(Accountability_Corrupcion_Violencia_Gob_Ley,RegulatoryQuality, all.x=T, all.y=T)
+Merge_Gobernanza$Efectividad_gobierno=as.numeric(Merge_Gobernanza$Efectividad_gobierno)
+```
+
+#MERGE ENTRE ACCESO A AGUA POTABLE Y SANEAMIENTO
+# Limpieza de la base: Acceso a agua potable (Gonzalo Berger)
+```{r} 
+library(htmltab)
+library(tidyr)
+library(stringr)
+library(rio)
+```
+```{r}
+lkpage='https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html'
+lkpath='//*[@id="fieldListing"]'
+Aguapotable = htmltab(doc = lkpage, which = lkpath)
+lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls'
+datapaises=import(lkpaises) 
+Aguapotable = separate(Aguapotable,'Drinking water source',into=c('Z1','Z2'), 'total')
+Aguapotable[,c(2)]=NULL
+Aguapotable = separate(Aguapotable,'Z2',into=c('Z1','Z2'),'%')
+Aguapotable[,c(3)]=NULL
+Aguapotable[,c(2)] = gsub(':','',Aguapotable[,c(2)])
+Aguapotable[,c(2)] = trimws(Aguapotable[,c(2)],whitespace = '[\\h\\v]')
+Aguapotable$Z1=as.numeric(Aguapotable$Z1)
+names(Aguapotable)=c('Pais','% of population with access to improved drinking water')
+```
+# NA
+```{r}
+table(Aguapotable$`% of population with access to improved drinking water`, useNA = 'always')
+```
+# Merge
+```{r}
+Agua=merge(datapaises,Aguapotable)
+```
+
+# Saneamiento - Ivonne Deliany Mondoñedo Mora
+```{r}
+library(htmltab)
+Linksana="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/398.html"
+Link_path_sana='//*[@id="fieldListing"]'
+saneamiento= htmltab (doc = Linksana,which = Link_path_sana)
+```
+# Limpieza 
+```{r}
+names(saneamiento)= c ("Pais", "Porcentaje_Saneamiento")
+library(tidyr)
+saneamiento$Porcentaje_Saneamiento=gsub("\\%.*","",saneamiento$Porcentaje_Saneamiento)
+saneamiento$Porcentaje_Saneamiento=gsub(".*\\:","",saneamiento$Porcentaje_Saneamiento)
+saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)
+saneamiento$Porcentaje_Saneamiento=trimws(saneamiento$Porcentaje_Saneamiento,whitespace = "[\\h\\v]")
+```
+# Ver los NA's 
+```{r}
+table(saneamiento$`Porcentaje_Saneamiento`,useNA = "always")
+```
+# Merge para quedarnos solo con países de Europa y América 
+```{r}
+library(rio)
+Europa_America1="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
+EuroAmer1=import(Europa_America1)
+names(EuroAmer1)= c ("Pais")
+Saneamiento_EA =merge(saneamiento,EuroAmer1,by.x='Pais', by.y='Pais') 
+```
+
+# Merge de ambas bases (saneamiento y agua potable) - Mayra Vargas
+```{r}
+Aguaysaneamiento=merge(Agua,Saneamiento_EA,all.x =T,all.y =T)
+Aguaysaneamiento$Porcentaje_Saneamiento=as.numeric(Aguaysaneamiento$Porcentaje_Saneamiento)
+```
+
+# Limpieza: Muertes confirmadas por millón de habitantes (Gonzalo Berger)
+```{r}
+library(htmltab)
+library(rio)
+library(stringr)
+```
+```{r}
+lkpage='https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory'
+lkpath='//*[@id="thetable"]'
+lkpage2='https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)'
+lkpath2='//*[@id="main"]'
+covid19=htmltab(doc=lkpage,which = lkpath)
+poblacion=htmltab(doc=lkpage2,which = lkpath2)
+lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls'
+datapaises=import(lkpaises)
+covid19[,c(2,4)]=NULL
+poblacion[,c(4,6)]=NULL
+names(covid19)[names(covid19)=='Location >> World']= 'Pais'
+names(poblacion)[names(poblacion)=='Country/Territory >> World']= 'Pais'
+poblacion$Pais=str_split(poblacion$Pais,pattern='\\(',simplify = T)[,1]
+poblacion$Pais=trimws(poblacion$Pais,whitespace = "[\\h\\v]")
+poblacion$Pais=gsub('Â',"",poblacion$Pais)
+poblacion$Pais=trimws(poblacion$Pais,whitespace = "[\\h\\v]")
+names(covid19)=c('Pais','Muertes_confirmadas')
+covid19$Muertes_confirmadas=gsub(',','',covid19$Muertes_confirmadas)
+covid19$Muertes_confirmadas=gsub('No data',NA,covid19$Muertes_confirmadas)
+covid19=covid19[-c(229:230),]
+covid19[,c(2)]=as.numeric(covid19[,c(2)])
+names(poblacion)=c('Pais','continentalregion','subregion','Poblacion_2019')
+poblacion$Poblacion_2019=gsub(',',"",poblacion$Poblacion_2019)
+poblacion$Poblacion_2019=as.numeric(poblacion$Poblacion_2019)
+covid19[covid19$Pais=='Saint Vincent','Pais']='Saint Vincent and the Grenadines'
+```
+# NA
+```{r}
+table(covid19$Muertes_confirmadas, useNA = 'always')
+```
+# Merge y estandarización
+```{r}
+data=merge(covid19,poblacion)
+data$'Decesos por millón de habitantes'=(data$Muertes_confirmadas/data$Poblacion_2019)*10^6
+data=data[,-c(2,5)]
+dataCovid=merge(data,datapaises)
+```
+
+# MERGE FINAL (Mayra Vargas)
+```{r}
+merge1=merge(DataSalud,Merge_Gobernanza,all.x = T,all.y = T)
+merge2=merge(Aguaysaneamiento,merge1,all.x = T,all.y = T)
+```
+```{r}
+Datacovidof=merge(dataCovid,merge2,all.x = T,all.y = T)
+```
+
+
+# Cluster basado en densidad considerando todas las variables (Gonzalo Berger)
+```{r}
+library(cluster)
+library(dbscan)
+library(fpc)
+library(ggrepel)
+```
+```{r}
+row.names(Datacovidof)=Datacovidof$Pais
+Datacovidof=na.omit(Datacovidof)
+distcovid= daisy(Datacovidof[,4:17],metric = 'gower')
+proyeccioncovid=cmdscale(distcovid,k=14,add = T)
+Datacovidof$dim1=proyeccioncovid$points[,1]
+Datacovidof$dim2=proyeccioncovid$points[,2]
+min(Datacovidof[,c('dim1','dim2')]);max(Datacovidof[,c('dim1','dim2')])
+```
+```{r}
+limitescovid=c(-0.6,0.4)
+g.dist.cmdcovid=daisy(Datacovidof[,c('dim1','dim2')],metric = 'euclidean')
+kNNdistplot(g.dist.cmdcovid, k=14)
+abline(h=0.2,lty=2)
+```
+```{r}
+db.cmdcovid = dbscan(g.dist.cmdcovid, eps=0.20, MinPts=14,method = 'dist')
+db.cmdcovid 
+```
