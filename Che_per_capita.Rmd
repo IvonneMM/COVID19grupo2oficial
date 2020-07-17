@@ -12,7 +12,7 @@ library(tidyr)
 
 che_per_capita=separate(che_per_capita,Porcentaje_che_per_capita,into=c("Porcentaje_che_per_capita",'delete'), "\\%")[,-3]
 
-che_per_capita$`Porcentaje_che_per_capita`=as.numeric(che_per_capita$`Porcentaje_che_per_capita`)
+che_per_capita[,c(2)]=as.numeric(che_per_capita[,c(2)])
 
 che_per_capita$Porcentaje_che_per_capita=trimws(che_per_capita$Porcentaje_che_per_capita,whitespace = "[\\h\\v]")
 ```
