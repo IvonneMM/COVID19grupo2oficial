@@ -435,12 +435,45 @@ Datacovidof=merge(dataCovid,merge2,all.x = T,all.y = T)
 
 
 # Cluster basado en densidad considerando todas las variables (Gonzalo Berger)
+# No jarárquico - Partición
 ```{r}
 library(cluster)
 library(dbscan)
 library(fpc)
 library(ggrepel)
+library(factoextra)
 ```
+```{r}
+row.names(Datacovidof)=Datacovidof$Pais
+Datacovidof=na.omit(Datacovidof)
+g.distcovid = daisy(Datacovidof[,c(4:17)], metric='gower')
+fviz_nbclust(Datacovidof[,c(4:17)], pam,diss=g.distcovid,method = 'gap_stat',k.max = 10,verbose = F)
+```
+```{r}
+res.pamCOVID=pam(g.distcovid,2,cluster.only = F)
+Datacovidof$clusterPAM=res.pamCOVID$cluster
+fviz_cluster(object = list(data=g.distcovid, cluster = Datacovidof$clusterPAM),
+             geom = c('text'), 
+             ellipse.type = 'convex')
+
+```
+# Jerarquización 
+```{r}
+fviz_nbclust(Datacovidof[,c(4:17)], hcut,diss=g.distcovid,method = 'gap_stat',k.max = 10,verbose = F)
+```
+# Aglomerativo - Agnes
+```{r}
+res.agCOVID = hcut(g.distcovid, k = 2,hc_func='agnes',hc_method = 'ward.D')
+Datacovidof$clusterAG=res.agCOVID$cluster
+fviz_dend(res.agCOVID,k=2, cex = 0.7, horiz = T)
+```
+# Divisivo - Diana
+```{r}
+res.diaCOVID = hcut(g.distcovid, k = 2,hc_func='diana')
+Datacovidof$clusterDIV=res.diaCOVID$cluster
+fviz_dend(res.diaCOVID, cex = 0.7,horiz = T)
+```
+# Estrategia basada en densiadad
 ```{r}
 row.names(Datacovidof)=Datacovidof$Pais
 Datacovidof=na.omit(Datacovidof)
