@@ -457,22 +457,60 @@ fviz_cluster(object = list(data=g.distsalud, cluster = DataSalud$clusterPAM),
              ellipse.type = 'convex')
 
 ```
+
 # Jerarquización 
 ```{r}
 fviz_nbclust(DataSalud[,c(2:6)], hcut,diss=g.distsalud,method = 'gap_stat',k.max = 10,verbose = F)
 ```
+
 # Aglomerativo - Agnes
 ```{r}
 res.agSALUD = hcut(g.distsalud, k = 2,hc_func='agnes',hc_method = 'ward.D')
 DataSalud$clusterAG=res.agSALUD$cluster
 fviz_dend(res.agSALUD,k=2, cex = 0.7, horiz = T)
 ```
+
 # Divisivo - Diana
 ```{r}
 res.diaSALUD = hcut(g.distsalud, k = 2,hc_func='diana')
 DataSalud$clusterDIV=res.diaSALUD$cluster
 fviz_dend(res.diaSALUD, cex = 0.7,horiz = T)
 ```
+
+# Evaluación gráfica con siluetas
+```{r}
+fviz_silhouette(res.pamSALUD)
+```
+```{r}
+fviz_silhouette(res.agSALUD)
+```
+```{r}
+fviz_silhouette(res.diaSALUD)
+```
+
+# Evaluación numérica
+```{r}
+poorPAMSALUD=data.frame(res.pamSALUD$silinfo$widths)
+poorPAMSALUD$Pais=row.names(poorPAMSALUD)
+poorPAMcasesSALUD=poorPAMSALUD[poorPAMSALUD$sil_width<0,'Pais']
+poorPAMcasesSALUD
+length(poorPAMcasesSALUD)
+```
+```{r}
+poorAGNESSALUD=data.frame(res.agSALUD$silinfo$widths)
+poorAGNESSALUD$Pais=row.names(poorAGNESSALUD)
+poorAGNEScasesSALUD=poorAGNESSALUD[poorAGNESSALUD$sil_width<0,'Pais']
+poorAGNEScasesSALUD
+length(poorAGNEScasesSALUD)
+```
+```{r}
+poorDIANASALUD=data.frame(res.diaSALUD$silinfo$widths)
+poorDIANASALUD$Pais=row.names(poorDIANASALUD)
+poorDIANAcasesSALUD=poorDIANASALUD[poorDIANASALUD$sil_width<0,'Pais']
+poorDIANAcasesSALUD
+length(poorDIANAcasesSALUD)
+```
+
 # Estrategia basada en densiadad
 
 ```{r}
