@@ -477,6 +477,41 @@ Datacovidof$clusterDIV=res.diaCOVID$cluster
 fviz_dend(res.diaCOVID, cex = 0.7,horiz = T)
 ```
 
+# Evaluación gráfica con siluetas
+```{r}
+fviz_silhouette(res.pamCOVID)
+```
+
+```{r}
+fviz_silhouette(res.agCOVID)
+```
+
+```{r}
+fviz_silhouette(res.diaCOVID)
+```
+
+# Evaluación numérica
+```{r}
+poorPAMof=data.frame(res.pamCOVID$silinfo$widths)
+poorPAMof$Pais=row.names(poorPAMof)
+poorPAMofcases=poorPAMof[poorPAMof$sil_width<0,'Pais']
+poorPAMofcases
+length(poorPAMofcases)
+```
+```{r}
+poorAGNESof=data.frame(res.agCOVID$silinfo$widths)
+poorAGNESof$Pais=row.names(poorAGNESof)
+poorAGNESofcases=poorAGNESof[poorAGNESof$sil_width<0,'Pais']
+poorAGNESofcases
+length(poorAGNESofcases)
+```
+```{r}
+poorDIANAof=data.frame(res.diaCOVID$silinfo$widths)
+poorDIANAof$Pais=row.names(poorDIANAof)
+poorDIANAofcases=poorDIANAof[poorDIANAof$sil_width<0,'Pais']
+poorDIANAofcases
+length(poorDIANAofcases)
+```
 # Estrategia basada en densiadad
 ```{r}
 row.names(Datacovidof)=Datacovidof$Pais
