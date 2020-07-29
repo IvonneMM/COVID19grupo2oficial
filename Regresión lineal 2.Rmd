@@ -8,7 +8,7 @@ linkPath_cama='//*[@id="fieldListing"]'
 camas = htmltab(doc = linkCIA_cama,
                 which = linkPath_cama)
 ```
-# LIMPIEZA
+# LIMPIEZA 
 ```{r}
 library(tidyr)
 camas=separate(camas,`Hospital bed density`,into = c("oficial","delete")," ")
@@ -547,5 +547,33 @@ stargazer(reg14cov,type='text',intercept.bottom = F)
 Modelo15=formula(muertes~estabilidad+accountability+UHC+CHE)
 reg15cov=lm(Modelo15,data=Datacovidof)
 stargazer(reg15cov,type='text',intercept.bottom = F)
+```
+#linealidad
+```{r}
+plot(reg15cov,1)
+```
+#Homocedasticidad
+```{r}
+library(lmtest)
+plot(reg15cov,3)
+bptest(reg15cov)
+```
+#Normalidad de residuos
+```{r}
+shapiro.test(reg15cov$residuals)
+```
+#multicolinealidad
+```{r}
+library(DescTools)
+VIF(reg15cov)
+```
+#Valores influyentes
+```{r}
+plot(reg15cov, 5)
+
+checkReg15=as.data.frame(influence.measures(reg15cov)$is.inf)
+head(checkReg15)
+
+checkReg15[checkReg15$cook.d | checkReg15$hat,]
 ```
 
