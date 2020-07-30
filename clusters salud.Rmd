@@ -443,16 +443,16 @@ library(fpc)
 ```
 ```{r}
 set.seed(777)
-row.names(DataSalud)=DataSalud$Pais
-DataSalud=na.omit(DataSalud)
-g.distsalud = daisy(DataSalud[,c(2:6)], metric='gower')
-fviz_nbclust(DataSalud[,c(2:6)], pam,diss=g.distsalud,method = 'gap_stat',k.max = 10,verbose = F)
+row.names(Datacovidof)=Datacovidof$Pais
+Datacovidof=na.omit(Datacovidof)
+g.distsalud = daisy(Datacovidof[,c(7:11)], metric='gower')
+fviz_nbclust(Datacovidof[,c(7:11)], pam,diss=g.distsalud,method = 'gap_stat',k.max = 10,verbose = F)
 ```
 
 ```{r}
 res.pamSALUD=pam(g.distsalud,2,cluster.only = F)
-DataSalud$clusterPAM=res.pamSALUD$cluster
-fviz_cluster(object = list(data=g.distsalud, cluster = DataSalud$clusterPAM),
+Datacovidof$clusterPAM=res.pamSALUD$cluster
+fviz_cluster(object = list(data=g.distsalud, cluster = Datacovidof$clusterPAM),
              geom = c('text'), 
              ellipse.type = 'convex')
 
@@ -460,21 +460,21 @@ fviz_cluster(object = list(data=g.distsalud, cluster = DataSalud$clusterPAM),
 
 # Jerarquización 
 ```{r}
-fviz_nbclust(DataSalud[,c(2:6)], hcut,diss=g.distsalud,method = 'gap_stat',k.max = 10,verbose = F)
+fviz_nbclust(Datacovidof[,c(4,7:11)], hcut,diss=g.distsalud,method = 'gap_stat',k.max = 10,verbose = F)
 ```
 
 # Aglomerativo - Agnes
 ```{r}
 res.agSALUD = hcut(g.distsalud, k = 2,hc_func='agnes',hc_method = 'ward.D')
-DataSalud$clusterAG=res.agSALUD$cluster
-fviz_dend(res.agSALUD,k=2, cex = 0.7, horiz = T)
+Datacovidof$clusterAG=res.agSALUD$cluster
+fviz_dend(res.agSALUD,k=2, cex = 0.5, horiz = T)
 ```
 
 # Divisivo - Diana
 ```{r}
 res.diaSALUD = hcut(g.distsalud, k = 2,hc_func='diana')
-DataSalud$clusterDIV=res.diaSALUD$cluster
-fviz_dend(res.diaSALUD, cex = 0.7,horiz = T)
+Datacovidof$clusterDIV=res.diaSALUD$cluster
+fviz_dend(res.diaSALUD, cex = 0.5,horiz = T)
 ```
 
 # Evaluación gráfica con siluetas
@@ -515,13 +515,13 @@ length(poorDIANAcasesSALUD)
 
 ```{r}
 proyeccionSALUD = cmdscale(g.distsalud, k=2,add = T)
-DataSalud$dim1 = proyeccionSALUD$points[,1]
-DataSalud$dim2 = proyeccionSALUD$points[,2]
-min(DataSalud[,c('dim1','dim2')]); max(DataSalud[,c('dim1','dim2')])
+Datacovidof$dim1 = proyeccionSALUD$points[,1]
+Datacovidof$dim2 = proyeccionSALUD$points[,2]
+min(Datacovidof[,c('dim1','dim2')]); max(Datacovidof[,c('dim1','dim2')])
 ```
 ```{r}
 limites=c(-0.5,0.4)
-g.dist.cmdSALUD = daisy(DataSalud[,c('dim1','dim2')], metric = 'euclidean')
+g.dist.cmdSALUD = daisy(Datacovidof[,c('dim1','dim2')], metric = 'euclidean')
 kNNdistplot(g.dist.cmdSALUD, k=5)
 abline(h=0.13, lty=2)
 ```
