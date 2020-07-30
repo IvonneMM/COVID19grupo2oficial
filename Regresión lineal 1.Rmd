@@ -1,4 +1,3 @@
-
 # Limpieza
 
 # BASE DE DATOS: CAMAS POR 1000 HABITANTES (Mayra Vargas)
@@ -433,103 +432,62 @@ merge2=merge(Aguaysaneamiento,merge1,all.x = T,all.y = T)
 Datacovidof=merge(dataCovid,merge2,all.x = T,all.y = T)
 ```
 
-# Clusters de salud (Gonzalo Berger)
-# No jarárquico - Partición
+# Regresión lineal (Gonzalo Berger)
 ```{r}
-library(cluster)
-library(factoextra)
-library(dbscan)
-library(fpc)
+names(Datacovidof)
 ```
 ```{r}
-set.seed(777)
-row.names(Datacovidof)=Datacovidof$Pais
+names(Datacovidof)=c('Pais','continentalregion','subregion','muertes','agua','saneamiento','chepercapita','medicos','UHC','camas','CHE','corrupcion','estabilidad','accountability','efectividad','ruleoflaw','regulacion')
+```
+```{r}
 Datacovidof=na.omit(Datacovidof)
-g.distsalud = daisy(Datacovidof[,c(7:11)], metric='gower')
-fviz_nbclust(Datacovidof[,c(7:11)], pam,diss=g.distsalud,method = 'gap_stat',k.max = 10,verbose = F)
+```
+```{r}
+library(stargazer)
+```
+```{r}
+Modelo1=formula(muertes~corrupcion)
+Modelo2=formula(muertes~corrupcion+estabilidad)
+Modelo3=formula(muertes~corrupcion+estabilidad+accountability)
+Modelo4=formula(muertes~corrupcion+estabilidad+accountability+efectividad)
+Modelo5=formula(muertes~corrupcion+estabilidad+accountability+efectividad+ruleoflaw)
+Modelo6=formula(muertes~corrupcion+estabilidad+accountability+efectividad+ruleoflaw+regulacion)
+```
+```{r}
+reg1cov=lm(Modelo1,data=Datacovidof)
+stargazer(reg1cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-res.pamSALUD=pam(g.distsalud,2,cluster.only = F)
-Datacovidof$clusterPAM=res.pamSALUD$cluster
-fviz_cluster(object = list(data=g.distsalud, cluster = Datacovidof$clusterPAM),
-             geom = c('text'), 
-             ellipse.type = 'convex')
-
+reg2cov=lm(Modelo2,data=Datacovidof)
+stargazer(reg2cov,type='text',intercept.bottom = F)
 ```
 
-# Jerarquización 
 ```{r}
-fviz_nbclust(Datacovidof[,c(4,7:11)], hcut,diss=g.distsalud,method = 'gap_stat',k.max = 10,verbose = F)
+reg3cov=lm(Modelo3,data=Datacovidof)
+stargazer(reg3cov,type='text',intercept.bottom = F)
 ```
 
-# Aglomerativo - Agnes
 ```{r}
-res.agSALUD = hcut(g.distsalud, k = 2,hc_func='agnes',hc_method = 'ward.D')
-Datacovidof$clusterAG=res.agSALUD$cluster
-fviz_dend(res.agSALUD,k=2, cex = 0.5, horiz = T)
+reg4cov=lm(Modelo4,data=Datacovidof)
+stargazer(reg4cov,type='text',intercept.bottom = F)
 ```
 
-# Divisivo - Diana
 ```{r}
-res.diaSALUD = hcut(g.distsalud, k = 2,hc_func='diana')
-Datacovidof$clusterDIV=res.diaSALUD$cluster
-fviz_dend(res.diaSALUD, cex = 0.5,horiz = T)
+reg5cov=lm(Modelo5,data=Datacovidof)
+stargazer(reg5cov,type='text',intercept.bottom = F)
 ```
 
-# Evaluación gráfica con siluetas
 ```{r}
-fviz_silhouette(res.pamSALUD)
-```
-```{r}
-fviz_silhouette(res.agSALUD)
-```
-```{r}
-fviz_silhouette(res.diaSALUD)
+reg6cov=lm(Modelo6,data=Datacovidof)
+stargazer(reg6cov,type='text',intercept.bottom = F)
 ```
 
-# Evaluación numérica
+#Análisis de varianza
 ```{r}
-poorPAMSALUD=data.frame(res.pamSALUD$silinfo$widths)
-poorPAMSALUD$Pais=row.names(poorPAMSALUD)
-poorPAMcasesSALUD=poorPAMSALUD[poorPAMSALUD$sil_width<0,'Pais']
-poorPAMcasesSALUD
-length(poorPAMcasesSALUD)
+tanova=anova(reg1cov,reg2cov,reg3cov,reg4cov,reg5cov,reg6cov)
+stargazer(tanova,type = 'text',summary = F,title = 'Tabla ANOVA')
 ```
-```{r}
-poorAGNESSALUD=data.frame(res.agSALUD$silinfo$widths)
-poorAGNESSALUD$Pais=row.names(poorAGNESSALUD)
-poorAGNEScasesSALUD=poorAGNESSALUD[poorAGNESSALUD$sil_width<0,'Pais']
-poorAGNEScasesSALUD
-length(poorAGNEScasesSALUD)
-```
-```{r}
-poorDIANASALUD=data.frame(res.diaSALUD$silinfo$widths)
-poorDIANASALUD$Pais=row.names(poorDIANASALUD)
-poorDIANAcasesSALUD=poorDIANASALUD[poorDIANASALUD$sil_width<0,'Pais']
-poorDIANAcasesSALUD
-length(poorDIANAcasesSALUD)
-```
-
-# Estrategia basada en densiadad
-
-```{r}
-proyeccionSALUD = cmdscale(g.distsalud, k=2,add = T)
-Datacovidof$dim1 = proyeccionSALUD$points[,1]
-Datacovidof$dim2 = proyeccionSALUD$points[,2]
-min(Datacovidof[,c('dim1','dim2')]); max(Datacovidof[,c('dim1','dim2')])
-```
-```{r}
-limites=c(-0.5,0.4)
-g.dist.cmdSALUD = daisy(Datacovidof[,c('dim1','dim2')], metric = 'euclidean')
-kNNdistplot(g.dist.cmdSALUD, k=5)
-abline(h=0.13, lty=2)
-```
-```{r}
-db.cmdSALUD = dbscan(g.dist.cmdSALUD, eps=0.13, MinPts=5,method = 'dist')
-db.cmdSALUD 
-```
-
 
 
 
