@@ -8,7 +8,7 @@ linkPath_cama='//*[@id="fieldListing"]'
 camas = htmltab(doc = linkCIA_cama,
                 which = linkPath_cama)
 ```
-# LIMPIEZA 
+# LIMPIEZA
 ```{r}
 library(tidyr)
 camas=separate(camas,`Hospital bed density`,into = c("oficial","delete")," ")
@@ -440,6 +440,9 @@ names(Datacovidof)
 names(Datacovidof)=c('Pais','continentalregion','subregion','muertes','agua','saneamiento','chepercapita','medicos','UHC','camas','CHE','corrupcion','estabilidad','accountability','efectividad','ruleoflaw','regulacion')
 ```
 ```{r}
+Datacovidof=na.omit(Datacovidof)
+```
+```{r}
 library(stargazer)
 ```
 ```{r}
@@ -480,9 +483,9 @@ reg6cov=lm(Modelo6,data=Datacovidof)
 stargazer(reg6cov,type='text',intercept.bottom = F)
 ```
 
-#Análisis de varianza
+#Análisis de varianza -Gonzalo Berger 
 ```{r}
-tanova=anova(reg1cov,reg2cov,reg3cov,reg4cov,reg5cov)
+tanova=anova(reg1cov,reg2cov,reg3cov,reg4cov,reg5cov,reg6cov)
 stargazer(tanova,type = 'text',summary = F,title = 'Tabla ANOVA')
 ```
 
@@ -494,7 +497,7 @@ Modelo9=formula(muertes~corrupcion+estabilidad+accountability+efectividad+ruleof
 Modelo10=formula(muertes~corrupcion+estabilidad+accountability+efectividad+ruleoflaw+regulacion+agua+saneamiento+chepercapita+medicos)
 Modelo11=formula(muertes~corrupcion+estabilidad+accountability+efectividad+ruleoflaw+regulacion+agua+saneamiento+chepercapita+medicos+UHC)
 Modelo12=formula(muertes~corrupcion+estabilidad+accountability+efectividad+ruleoflaw+regulacion+agua+saneamiento+chepercapita+medicos+UHC+camas)
-Modelo12=formula(muertes~corrupcion+estabilidad+accountability+efectividad+ruleoflaw+regulacion+agua+saneamiento+chepercapita+medicos+UHC+camas+CHE)
+Modelo13=formula(muertes~corrupcion+estabilidad+accountability+efectividad+ruleoflaw+regulacion+agua+saneamiento+chepercapita+medicos+UHC+camas+CHE)
 ```
 
 ```{r}
@@ -526,54 +529,106 @@ stargazer(reg11cov,type='text',intercept.bottom = F)
 reg12cov=lm(Modelo12,data=Datacovidof)
 stargazer(reg12cov,type='text',intercept.bottom = F)
 ```
-
 ```{r}
-tanova_covid=anova(reg1cov,reg2cov,reg3cov,reg4cov,reg5cov,reg6cov,reg7cov,reg8cov,reg9cov,reg10cov,reg11cov,reg12cov)
-stargazer(tanova_covid,type = 'text',summary = F,title = 'Tabla ANOVA')
-```
-```{r}
-Modelo13=formula(muertes~agua+saneamiento+chepercapita+CHE+medicos+UHC+camas)
 reg13cov=lm(Modelo13,data=Datacovidof)
 stargazer(reg13cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-Modelo14=formula(muertes~estabilidad+accountability+UHC+CHE+medicos)
+tanova_covid=anova(reg1cov,reg2cov,reg3cov,reg4cov,reg5cov,reg6cov,reg7cov,reg8cov,reg9cov,reg10cov,reg11cov,reg12cov,reg13cov)
+stargazer(tanova_covid,type = 'text',summary = F,title = 'Tabla ANOVA')
+```
+# DIAGNOSTICO DE LA REGRESIÓN
+#linealidad
+```{r}
+plot(reg11cov,1)
+```
+#Homocedasticidad
+```{r}
+library(lmtest)
+plot(reg11cov,3)
+bptest(reg11cov)
+```
+#Normalidad de residuos
+```{r}
+shapiro.test(reg11cov$residuals)
+```
+#multicolinealidad
+```{r}
+library(DescTools)
+VIF(reg11cov)
+```
+#Valores influyentes
+```{r}
+plot(reg11cov, 5)
+
+checkReg11=as.data.frame(influence.measures(reg11cov)$is.inf)
+head(checkReg11)
+
+checkReg11[checkReg11$cook.d | checkReg11$hat,]
+```
+```{r}
+Modelo14=formula(muertes~estabilidad+agua+saneamiento+chepercapita+medicos+UHC)
+reg14cov=lm(Modelo14,data=Datacovidof)
+stargazer(reg14cov,type='text',intercept.bottom = F)
+```
+```{r}
+tanova_covid=anova(reg11cov,reg14cov)
+stargazer(tanova_covid,type = 'text',summary = F,title = 'Tabla ANOVA')
+```
+```{r}
+plot(reg14cov,1)
+```
+```{r}
+library(lmtest)
+plot(reg14cov,3)
+bptest(reg14cov)
+```
+```{r}
+shapiro.test(reg14cov$residuals)
+```
+```{r}
+library(DescTools)
+VIF(reg14cov)
+```
+```{r}
+plot(reg14cov, 5)
+
+checkReg14=as.data.frame(influence.measures(reg14cov)$is.inf)
+head(checkReg14)
+
+checkReg14[checkReg14$cook.d | checkReg14$hat,]
+```
+```{r}
+Datacovidof=Datacovidof[-c(19,34),]
+```
+
+```{r}
+Modelo14=formula(muertes~estabilidad+agua+saneamiento+chepercapita+medicos+UHC)
 reg14cov=lm(Modelo14,data=Datacovidof)
 stargazer(reg14cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-Modelo15=formula(muertes~estabilidad+accountability+UHC+CHE)
-reg15cov=lm(Modelo15,data=Datacovidof)
-stargazer(reg15cov,type='text',intercept.bottom = F)
+plot(reg14cov,1)
 ```
-#linealidad
-```{r}
-plot(reg15cov,1)
-```
-#Homocedasticidad
 ```{r}
 library(lmtest)
-plot(reg15cov,3)
-bptest(reg15cov)
+plot(reg14cov,3)
+bptest(reg14cov)
 ```
-#Normalidad de residuos
 ```{r}
-shapiro.test(reg15cov$residuals)
+shapiro.test(reg14cov$residuals)
 ```
-#multicolinealidad
 ```{r}
 library(DescTools)
-VIF(reg15cov)
+VIF(reg14cov)
 ```
-#Valores influyentes
 ```{r}
-plot(reg15cov, 5)
+plot(reg14cov, 5)
 
-checkReg15=as.data.frame(influence.measures(reg15cov)$is.inf)
-head(checkReg15)
+checkReg14=as.data.frame(influence.measures(reg14cov)$is.inf)
+head(checkReg14)
 
-checkReg15[checkReg15$cook.d | checkReg15$hat,]
+checkReg14[checkReg14$cook.d | checkReg14$hat,]
 ```
-
