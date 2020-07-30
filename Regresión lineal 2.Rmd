@@ -561,10 +561,12 @@ VIF(reg11cov)
 #Valores influyentes
 ```{r}
 plot(reg11cov, 5)
-
+```
+```{r}
 checkReg11=as.data.frame(influence.measures(reg11cov)$is.inf)
 head(checkReg11)
-
+```
+```{r}
 checkReg11[checkReg11$cook.d | checkReg11$hat,]
 ```
 ```{r}
@@ -593,10 +595,12 @@ VIF(reg14cov)
 ```
 ```{r}
 plot(reg14cov, 5)
-
+```
+```{r}
 checkReg14=as.data.frame(influence.measures(reg14cov)$is.inf)
 head(checkReg14)
-
+```
+```{r}
 checkReg14[checkReg14$cook.d | checkReg14$hat,]
 ```
 ```{r}
@@ -626,9 +630,11 @@ VIF(reg14cov)
 ```
 ```{r}
 plot(reg14cov, 5)
-
+```
+```{r}
 checkReg14=as.data.frame(influence.measures(reg14cov)$is.inf)
 head(checkReg14)
-
+```
+```{r}
 checkReg14[checkReg14$cook.d | checkReg14$hat,]
 ```
