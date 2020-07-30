@@ -1157,32 +1157,32 @@ covid19[covid19$Pais==&#39;Saint Vincent&#39;,&#39;Pais&#39;]=&#39;Saint Vincent
 <pre class="r"><code>table(covid19$Muertes_confirmadas, useNA = &#39;always&#39;)</code></pre>
 <pre><code>## 
 ##      0      1      2      3      4      5      6      7      8      9     10 
-##     32      9      6      4      3      2      1      4      3      2      3 
-##     11     12     13     14     15     16     18     19     20     22     23 
-##      4      1      1      2      4      1      1      1      1      2      1 
-##     24     26     27     28     31     35     39     40     42     45     46 
-##      2      1      2      1      1      2      1      2      1      2      2 
-##     47     49     50     51     52     53     54     58     59     60     63 
-##      1      2      1      1      1      1      2      2      1      1      1 
-##     66     67     69     72     75     78     80     87     93     98     99 
-##      1      1      2      1      1      1      1      1      2      1      1 
-##    103    113    116    117    124    125    140    141    142    148    151 
-##      1      1      1      1      3      1      1      1      1      1      1 
-##    156    158    167    168    192    203    208    209    239    255    297 
-##      1      1      2      1      1      1      1      1      1      1      1 
-##    299    300    327    329    347    373    391    402    417    430    442 
-##      1      1      1      1      2      1      1      1      1      1      1 
-##    471    484    486    543    551    596    613    713    719    725    753 
+##     32      8      7      4      3      2      1      3      3      3      3 
+##     11     13     14     15     17     18     19     20     22     23     24 
+##      4      2      2      4      1      1      1      1      1      1      2 
+##     26     27     28     31     35     40     41     42     46     47     48 
+##      2      2      1      1      2      2      1      1      3      1      1 
+##     49     50     51     52     53     54     55     58     59     60     63 
+##      2      1      1      1      1      1      1      2      1      1      1 
+##     67     69     72     75     76     80     87     93     99    103    114 
+##      1      2      1      1      1      2      1      1      3      1      1 
+##    116    117    124    131    133    141    144    146    150    156    159 
+##      1      1      2      1      1      1      1      1      1      2      1 
+##    169    175    176    196    203    210    211    253    255    300    311 
 ##      1      1      1      1      1      1      1      1      1      1      1 
-##    793    868    998   1101   1166   1174   1270   1329   1349   1629   1682 
+##    316    329    334    347    355    374    387    412    430    438    444 
 ##      1      1      1      1      1      1      1      1      1      1      1 
-##   1703   1722   1764   1782   1947   2206   2647   2789   3000   3179   4535 
+##    476    485    491    548    558    596    614    716    723    725    759 
 ##      1      1      1      1      1      1      1      1      1      1      1 
-##   4634   4691   4901   5584   5645   5702   5865   6145   7257   8912   9074 
+##    793    873   1001   1123   1186   1259   1271   1347   1374   1650   1694 
 ##      1      1      1      1      1      1      1      1      1      1      1 
-##   9202   9240   9822  13504  16147  18612  28436  30223  33425  35123  44022 
+##   1703   1725   1764   1835   1962   2269   2808   2816   3035   3288   4603 
 ##      1      1      1      1      1      1      1      1      1      1      1 
-##  45878  88634 151374   &lt;NA&gt; 
+##   4634   4728   4975   5623   5659   5730   5892   6147   7497   8917   9212 
+##      1      1      1      1      1      1      1      1      1      1      1 
+##   9278   9454   9833  13673  16343  18816  28441  30238  34193  35129  45361 
+##      1      1      1      1      1      1      1      1      1      1      1 
+##  45961  90188 152904   &lt;NA&gt; 
 ##      1      1      1      1</code></pre>
 </div>
 <div id="merge-y-estandarización" class="section level1">
@@ -1219,6 +1219,7 @@ merge2=merge(Aguaysaneamiento,merge1,all.x = T,all.y = T)</code></pre>
 ## [16] &quot;RuleofLaw&quot;                                              
 ## [17] &quot;RegulatoryQuality&quot;</code></pre>
 <pre class="r"><code>names(Datacovidof)=c(&#39;Pais&#39;,&#39;continentalregion&#39;,&#39;subregion&#39;,&#39;muertes&#39;,&#39;agua&#39;,&#39;saneamiento&#39;,&#39;chepercapita&#39;,&#39;medicos&#39;,&#39;UHC&#39;,&#39;camas&#39;,&#39;CHE&#39;,&#39;corrupcion&#39;,&#39;estabilidad&#39;,&#39;accountability&#39;,&#39;efectividad&#39;,&#39;ruleoflaw&#39;,&#39;regulacion&#39;)</code></pre>
+<pre class="r"><code>Datacovidof=na.omit(Datacovidof)</code></pre>
 <pre class="r"><code>library(stargazer)</code></pre>
 <pre><code>## 
 ## Please cite as:</code></pre>
@@ -1238,18 +1239,18 @@ stargazer(reg1cov,type=&#39;text&#39;,intercept.bottom = F)</code></pre>
 ##                     ---------------------------
 ##                               muertes          
 ## -----------------------------------------------
-## Constant                      58.016           
-##                              (54.333)          
+## Constant                      74.636           
+##                              (59.539)          
 ##                                                
-## corrupcion                    1.567*           
-##                               (0.822)          
+## corrupcion                    1.563*           
+##                               (0.902)          
 ##                                                
 ## -----------------------------------------------
-## Observations                    80             
-## R2                             0.045           
-## Adjusted R2                    0.032           
-## Residual Std. Error      194.855 (df = 78)     
-## F Statistic             3.640* (df = 1; 78)    
+## Observations                    67             
+## R2                             0.044           
+## Adjusted R2                    0.029           
+## Residual Std. Error      196.999 (df = 65)     
+## F Statistic             3.004* (df = 1; 65)    
 ## ===============================================
 ## Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <pre class="r"><code>reg2cov=lm(Modelo2,data=Datacovidof)
@@ -1260,21 +1261,21 @@ stargazer(reg2cov,type=&#39;text&#39;,intercept.bottom = F)</code></pre>
 ##                     ---------------------------
 ##                               muertes          
 ## -----------------------------------------------
-## Constant                     118.276**         
-##                              (55.574)          
+## Constant                     143.508**         
+##                              (61.335)          
 ##                                                
-## corrupcion                   4.999***          
-##                               (1.391)          
+## corrupcion                   5.071***          
+##                               (1.490)          
 ##                                                
-## estabilidad                  -4.618***         
-##                               (1.548)          
+## estabilidad                  -5.010***         
+##                               (1.742)          
 ##                                                
 ## -----------------------------------------------
-## Observations                    80             
-## R2                             0.144           
-## Adjusted R2                    0.121           
-## Residual Std. Error      185.676 (df = 77)     
-## F Statistic            6.456*** (df = 2; 77)   
+## Observations                    67             
+## R2                             0.154           
+## Adjusted R2                    0.127           
+## Residual Std. Error      186.829 (df = 64)     
+## F Statistic            5.805*** (df = 2; 64)   
 ## ===============================================
 ## Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <pre class="r"><code>reg3cov=lm(Modelo3,data=Datacovidof)
@@ -1285,24 +1286,24 @@ stargazer(reg3cov,type=&#39;text&#39;,intercept.bottom = F)</code></pre>
 ##                     ---------------------------
 ##                               muertes          
 ## -----------------------------------------------
-## Constant                      58.794           
-##                              (59.368)          
+## Constant                      71.970           
+##                              (65.058)          
 ##                                                
-## corrupcion                     2.175           
-##                               (1.792)          
+## corrupcion                     2.037           
+##                               (1.853)          
 ##                                                
-## estabilidad                  -5.326***         
-##                               (1.531)          
+## estabilidad                  -5.810***         
+##                               (1.699)          
 ##                                                
-## accountability                4.130**          
-##                               (1.723)          
+## accountability                4.543**          
+##                               (1.766)          
 ##                                                
 ## -----------------------------------------------
-## Observations                    80             
-## R2                             0.204           
-## Adjusted R2                    0.172           
-## Residual Std. Error      180.203 (df = 76)     
-## F Statistic            6.485*** (df = 3; 76)   
+## Observations                    67             
+## R2                             0.234           
+## Adjusted R2                    0.197           
+## Residual Std. Error      179.139 (df = 63)     
+## F Statistic            6.413*** (df = 3; 63)   
 ## ===============================================
 ## Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <pre class="r"><code>reg4cov=lm(Modelo4,data=Datacovidof)
@@ -1313,27 +1314,27 @@ stargazer(reg4cov,type=&#39;text&#39;,intercept.bottom = F)</code></pre>
 ##                     ---------------------------
 ##                               muertes          
 ## -----------------------------------------------
-## Constant                      27.215           
-##                              (61.845)          
+## Constant                      55.150           
+##                              (68.368)          
 ##                                                
-## corrupcion                     0.095           
-##                               (2.184)          
+## corrupcion                     0.779           
+##                               (2.408)          
 ##                                                
-## estabilidad                  -5.141***         
-##                               (1.519)          
+## estabilidad                  -5.727***         
+##                               (1.707)          
 ##                                                
-## accountability                3.381*           
-##                               (1.765)          
+## accountability                4.070**          
+##                               (1.862)          
 ##                                                
-## efectividad                    3.123           
-##                               (1.916)          
+## efectividad                    1.895           
+##                               (2.308)          
 ##                                                
 ## -----------------------------------------------
-## Observations                    80             
-## R2                             0.231           
-## Adjusted R2                    0.190           
-## Residual Std. Error      178.271 (df = 75)     
-## F Statistic            5.634*** (df = 4; 75)   
+## Observations                    67             
+## R2                             0.242           
+## Adjusted R2                    0.193           
+## Residual Std. Error      179.604 (df = 62)     
+## F Statistic            4.954*** (df = 4; 62)   
 ## ===============================================
 ## Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <pre class="r"><code>reg5cov=lm(Modelo5,data=Datacovidof)
@@ -1344,30 +1345,30 @@ stargazer(reg5cov,type=&#39;text&#39;,intercept.bottom = F)</code></pre>
 ##                     ---------------------------
 ##                               muertes          
 ## -----------------------------------------------
-## Constant                      32.508           
-##                              (64.977)          
+## Constant                      60.407           
+##                              (72.639)          
 ##                                                
-## corrupcion                    -0.222           
-##                               (2.465)          
+## corrupcion                     0.548           
+##                               (2.629)          
 ##                                                
-## estabilidad                  -5.188***         
-##                               (1.537)          
+## estabilidad                  -5.755***         
+##                               (1.724)          
 ##                                                
-## accountability                 3.159           
-##                               (1.941)          
+## accountability                3.889*           
+##                               (2.036)          
 ##                                                
-## efectividad                    2.901           
-##                               (2.082)          
+## efectividad                    1.620           
+##                               (2.620)          
 ##                                                
-## ruleoflaw                      0.747           
-##                               (2.639)          
+## ruleoflaw                      0.659           
+##                               (2.885)          
 ##                                                
 ## -----------------------------------------------
-## Observations                    80             
-## R2                             0.232           
-## Adjusted R2                    0.180           
-## Residual Std. Error      179.375 (df = 74)     
-## F Statistic            4.468*** (df = 5; 74)   
+## Observations                    67             
+## R2                             0.243           
+## Adjusted R2                    0.181           
+## Residual Std. Error      180.992 (df = 61)     
+## F Statistic            3.913*** (df = 5; 61)   
 ## ===============================================
 ## Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <pre class="r"><code>reg6cov=lm(Modelo6,data=Datacovidof)
@@ -1378,49 +1379,50 @@ stargazer(reg6cov,type=&#39;text&#39;,intercept.bottom = F)</code></pre>
 ##                     ---------------------------
 ##                               muertes          
 ## -----------------------------------------------
-## Constant                      35.903           
-##                              (71.182)          
+## Constant                      60.523           
+##                              (76.546)          
 ##                                                
-## corrupcion                    -0.667           
-##                               (2.737)          
+## corrupcion                     0.543           
+##                               (2.788)          
 ##                                                
-## estabilidad                  -5.063***         
-##                               (1.709)          
+## estabilidad                  -5.758***         
+##                               (1.854)          
 ##                                                
-## accountability                 3.458           
-##                               (2.133)          
+## accountability                3.893*           
+##                               (2.179)          
 ##                                                
-## efectividad                    3.367           
-##                               (2.696)          
+## efectividad                    1.629           
+##                               (3.175)          
 ##                                                
-## ruleoflaw                      1.122           
-##                               (3.086)          
+## ruleoflaw                      0.666           
+##                               (3.168)          
 ##                                                
-## regulacion                    -0.753           
-##                               (2.457)          
+## regulacion                    -0.013           
+##                               (2.582)          
 ##                                                
 ## -----------------------------------------------
-## Observations                    75             
-## R2                             0.228           
-## Adjusted R2                    0.160           
-## Residual Std. Error      184.468 (df = 68)     
-## F Statistic            3.351*** (df = 6; 68)   
+## Observations                    67             
+## R2                             0.243           
+## Adjusted R2                    0.167           
+## Residual Std. Error      182.494 (df = 60)     
+## F Statistic            3.207*** (df = 6; 60)   
 ## ===============================================
 ## Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <p>#Análisis de varianza</p>
-<pre class="r"><code>tanova=anova(reg1cov,reg2cov,reg3cov,reg4cov,reg5cov)
+<pre class="r"><code>tanova=anova(reg1cov,reg2cov,reg3cov,reg4cov,reg5cov,reg6cov)
 stargazer(tanova,type = &#39;text&#39;,summary = F,title = &#39;Tabla ANOVA&#39;)</code></pre>
 <pre><code>## 
 ## Tabla ANOVA
-## ===================================================
-##   Res.Df      RSS      Df  Sum of Sq    F   Pr(&gt; F)
-## ---------------------------------------------------
-## 1   78   2,961,548.000                             
-## 2   77   2,654,620.000 1  306,927.500 9.539  0.003 
-## 3   76   2,467,966.000 1  186,654.500 5.801  0.019 
-## 4   75   2,383,549.000 1  84,416.550  2.624  0.110 
-## 5   74   2,380,971.000 1   2,578.102  0.080  0.778 
-## ---------------------------------------------------</code></pre>
+## =====================================================
+##   Res.Df      RSS      Df  Sum of Sq     F    Pr(&gt; F)
+## -----------------------------------------------------
+## 1   65   2,522,563.000                               
+## 2   64   2,233,931.000 1  288,631.400  8.667   0.005 
+## 3   63   2,021,710.000 1  212,221.000  6.372   0.014 
+## 4   62   1,999,962.000 1  21,748.400   0.653   0.422 
+## 5   61   1,998,252.000 1   1,709.550   0.051   0.822 
+## 6   60   1,998,251.000 1     0.899    0.00003  0.996 
+## -----------------------------------------------------</code></pre>
 </div>
 
 

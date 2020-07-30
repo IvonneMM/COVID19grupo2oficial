@@ -440,6 +440,9 @@ names(Datacovidof)
 names(Datacovidof)=c('Pais','continentalregion','subregion','muertes','agua','saneamiento','chepercapita','medicos','UHC','camas','CHE','corrupcion','estabilidad','accountability','efectividad','ruleoflaw','regulacion')
 ```
 ```{r}
+Datacovidof=na.omit(Datacovidof)
+```
+```{r}
 library(stargazer)
 ```
 ```{r}
@@ -482,10 +485,9 @@ stargazer(reg6cov,type='text',intercept.bottom = F)
 
 #Análisis de varianza
 ```{r}
-tanova=anova(reg1cov,reg2cov,reg3cov,reg4cov,reg5cov)
+tanova=anova(reg1cov,reg2cov,reg3cov,reg4cov,reg5cov,reg6cov)
 stargazer(tanova,type = 'text',summary = F,title = 'Tabla ANOVA')
 ```
-
 
 
 
