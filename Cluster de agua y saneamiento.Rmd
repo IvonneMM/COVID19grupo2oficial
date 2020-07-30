@@ -443,36 +443,36 @@ library(magrittr)
 ```
 ```{r}
 set.seed(777)
-row.names(Aguaysaneamiento)=Aguaysaneamiento$Pais
-Aguaysaneamiento=na.omit(Aguaysaneamiento)
-distancia= daisy(Aguaysaneamiento[,2:3],metric = "gower")
+row.names(Datacovidof)=Datacovidof$Pais
+Datacovidof=na.omit(Datacovidof)
+distancia= daisy(Datacovidof[,c(5,6)],metric = "gower")
 ```
 # Cluster no jerárquico - partición
 ```{r}
-fviz_nbclust(Aguaysaneamiento[,2:3], pam, diss = distancia,method = "gap_stat",k.max = 10,verbose = F)
+fviz_nbclust(Datacovidof[,c(5,6)], pam, diss = distancia,method = "gap_stat",k.max = 10,verbose = F)
 ```
 
 ```{r}
 pam.resultado = pam(distancia,1,cluster.only = F)
-Aguaysaneamiento$clusterAS=pam.resultado$cluster
-fviz_cluster(object = list(data=distancia, cluster = Aguaysaneamiento$clusterAS),
+Datacovidof$clusterAS=pam.resultado$cluster
+fviz_cluster(object = list(data=distancia, cluster = Datacovidof$clusterAS),
              geom = c("text"), 
              ellipse.type = "convex")
 ```
 # Clusters jerarquicos
 ```{r}
-fviz_nbclust(Aguaysaneamiento[,2:3], hcut, diss = distancia,method = "gap_stat",k.max = 10,verbose = F)
+fviz_nbclust(Datacovidof[,c(5,6)], hcut, diss = distancia,method = "gap_stat",k.max = 10,verbose = F)
 ```
 # Aglomerativo - Agnes
 ```{r}
 res.agnes<-hcut(distancia, k = 1,hc_func='agnes',hc_method = "ward.D")
-Aguaysaneamiento$clusterAgnes=res.agnes$cluster
+Datacovidof$clusterAgnes=res.agnes$cluster
 fviz_dend(res.agnes,k=1, cex = 0.5, horiz = T)
 ```
 # Divisivo - Diana
 ```{r}
 res.diana <- hcut(distancia, k = 1,hc_func='diana')
-Aguaysaneamiento$clusterDivisivo=res.diana$cluster
+Datacovidof$clusterDivisivo=res.diana$cluster
 fviz_dend(res.diana, cex = 0.7,horiz = T)
 ```
 # Estrategia basada en densidad
@@ -481,51 +481,51 @@ fviz_dend(res.diana, cex = 0.7,horiz = T)
 proyeccionAS = cmdscale(distancia, k=2,add = T)
 ```
 ```{r}
-Aguaysaneamiento$dim1 <- proyeccionAS$points[,1]
-Aguaysaneamiento$dim2 <- proyeccionAS$points[,2]
+Datacovidof$dim1 <- proyeccionAS$points[,1]
+Datacovidof$dim2 <- proyeccionAS$points[,2]
 
 #limites
-min(Aguaysaneamiento[,c('dim1','dim2')]); max(Aguaysaneamiento[,c('dim1','dim2')])
+min(Datacovidof[,c('dim1','dim2')]); max(Datacovidof[,c('dim1','dim2')])
 ```
 ```{r}
-limites=c(-0.2,2)
-g.dist.cmd_AS = daisy(Aguaysaneamiento[,c('dim1','dim2')], metric = 'euclidean')
+limites=c(-0.4,1)
+g.dist.cmd_AS = daisy(Datacovidof[,c('dim1','dim2')], metric = 'euclidean')
 ```
 ```{r}
 library(dbscan)
 kNNdistplot(g.dist.cmd_AS, k=2)
-abline(h=0.09,lty=2)
+abline(h=0.06,lty=2)
 ```
 ```{r}
 library(fpc)
-db.cmd_AS= dbscan(g.dist.cmd_AS, eps=0.09, MinPts=2,method = 'dist')
+db.cmd_AS= dbscan(g.dist.cmd_AS, eps=0.06, MinPts=2,method = 'dist')
 db.cmd_AS
 ```
 
 ```{r}
-Aguaysaneamiento$dbCMD_AS=as.factor(db.cmd_AS$cluster)
+Datacovidof$dbCMD_AS=as.factor(db.cmd_AS$cluster)
 ```
 
 
 ```{r}
 library(ggrepel)
-base_AS= ggplot(Aguaysaneamiento,aes(x=dim1, y=dim2)) + ylim(limites) + xlim(limites) + coord_fixed()
+base_AS= ggplot(Datacovidof,aes(x=dim1, y=dim2)) + ylim(limites) + xlim(limites) + coord_fixed()
 dbplot_AS= base_AS + geom_point(aes(color=dbCMD_AS))
 
 dbplot_AS
 ```
 ```{r}
-dbplot_AS + geom_text_repel(size=3,aes(label=row.names(Aguaysaneamiento[2:3])))
+dbplot_AS + geom_text_repel(size=3,aes(label=row.names(Datacovidof[,c(5,6)])))
 ```
 
 
 ```{r}
-LABEL=ifelse(Aguaysaneamiento$dbCMD_AS==0,row.names(Aguaysaneamiento[2:3]),"")
+LABEL=ifelse(Datacovidof$dbCMD_AS==0,row.names(Datacovidof[,c(5,6)]),"")
 dbplot_AS + geom_text_repel(aes(label=LABEL),
                          size=5, 
                          direction = "y", ylim = 0.45,
                          angle=45,
-                         segment.colour = "purple")
+                         segment.colour = "turquoise")
 ```
 
 
