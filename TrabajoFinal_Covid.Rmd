@@ -77,7 +77,7 @@ datauhc[datauhc$Pais=='Russian Federation','Pais']='Russia'
 ```{r}
 table(datauhc$`Asistencia sanitaria universal`, useNA = 'always')
 ```
-##MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA LATINA (Gonzalo Berger)
+#MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA LATINA (Gonzalo Berger)
 ```{r}
 UHC=merge(datapaises,datauhc)
 ```
@@ -138,8 +138,8 @@ names(EuroAmer2)= c ("Pais")
 che_per_capita_EA =merge(che_per_capita,EuroAmer2,by.x='Pais', by.y='Pais') 
 ```
 # VARIABLES DE GOBERNANZA
-# Limpieza de las bases de datos
-#BASE DE DATOS: Estabilidad y ausencia de violencia + Control de Corrupción (Gonzalo Berger)
+#Limpieza de las bases de datos
+# BASE DE DATOS: Estabilidad y ausencia de violencia + Control de Corrupción (Gonzalo Berger)
 ```{r}
 library(rio)
 lkcorrup='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx'
@@ -158,14 +158,14 @@ dataviolence=dataviolence[c(1:99),]
 names(dataviolence)=c('Pais','Estabilidad política y ausencia de violencia/terrorismo')
 dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`=as.numeric(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`)
 ```
-# NA
+#NA
 ```{r}
 table(datacorrup$`Control de la corrupción`, useNA = 'always')
 ```
 ```{r}
 table(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`, useNA = 'always')
 ```
-# Merge
+#Merge
 ```{r}
 corrupcionyviolencia=merge(datacorrup,dataviolence)
 CORRUPVIOLENCIA=merge(datapaises,corrupcionyviolencia) 
@@ -200,18 +200,18 @@ library(rio)
 Gobernabilidad="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(3).xlsx"
 Gobernanza=import(Gobernabilidad)
 ```
-# Limpieza 
+#Limpieza 
 ```{r}
 names(Gobernanza)= c ("Pais", "Efectividad_gobierno")
 Gobernanza$Efectividad_gobierno=as.numeric(Gobernanza$Efectividad_gobierno)
 Gobernanza$Efectividad_gobierno=trimws(Gobernanza$Efectividad_gobierno,whitespace = "[\\h\\v]")
 Gobernanza[Gobernanza$Pais=='Russian','Pais']='Russia'
 ```
-# Ver los NA's 
+#Ver los NA's 
 ```{r}
 table(Gobernanza$`Efectividad_gobierno`,useNA = "always")
 ```
-# Merge para quedarnos solo con países de Europa y América
+#Merge para quedarnos solo con países de Europa y América
 ```{r}
 library(rio)
 Europa_America4="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
@@ -219,19 +219,19 @@ EuroAmer4=import(Europa_America4)
 names(EuroAmer4)= c ("Pais")
 Gobernanza_EA=merge(Gobernanza,EuroAmer4,by.x='Pais', by.y='Pais') 
 ```
-# Base de datos de estado de derecho: Rango de Percentil (Rule of Law: Percentil Rank)- Mayra Vargas
+#Base de datos: imperio de la ley- Mayra Vargas
 ```{r}
 library(rio)
 lkRofLaw= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Rule%20of%20Law%20Percentile%20Rank.xlsx"
 RuleofLaw= import(lkRofLaw)
 ```
-# Limpieza
+#Limpieza
 ```{r}
 RuleofLaw[,c(2,3,4)] = NULL
 names(RuleofLaw)=c("Pais","RuleofLaw")
 RuleofLaw$RuleofLaw=as.numeric(RuleofLaw$RuleofLaw)
 ```
-# NA
+#NA
 ```{r}
 table(RuleofLaw$RuleofLaw,useNA = "always")
 ```
@@ -241,13 +241,13 @@ lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%
 Paisesoficial=import(lkpaises)
 Imperiodelaley=merge(RuleofLaw,Paisesoficial,by.x = 'Pais',by.y = 'Pais')
 ```
-# Base de dato regulatory quality - Mayra Vargas
+# Base de datos : cualidad regulatoria - Mayra Vargas
 ```{r}
 library(rio)
 lkregulatoryq= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Regulatory%20Quality%20-%20Percentile%20Rank.xlsx"
 Regqual= import(lkregulatoryq)
 ```
-# Limpieza
+#Limpieza
 ```{r}
 Regqual[,c(2,3,4)] = NULL
 names(Regqual)=c("Pais","RegulatoryQuality")
@@ -257,19 +257,19 @@ Regqual[Regqual$Pais=='Venezuela, RB','Pais']='Venezuela'
 Regqual$RegulatoryQuality=as.numeric(Regqual$RegulatoryQuality)
 str(Regqual)
 ```
-# NA
+#NA
 ```{r}
 table(Regqual$RegulatoryQuality,useNA = "always")
 ```
-# MERGE
+#MERGE
 ```{r}
 lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 Paisesoficial=import(lkpaises)
 RegulatoryQuality=merge(Regqual,Paisesoficial,by.x='Pais', by.y='Pais')
 ```
-#VARIABLES DE ACCESO A AGUA POTABLE Y SANEAMIENTO
-# Limpieza
-#Base: Acceso a agua potable (Gonzalo Berger)
+# VARIABLES DE ACCESO A AGUA POTABLE Y SANEAMIENTO
+#Limpieza
+# Base de datos: Acceso a agua potable (Gonzalo Berger)
 ```{r} 
 library(htmltab)
 library(tidyr)
@@ -291,11 +291,11 @@ Aguapotable[,c(2)] = trimws(Aguapotable[,c(2)],whitespace = '[\\h\\v]')
 Aguapotable$Z1=as.numeric(Aguapotable$Z1)
 names(Aguapotable)=c('Pais','% of population with access to improved drinking water')
 ```
-# NA
+#NA
 ```{r}
 table(Aguapotable$`% of population with access to improved drinking water`, useNA = 'always')
 ```
-# Merge
+#Merge
 ```{r}
 Agua=merge(datapaises,Aguapotable)
 ```
@@ -306,7 +306,7 @@ Linksana="https://www.cia.gov/library/publications/resources/the-world-factbook/
 Link_path_sana='//*[@id="fieldListing"]'
 saneamiento= htmltab (doc = Linksana,which = Link_path_sana)
 ```
-# Limpieza 
+#Limpieza 
 ```{r}
 names(saneamiento)= c ("Pais", "Porcentaje_Saneamiento")
 library(tidyr)
@@ -315,11 +315,11 @@ saneamiento$Porcentaje_Saneamiento=gsub(".*\\:","",saneamiento$Porcentaje_Saneam
 saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)
 saneamiento$Porcentaje_Saneamiento=trimws(saneamiento$Porcentaje_Saneamiento,whitespace = "[\\h\\v]")
 ```
-# Ver los NA's 
+#Ver los NA's 
 ```{r}
 table(saneamiento$`Porcentaje_Saneamiento`,useNA = "always")
 ```
-# Merge para quedarnos solo con países de Europa y América 
+#Merge para quedarnos solo con países de Europa y América 
 ```{r}
 library(rio)
 Europa_America1="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
@@ -327,7 +327,7 @@ EuroAmer1=import(Europa_America1)
 names(EuroAmer1)= c ("Pais")
 Saneamiento_EA =merge(saneamiento,EuroAmer1,by.x='Pais', by.y='Pais')
 ```
-# Limpieza: Muertes confirmadas por millón de habitantes (Gonzalo Berger)
+# BASE DE DATOS: Muertes confirmadas por millón de habitantes (Gonzalo Berger)
 ```{r}
 library(htmltab)
 library(rio)
@@ -360,18 +360,18 @@ poblacion$Poblacion_2019=gsub(',',"",poblacion$Poblacion_2019)
 poblacion$Poblacion_2019=as.numeric(poblacion$Poblacion_2019)
 covid19[covid19$Pais=='Saint Vincent','Pais']='Saint Vincent and the Grenadines'
 ```
-# NA
+#NA
 ```{r}
 table(covid19$Muertes_confirmadas, useNA = 'always')
 ```
-# Merge y estandarización
+#Merge y estandarización
 ```{r}
 data=merge(covid19,poblacion)
 data$'Decesos por millón de habitantes'=(data$Muertes_confirmadas/data$Poblacion_2019)*10^6
 data=data[,-c(2,5)]
 dataCovid=merge(data,datapaises)
 ```
-# Merge de las variables de salud (Gonzalo Berger)
+# MERGE DE LAS VARIABLES DE SALUD (Gonzalo Berger)
 ```{r}
 camasCHE = merge(Numerodecamas,HealthExpenditure,all.x=T,all.y=T)
 UHCcamasCHE = merge(UHC,camasCHE,all.x=T,all.y=T)
@@ -386,7 +386,7 @@ Accountability_Corrupcion_Violencia_Gob_Ley=merge(Accountability_Corrupcion_Viol
 Merge_Gobernanza=merge(Accountability_Corrupcion_Violencia_Gob_Ley,RegulatoryQuality, all.x=T, all.y=T)
 Merge_Gobernanza$Efectividad_gobierno=as.numeric(Merge_Gobernanza$Efectividad_gobierno)
 ```
-# Merge de las variables de saneamiento y agua potable - Mayra Vargas
+# MERGE DE LAS VARIABLES DE AGUA Y SANEAMIENTO - Mayra Vargas
 ```{r}
 Aguaysaneamiento=merge(Agua,Saneamiento_EA,all.x =T,all.y =T)
 Aguaysaneamiento$Porcentaje_Saneamiento=as.numeric(Aguaysaneamiento$Porcentaje_Saneamiento)
@@ -398,10 +398,6 @@ merge2=merge(Aguaysaneamiento,merge1,all.x = T,all.y = T)
 ```
 ```{r}
 Datacovidof=merge(dataCovid,merge2,all.x = T,all.y = T)
-```
-
-```{r}
-names(Datacovidof)
 ```
 
 ```{r}
@@ -437,11 +433,11 @@ Datacovidof[Datacovidof$clusterPAM==1,'Pais']
 ```{r}
 Datacovidof[Datacovidof$clusterPAM==2,'Pais']
 ```
-# Jerarquización 
+#Jerarquización 
 ```{r}
 fviz_nbclust(Datacovidof[,c(4,7:11)], hcut,diss=g.distsalud,method = 'gap_stat',k.max = 10,verbose = F)
 ```
-# Aglomerativo - Agnes
+#Aglomerativo - Agnes
 ```{r}
 res.agSALUD = hcut(g.distsalud, k = 2,hc_func='agnes',hc_method = 'ward.D')
 Datacovidof$clusterAG=res.agSALUD$cluster
@@ -467,7 +463,7 @@ Datacovidof[Datacovidof$clusterDIV==1,'Pais']
 ```{r}
 Datacovidof[Datacovidof$clusterDIV==2,'Pais']
 ```
-# Evaluación gráfica con siluetas
+#Evaluación gráfica con siluetas
 ```{r}
 fviz_silhouette(res.pamSALUD)
 ```
@@ -478,7 +474,7 @@ fviz_silhouette(res.agSALUD)
 fviz_silhouette(res.diaSALUD)
 ```
 
-# Evaluación numérica
+#Evaluación numérica
 ```{r}
 poorPAMSALUD=data.frame(res.pamSALUD$silinfo$widths)
 poorPAMSALUD$Pais=row.names(poorPAMSALUD)
@@ -500,7 +496,7 @@ poorDIANAcasesSALUD=poorDIANASALUD[poorDIANASALUD$sil_width<0,'Pais']
 poorDIANAcasesSALUD
 length(poorDIANAcasesSALUD)
 ```
-# Estrategia basada en densiadad
+#Estrategia basada en densiadad
 ```{r}
 proyeccionSALUD = cmdscale(g.distsalud, k=2,add = T)
 Datacovidof$dim1 = proyeccionSALUD$points[,1]
@@ -528,7 +524,7 @@ row.names(Datacovidof)=Datacovidof$Pais
 Datacovidof=na.omit(Datacovidof)
 g.dist_gob= daisy(Datacovidof[,c(12,17)], metric="gower")
 ```
-##Cluster no jerarquico - Partición
+#Cluster no jerarquico - Partición
 ```{r}
 fviz_nbclust(Datacovidof[,c(12,17)], pam,diss=g.dist_gob,method = "gap_stat",k.max = 10,verbose = F)
 ```
@@ -704,7 +700,7 @@ row.names(Datacovidof)=Datacovidof$Pais
 Datacovidof=na.omit(Datacovidof)
 distancia= daisy(Datacovidof[,c(5,6)],metric = "gower")
 ```
-# Cluster no jerárquico - partición
+#Cluster no jerárquico - partición
 ```{r}
 fviz_nbclust(Datacovidof[,c(5,6)], pam, diss = distancia,method = "gap_stat",k.max = 10,verbose = F)
 ```
@@ -716,7 +712,7 @@ fviz_cluster(object = list(data=distancia, cluster = Datacovidof$clusterAS),
              ellipse.type = "convex")
 ```
 
-# Clusters jerarquicos
+#Clusters jerarquicos
 ```{r}
 fviz_nbclust(Datacovidof[,c(5,6)], hcut, diss = distancia,method = "gap_stat",k.max = 10,verbose = F)
 ```
@@ -796,27 +792,27 @@ library(polycor)
 MatrixCovid=polycor::hetcor(COVIDEFA)$correlations
 ```
 
-# Explorar Correlaciones
-# Sin evaluar significancia
+#Explorar Correlaciones
+#Sin evaluar significancia
 ```{r}
 library(ggcorrplot)
 ggcorrplot(MatrixCovid)
 ```
 
-# Evaluando significancia
+#Evaluando significancia
 ```{r}
 ggcorrplot(MatrixCovid,
           p.mat = cor_pmat(MatrixCovid),
           insig = "blank")
 ```
 
-# KMO
+#KMO
 ```{r}
 library(psych)
 psych::KMO(MatrixCovid)
 ```
-# Pruebas
-# HNula: para matriz identidad
+#Pruebas
+#HNula: para matriz identidad
 ```{r}
 cortest.bartlett(MatrixCovid,n=nrow(COVIDEFA))$p.value>0.05
 ```
@@ -830,7 +826,7 @@ is.singular.matrix(MatrixCovid)
 fa.parallel(COVIDEFA,fm = 'ML', fa = 'fa')
 ```
 
-# Primer resultado
+#Primer resultado
 ```{r}
 library(GPArotation)
 resulefa=fa(COVIDEFA,nfactors = 2,cor = 'mixed',rotate = "varimax",fm="minres")
@@ -838,36 +834,37 @@ resulefa=fa(COVIDEFA,nfactors = 2,cor = 'mixed',rotate = "varimax",fm="minres")
 ```{r}
 print(resulefa$loadings)
 ```
-# Resultado mejorado
+#Resultado mejorado
 ```{r}
 print(resulefa$loadings,cutoff = 0.5)
 ```
-# Visualizamos
+#Visualizamos
 ```{r}
 fa.diagram(resulefa)
 ```
 
-# Evaluación
-# ¿La Raíz del error cuadrático medio corregida está cerca a cero?
+#Evaluación
+#¿La Raíz del error cuadrático medio corregida está cerca a cero?
 ```{r}
 resulefa$crms
 ```
-# ¿La Raíz del error cuadrático medio de aproximación es menor a 0.05?
+#¿La Raíz del error cuadrático medio de aproximación es menor a 0.05?
 ```{r}
 resulefa$RMSEA
 ```
-# ¿El índice de Tucker-Lewis es mayor a 0.9?
+#¿El índice de Tucker-Lewis es mayor a 0.9?
 ```{r}
 resulefa$TLI
 ```
-# ¿Qué variables aportaron mas a los factores?
+#¿Qué variables aportaron mas a los factores?
 ```{r}
 sort(resulefa$communality)
 ```
-# ¿Qué variables contribuyen a mas de un factor?
+#¿Qué variables contribuyen a mas de un factor?
 ```{r}
 sort(resulefa$complexity)
 ```
+
 # Regresión lineal (Gonzalo Berger)
 ```{r}
 regDatacovid=Datacovidof[,c(4:17)]
@@ -967,7 +964,7 @@ tanova_covid=anova(reg1cov,reg2cov,reg3cov,reg4cov,reg5cov,reg6cov,reg7cov,reg8c
 stargazer(tanova_covid,type = 'text',summary = F,title = 'Tabla ANOVA')
 ```
 
-# DIAGNOSTICO DE LA REGRESIÓN
+#DIAGNOSTICO DE LA REGRESIÓN
 #linealidad
 ```{r}
 plot(reg11cov,1)
