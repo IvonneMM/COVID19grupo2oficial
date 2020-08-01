@@ -431,11 +431,16 @@ fviz_cluster(object = list(data=g.distsalud, cluster = Datacovidof$clusterPAM),
 
 ```
 
+```{r}
+Datacovidof[Datacovidof$clusterPAM==1,'Pais']
+```
+```{r}
+Datacovidof[Datacovidof$clusterPAM==2,'Pais']
+```
 # Jerarquización 
 ```{r}
 fviz_nbclust(Datacovidof[,c(4,7:11)], hcut,diss=g.distsalud,method = 'gap_stat',k.max = 10,verbose = F)
 ```
-
 # Aglomerativo - Agnes
 ```{r}
 res.agSALUD = hcut(g.distsalud, k = 2,hc_func='agnes',hc_method = 'ward.D')
@@ -443,6 +448,12 @@ Datacovidof$clusterAG=res.agSALUD$cluster
 fviz_dend(res.agSALUD,k=2, cex = 0.5, horiz = T)
 ```
 
+```{r}
+Datacovidof[Datacovidof$clusterAG==1,'Pais']
+```
+```{r}
+Datacovidof[Datacovidof$clusterAG==2,'Pais']
+```
 # Divisivo - Diana
 ```{r}
 res.diaSALUD = hcut(g.distsalud, k = 2,hc_func='diana')
@@ -450,6 +461,12 @@ Datacovidof$clusterDIV=res.diaSALUD$cluster
 fviz_dend(res.diaSALUD, cex = 0.5,horiz = T)
 ```
 
+```{r}
+Datacovidof[Datacovidof$clusterDIV==1,'Pais']
+```
+```{r}
+Datacovidof[Datacovidof$clusterDIV==2,'Pais']
+```
 # Evaluación gráfica con siluetas
 ```{r}
 fviz_silhouette(res.pamSALUD)
@@ -524,6 +541,12 @@ fviz_cluster(object = list(data=g.dist_gob, cluster = Datacovidof$clusterPT),
              ellipse.type = "convex")
 ```
 
+```{r}
+Datacovidof[Datacovidof$clusterPT==1,'Pais']
+```
+```{r}
+Datacovidof[Datacovidof$clusterPT==2,'Pais']
+```
 #Clusters jerarquicos 
 ```{r}
 fviz_nbclust(Datacovidof[,c(12,17)], hcut,diss=g.dist_gob,method = "gap_stat",k.max = 10,verbose = F)
@@ -536,6 +559,21 @@ Datacovidof$clustAG=res.agnes_gob$cluster
 fviz_dend(res.agnes_gob,k=5, cex = 0.5, horiz = T)
 ```
 
+```{r}
+Datacovidof[Datacovidof$clustAG==1,'Pais']
+```
+```{r}
+Datacovidof[Datacovidof$clustAG==2,'Pais']
+```
+```{r}
+Datacovidof[Datacovidof$clustAG==3,'Pais']
+```
+```{r}
+Datacovidof[Datacovidof$clustAG==4,'Pais']
+```
+```{r}
+Datacovidof[Datacovidof$clustAG==5,'Pais']
+```
 #Divisivo - Diana
 ```{r}
 res.diana_gob = hcut(g.dist_gob, k = 5,hc_func='diana')
@@ -543,6 +581,21 @@ Datacovidof$clustDIV=res.diana_gob$cluster
 fviz_dend(res.diana_gob, cex = 0.5,horiz = T)
 ```
 
+```{r}
+Datacovidof[Datacovidof$clustDIV==1,'Pais']
+```
+```{r}
+Datacovidof[Datacovidof$clustDIV==2,'Pais']
+```
+```{r}
+Datacovidof[Datacovidof$clustDIV==3,'Pais']
+```
+```{r}
+Datacovidof[Datacovidof$clustDIV==4,'Pais']
+```
+```{r}
+Datacovidof[Datacovidof$clustDIV==5,'Pais']
+```
 #Evaluación gráfica con siluetas 
 ```{r}
 fviz_silhouette(res.pam_gob)
@@ -817,7 +870,7 @@ sort(resulefa$complexity)
 ```
 # Regresión lineal (Gonzalo Berger)
 ```{r}
-names(Datacovidof)
+regDatacovid=Datacovidof[,c(4:17)]
 ```
 ```{r}
 library(stargazer)
@@ -831,32 +884,32 @@ Modelo5=formula(Decesos~CC+PV+VA+GE+RL)
 Modelo6=formula(Decesos~CC+PV+VA+GE+RL+RQ)
 ```
 ```{r}
-reg1cov=lm(Modelo1,data=Datacovidof)
+reg1cov=lm(Modelo1,data=regDatacovid)
 stargazer(reg1cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-reg2cov=lm(Modelo2,data=Datacovidof)
+reg2cov=lm(Modelo2,data=regDatacovid)
 stargazer(reg2cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-reg3cov=lm(Modelo3,data=Datacovidof)
+reg3cov=lm(Modelo3,data=regDatacovid)
 stargazer(reg3cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-reg4cov=lm(Modelo4,data=Datacovidof)
+reg4cov=lm(Modelo4,data=regDatacovid)
 stargazer(reg4cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-reg5cov=lm(Modelo5,data=Datacovidof)
+reg5cov=lm(Modelo5,data=regDatacovid)
 stargazer(reg5cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-reg6cov=lm(Modelo6,data=Datacovidof)
+reg6cov=lm(Modelo6,data=regDatacovid)
 stargazer(reg6cov,type='text',intercept.bottom = F)
 ```
 
@@ -866,7 +919,7 @@ tanova=anova(reg1cov,reg2cov,reg3cov,reg4cov,reg5cov,reg6cov)
 stargazer(tanova,type = 'text',summary = F,title = 'Tabla ANOVA')
 ```
 
-#Regresion lineal parte 2 - Ivonne Mondoñedo Mora
+# Regresion lineal parte 2 - Ivonne Mondoñedo Mora
 ```{r}
 Modelo7=formula(Decesos~CC+PV+VA+GE+RL+RQ+Agua)
 Modelo8=formula(Decesos~CC+PV+VA+GE+RL+RQ+Agua+Saneamiento)
@@ -877,36 +930,36 @@ Modelo12=formula(Decesos~CC+PV+VA+GE+RL+RQ+Agua+Saneamiento+CHE_percapita+Medico
 Modelo13=formula(Decesos~CC+PV+VA+GE+RL+RQ+Agua+Saneamiento+CHE_percapita+Medicos+UHC+Camas+CHE)
 ```
 ```{r}
-reg7cov=lm(Modelo7,data=Datacovidof)
+reg7cov=lm(Modelo7,data=regDatacovid)
 stargazer(reg7cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-reg8cov=lm(Modelo8,data=Datacovidof)
+reg8cov=lm(Modelo8,data=regDatacovid)
 stargazer(reg8cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-reg9cov=lm(Modelo9,data=Datacovidof)
+reg9cov=lm(Modelo9,data=regDatacovid)
 stargazer(reg9cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-reg10cov=lm(Modelo10,data=Datacovidof)
+reg10cov=lm(Modelo10,data=regDatacovid)
 stargazer(reg10cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-reg11cov=lm(Modelo11,data=Datacovidof)
+reg11cov=lm(Modelo11,data=regDatacovid)
 stargazer(reg11cov,type='text',intercept.bottom = F)
 ```
 
 ```{r}
-reg12cov=lm(Modelo12,data=Datacovidof)
+reg12cov=lm(Modelo12,data=regDatacovid)
 stargazer(reg12cov,type='text',intercept.bottom = F)
 ```
 ```{r}
-reg13cov=lm(Modelo13,data=Datacovidof)
+reg13cov=lm(Modelo13,data=regDatacovid)
 stargazer(reg13cov,type='text',intercept.bottom = F)
 ```
 ```{r}
@@ -949,7 +1002,7 @@ checkReg11[checkReg11$cook.d | checkReg11$hat,]
 ```
 ```{r}
 Modelo14=formula(Decesos~PV+Agua+Saneamiento+CHE_percapita+Medicos+UHC)
-reg14cov=lm(Modelo14,data=Datacovidof)
+reg14cov=lm(Modelo14,data=regDatacovid)
 stargazer(reg14cov,type='text',intercept.bottom = F)
 ```
 ```{r}
@@ -982,11 +1035,11 @@ head(checkReg14)
 checkReg14[checkReg14$cook.d | checkReg14$hat,]
 ```
 ```{r}
-Datacovidof=Datacovidof[-c(19,34),]
+regDatacovid=regDatacovid[-c(19,34),]
 ```
 ```{r}
 Modelo14=formula(Decesos~PV+Agua+Saneamiento+CHE_percapita+Medicos+UHC)
-reg14cov=lm(Modelo14,data=Datacovidof)
+reg14cov=lm(Modelo14,data=regDatacovid)
 stargazer(reg14cov,type='text',intercept.bottom = F)
 ```
 ```{r}
