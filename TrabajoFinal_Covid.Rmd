@@ -782,6 +782,10 @@ dbplot_AS + geom_text_repel(aes(label=LABEL),
                          segment.colour = "turquoise")
 ```
 
+```{r}
+Dataclusters=Datacovidof[,c(1,4,18:20,23)]
+names(Dataclusters)=c('Pais','Decesos','Salud_PAM','Salud_AG','Salud_DI','Gobernanza_PAM')
+```
 # Analisis Factorial Exploratorio (EFA) - Mayra Vargas
 ```{r}
 Datacovidof=na.omit(Datacovidof)
@@ -1070,6 +1074,6 @@ head(checkReg14)
 ```
 
 ```{r}
-checkReg14[checkReg14$cook.d | checkReg14$hat,]
+checkReg14[checkReg14$cook.d | checkReg14$hat,] 
 ```
 
