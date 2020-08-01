@@ -6,7 +6,7 @@
 library(htmltab)
 linkCIA_cama = "https://www.cia.gov/library/publications/resources/the-world-factbook/fields/360.html"
 linkPath_cama='//*[@id="fieldListing"]'
-camas = htmltab(doc = linkCIA_cama,
+camas = htmltab(doc = linkCIA_cama, 
                 which = linkPath_cama)
 ```
 #LIMPIEZA 
