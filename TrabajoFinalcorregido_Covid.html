@@ -2107,10 +2107,39 @@ intersect(cluster2_rec,cluster2_rec2)</code></pre>
 ## [17] &quot;United States&quot;</code></pre>
 <pre class="r"><code>setdiff(cluster2_rec2,cluster2_rec)</code></pre>
 <pre><code>## [1] &quot;Cuba&quot;     &quot;Finland&quot;  &quot;Malta&quot;    &quot;Portugal&quot;</code></pre>
+<pre class="r"><code>Modelo6A=formula(Decesos~ UHC+CHE+CHE_percapita)
+reg6Acov=lm(Modelo6A,data=Datacovidof2)
+stargazer(reg6Acov,type=&#39;text&#39;,intercept.bottom = F)</code></pre>
+<pre><code>## 
+## ===============================================
+##                         Dependent variable:    
+##                     ---------------------------
+##                               Decesos          
+## -----------------------------------------------
+## Constant                    -649.167**         
+##                              (302.896)         
+##                                                
+## UHC                           8.739**          
+##                               (4.046)          
+##                                                
+## CHE                           23.196           
+##                              (14.642)          
+##                                                
+## CHE_percapita                 -0.007           
+##                               (0.016)          
+##                                                
+## -----------------------------------------------
+## Observations                    68             
+## R2                             0.191           
+## Adjusted R2                    0.153           
+## Residual Std. Error      189.144 (df = 64)     
+## F Statistic            5.046*** (df = 3; 64)   
+## ===============================================
+## Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <pre class="r"><code>Datacovidof2=Datacovidof2[-c(4,8,14,21,27,29,37:39,43,47,50,59,61:62,66:67),]</code></pre>
-<pre class="r"><code>Modelo6=formula(Decesos~ UHC+CHE+CHE_percapita)
-reg6cov=lm(Modelo6,data=Datacovidof2)
-stargazer(reg6cov,type=&#39;text&#39;,intercept.bottom = F)</code></pre>
+<pre class="r"><code>Modelo6B=formula(Decesos~ UHC+CHE+CHE_percapita)
+reg6Bcov=lm(Modelo6B,data=Datacovidof2)
+stargazer(reg6Bcov,type=&#39;text&#39;,intercept.bottom = F) </code></pre>
 <pre><code>## 
 ## ===============================================
 ##                         Dependent variable:    

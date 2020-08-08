@@ -774,10 +774,15 @@ intersect(cluster2_rec,cluster2_rec2)
 setdiff(cluster2_rec2,cluster2_rec)
 ```
 ```{r}
+Modelo6A=formula(Decesos~ UHC+CHE+CHE_percapita)
+reg6Acov=lm(Modelo6A,data=Datacovidof2)
+stargazer(reg6Acov,type='text',intercept.bottom = F)
+```
+```{r}
 Datacovidof2=Datacovidof2[-c(4,8,14,21,27,29,37:39,43,47,50,59,61:62,66:67),]
 ```
 ```{r}
-Modelo6=formula(Decesos~ UHC+CHE+CHE_percapita)
-reg6cov=lm(Modelo6,data=Datacovidof2)
-stargazer(reg6cov,type='text',intercept.bottom = F)
+Modelo6B=formula(Decesos~ UHC+CHE+CHE_percapita)
+reg6Bcov=lm(Modelo6B,data=Datacovidof2)
+stargazer(reg6Bcov,type='text',intercept.bottom = F) 
 ```
