@@ -1,4 +1,5 @@
 # VARIABLES DE SALUD
+
 #Limpieza
 
 # BASE DE DATOS: DENSIDAD DE CAMAS EN LOS CENTROS HOSPITALARIOS (Mayra Vargas)
@@ -403,8 +404,7 @@ Datacovidof=merge(dataCovid,merge2,all.x = T,all.y = T)
 ```{r}
 names(Datacovidof)=c("Pais","Region","Subregion","Decesos","Agua","Saneamiento","CHE_percapita","Medicos","UHC","Camas","CHE","CC","PV","VA","GE","RL","RQ")
 ```
-# Clusters de salud (Gonzalo Berger)
-# No jarárquico - Partición
+# CLUSTERS DE SALUD 
 ```{r}
 library(cluster)
 library(factoextra)
@@ -412,84 +412,47 @@ library(dbscan)
 library(fpc)
 ```
 ```{r}
-set.seed(777)
 row.names(Datacovidof)=Datacovidof$Pais
 Datacovidof=na.omit(Datacovidof)
+# No jarárquico - Partición
 g.distsalud = daisy(Datacovidof[,c(7:11)], metric='gower')
 fviz_nbclust(Datacovidof[,c(7:11)], pam,diss=g.distsalud,method = 'gap_stat',k.max = 10,verbose = F)
-```
-```{r}
 res.pamSALUD=pam(g.distsalud,2,cluster.only = F)
 Datacovidof$clusterPAM=res.pamSALUD$cluster
 fviz_cluster(object = list(data=g.distsalud, cluster = Datacovidof$clusterPAM),
              geom = c('text'), 
              ellipse.type = 'convex')
-
-```
-
-```{r}
 Datacovidof[Datacovidof$clusterPAM==1,'Pais']
-```
-```{r}
 Datacovidof[Datacovidof$clusterPAM==2,'Pais']
-```
 #Jerarquización 
-```{r}
 fviz_nbclust(Datacovidof[,c(4,7:11)], hcut,diss=g.distsalud,method = 'gap_stat',k.max = 10,verbose = F)
-```
 #Aglomerativo - Agnes
-```{r}
 res.agSALUD = hcut(g.distsalud, k = 2,hc_func='agnes',hc_method = 'ward.D')
 Datacovidof$clusterAG=res.agSALUD$cluster
 fviz_dend(res.agSALUD,k=2, cex = 0.5, horiz = T)
-```
-
-```{r}
 Datacovidof[Datacovidof$clusterAG==1,'Pais']
-```
-```{r}
 Datacovidof[Datacovidof$clusterAG==2,'Pais']
-```
 # Divisivo - Diana
-```{r}
 res.diaSALUD = hcut(g.distsalud, k = 2,hc_func='diana')
 Datacovidof$clusterDIV=res.diaSALUD$cluster
 fviz_dend(res.diaSALUD, cex = 0.5,horiz = T)
-```
-
-```{r}
 Datacovidof[Datacovidof$clusterDIV==1,'Pais']
-```
-```{r}
 Datacovidof[Datacovidof$clusterDIV==2,'Pais']
-```
 #Evaluación gráfica con siluetas
-```{r}
 fviz_silhouette(res.pamSALUD)
-```
-```{r}
 fviz_silhouette(res.agSALUD)
-```
-```{r}
 fviz_silhouette(res.diaSALUD)
-```
-
 #Evaluación numérica
-```{r}
 poorPAMSALUD=data.frame(res.pamSALUD$silinfo$widths)
 poorPAMSALUD$Pais=row.names(poorPAMSALUD)
 poorPAMcasesSALUD=poorPAMSALUD[poorPAMSALUD$sil_width<0,'Pais']
 poorPAMcasesSALUD
 length(poorPAMcasesSALUD)
-```
-```{r}
 poorAGNESSALUD=data.frame(res.agSALUD$silinfo$widths)
 poorAGNESSALUD$Pais=row.names(poorAGNESSALUD)
 poorAGNEScasesSALUD=poorAGNESSALUD[poorAGNESSALUD$sil_width<0,'Pais']
 poorAGNEScasesSALUD
 length(poorAGNEScasesSALUD)
-```
-```{r}
 poorDIANASALUD=data.frame(res.diaSALUD$silinfo$widths)
 poorDIANASALUD$Pais=row.names(poorDIANASALUD)
 poorDIANAcasesSALUD=poorDIANASALUD[poorDIANASALUD$sil_width<0,'Pais']
@@ -502,141 +465,73 @@ proyeccionSALUD = cmdscale(g.distsalud, k=2,add = T)
 Datacovidof$dim1 = proyeccionSALUD$points[,1]
 Datacovidof$dim2 = proyeccionSALUD$points[,2]
 min(Datacovidof[,c('dim1','dim2')]); max(Datacovidof[,c('dim1','dim2')])
-```
-```{r}
 limites=c(-0.6,0.4)
 g.dist.cmdSALUD = daisy(Datacovidof[,c('dim1','dim2')], metric = 'euclidean')
 kNNdistplot(g.dist.cmdSALUD, k=5)
 abline(h=0.15, lty=2)
-```
-
-```{r}
 db.cmdSALUD = dbscan(g.dist.cmdSALUD, eps=0.15, MinPts=5,method = 'dist')
 db.cmdSALUD 
-```
-```{r}
 Datacovidof$clusterDB=db.cmdSALUD$cluster
 Datacovidof[Datacovidof$clusterDB==0,]
 length(Datacovidof[Datacovidof$clusterDB==0,])
 ```
-
-
-
-# CLUSTERS DE GOBERNANZA - Ivonne Mondoñedo
+# CLUSTERS DE GOBERNANZA 
 ```{r}
-library(cluster)
-library(factoextra)
-set.seed(777)
-row.names(Datacovidof)=Datacovidof$Pais
-Datacovidof=na.omit(Datacovidof)
 g.dist_gob= daisy(Datacovidof[,c(12,17)], metric="gower")
-```
 #Cluster no jerarquico - Partición
-```{r}
 fviz_nbclust(Datacovidof[,c(12,17)], pam,diss=g.dist_gob,method = "gap_stat",k.max = 10,verbose = F) 
-```
-```{r}
 res.pam_gob=pam(g.dist_gob,2,cluster.only = F)
-
 Datacovidof$clusterPT=res.pam_gob$cluster
 fviz_cluster(object = list(data=g.dist_gob, cluster = Datacovidof$clusterPT),
              geom = c("text"), 
              ellipse.type = "convex")
-```
-
-```{r}
 Datacovidof[Datacovidof$clusterPT==1,'Pais']
-```
-```{r}
 Datacovidof[Datacovidof$clusterPT==2,'Pais']
-```
-#Clusters jerarquicos 
-```{r}
+#Clusters jerárquicos 
 fviz_nbclust(Datacovidof[,c(12,17)], hcut,diss=g.dist_gob,method = "gap_stat",k.max = 10,verbose = F)
-```
-
 #Aglomerativo - Agnes
-```{r}
 res.agnes_gob = hcut(g.dist_gob, k = 5,hc_func='agnes',hc_method = "ward.D")
 Datacovidof$clustAG=res.agnes_gob$cluster
 fviz_dend(res.agnes_gob,k=5, cex = 0.5, horiz = T)
-```
-
-```{r}
 Datacovidof[Datacovidof$clustAG==1,'Pais']
-```
-```{r}
 Datacovidof[Datacovidof$clustAG==2,'Pais']
-```
-```{r}
 Datacovidof[Datacovidof$clustAG==3,'Pais']
-```
-```{r}
 Datacovidof[Datacovidof$clustAG==4,'Pais']
-```
-```{r}
 Datacovidof[Datacovidof$clustAG==5,'Pais']
-```
 #Divisivo - Diana
-```{r}
 res.diana_gob = hcut(g.dist_gob, k = 5,hc_func='diana')
 Datacovidof$clustDIV=res.diana_gob$cluster
 fviz_dend(res.diana_gob, cex = 0.5,horiz = T)
-```
-
-```{r}
 Datacovidof[Datacovidof$clustDIV==1,'Pais']
-```
-```{r}
 Datacovidof[Datacovidof$clustDIV==2,'Pais']
-```
-```{r}
 Datacovidof[Datacovidof$clustDIV==3,'Pais']
-```
-```{r}
 Datacovidof[Datacovidof$clustDIV==4,'Pais']
-```
-```{r}
 Datacovidof[Datacovidof$clustDIV==5,'Pais']
-```
 #Evaluación gráfica con siluetas 
-```{r}
 fviz_silhouette(res.pam_gob)
-```
-```{r}
 fviz_silhouette(res.agnes_gob)
-```
-```{r}
 fviz_silhouette(res.diana_gob)
-```
-
 #Evaluacion númerica
-```{r}
 poorPAM_Gob=data.frame(res.pam_gob$silinfo$widths)
 poorPAM_Gob$Pais=row.names(poorPAM_Gob)
-
 poorPAMcases_gob=poorPAM_Gob[poorPAM_Gob$sil_width<0,'Pais']
-# osea:
 poorPAMcases_gob
-```
-```{r}
 # agnes
 poorAGNES_gob=data.frame(res.agnes_gob$silinfo$widths)
 poorAGNES_gob$Pais=row.names(poorAGNES_gob)
 poorAGNEScases_gob=poorAGNES_gob[poorAGNES_gob$sil_width<0,'Pais']
 poorAGNEScases_gob
-```
-```{r}
-#diana:
+#diana
 poorDIANA_gob=data.frame(res.diana_gob$silinfo$widths)
 poorDIANA_gob$Pais=row.names(poorDIANA_gob)
 poorDIANAcases_gob=poorDIANA_gob[poorDIANA_gob$sil_width<0,'Pais']
 poorDIANAcases_gob
 ```
+```{r}
 #Estrategia basada en densidad
 ```{r}
 proyeccion_gob= cmdscale(g.dist_gob, k=2,add = T)
-Datacovidof$dim1 <- proyeccion_gob$points[,1]
+Datacovidof$dim1 <- proyeccion_gob$points[,1] 
 Datacovidof$dim2 <- proyeccion_gob$points[,2]
 ```
 ```{r}
@@ -804,19 +699,13 @@ MatrixCovid=polycor::hetcor(COVIDEFA)$correlations
 ```
 
 #Explorar Correlaciones
-#Sin evaluar significancia
 ```{r}
 library(ggcorrplot)
 ggcorrplot(MatrixCovid)
-```
-
-#Evaluando significancia
-```{r}
 ggcorrplot(MatrixCovid,
           p.mat = cor_pmat(MatrixCovid),
           insig = "blank")
 ```
-
 #KMO
 ```{r}
 library(psych)
@@ -876,19 +765,13 @@ sort(resulefa$communality)
 sort(resulefa$complexity)
 ```
 
-
-
-
-
 ```{r}
 COVIDEFA2=Datacovidof[,c(12:17)]
 ```
-
 ```{r}
 library(polycor)
 MatrixCovid2=polycor::hetcor(COVIDEFA2)$correlations
 ```
-
 #Explorar Correlaciones
 #Sin evaluar significancia
 ```{r}
@@ -957,46 +840,27 @@ cfa=cfa(Modelo,data=covidreg,
 covidreg=as.data.frame(cbind(covidreg,lavPredict(cfa)))
 ```
 
-# Regresión lineal (Gonzalo Berger)
-
+# Regresión lineal
 ```{r}
 library(stargazer)
-```
-```{r}
-names(covidreg)
 ```
 ```{r}
 Modelo1=formula(Decesos~Governanza)
 Modelo2=formula(Decesos~Governanza+Recursos_humanos_y_materiales)
 Modelo3=formula(Decesos~Governanza+Recursos_humanos_y_materiales+Recursos_financieros)
 Modelo4=formula(Decesos~Governanza+Recursos_humanos_y_materiales+Recursos_financieros+Agua_y_saneamiento)
-```
-```{r}
 reg1cov=lm(Modelo1,data=covidreg)
 stargazer(reg1cov,type='text',intercept.bottom = F)
-```
-
-```{r}
 reg2cov=lm(Modelo2,data=covidreg)
 stargazer(reg2cov,type='text',intercept.bottom = F)
-```
-
-```{r}
 reg3cov=lm(Modelo3,data=covidreg)
 stargazer(reg3cov,type='text',intercept.bottom = F)
-```
-
-```{r}
 reg4cov=lm(Modelo4,data=covidreg)
 stargazer(reg4cov,type='text',intercept.bottom = F)
-```
-
 #Análisis de varianza 
-```{r}
 tanova=anova(reg1cov,reg2cov,reg3cov,reg4cov)
 stargazer(tanova,type = 'text',summary = F,title = 'Tabla ANOVA')
 ```
-
 #DIAGNOSTICO DE LA REGRESIÓN
 ```{r}
 #linealidad
@@ -1082,4 +946,65 @@ plot(reg5cov, 5)
 checkReg5=as.data.frame(influence.measures(reg5cov)$is.inf)
 head(checkReg5)
 checkReg5[checkReg5$cook.d | checkReg5$hat,] 
+```
+
+# Recursos financieros
+
+```{r}
+Datacovidof2=merge(dataCovid,merge2,all.x = T,all.y = T)
+names(Datacovidof2)=c("Pais","Region","Subregion","Decesos","Agua","Saneamiento","CHE_percapita","Medicos","UHC","Camas","CHE","CC","PV","VA","GE","RL","RQ")
+Datacovidof2[,c(2:3,5:6,12:17)]=NULL
+Datacovidof2[,c(4,6)]=NULL
+row.names(Datacovidof2)=Datacovidof2$Pais
+Datacovidof2=na.omit(Datacovidof2)
+g.dist_rec = daisy(Datacovidof2[,c(2:5)], metric='gower')
+fviz_nbclust(Datacovidof2[,c(2:5)], pam,diss=g.dist_rec,method = 'gap_stat',k.max = 10,verbose = F)
+res.pam_rec=pam(g.dist_rec,2,cluster.only = F)
+Datacovidof2$clusterPT_rec=res.pam_rec$cluster
+fviz_cluster(object = list(data=g.dist_rec, cluster = Datacovidof2$clusterPT_rec),
+             geom = c("text"), 
+             ellipse.type = "convex")
+fviz_nbclust(Datacovidof2[,c(2:5)], hcut,diss=g.dist_rec,method = 'gap_stat',k.max = 10,verbose = F)
+res.agnes_rec = hcut(g.dist_rec, k = 2,hc_func='agnes',hc_method = 'ward.D')
+Datacovidof2$clustAG_rec=res.agnes_rec$cluster
+fviz_dend(res.agnes_rec,k=2, cex = 0.5, horiz = T)
+res.diana_rec = hcut(g.dist_rec, k = 2,hc_func='diana')
+Datacovidof2$clustDIV_rec=res.diana_rec$cluster
+fviz_dend(res.diana_rec, cex = 0.5,horiz = T)
+fviz_silhouette(res.pam_rec)
+fviz_silhouette(res.agnes_rec)
+fviz_silhouette(res.diana_rec)
+```
+```{r}
+g.dist_rec2 = daisy(Datacovidof2[,c(3:5)], metric='gower')
+fviz_nbclust(Datacovidof2[,c(3:5)], pam,diss=g.dist_rec,method = 'gap_stat',k.max = 10,verbose = F)
+res.pam_rec2=pam(g.dist_rec2,2,cluster.only = F)
+Datacovidof2$clusterPT_rec2=res.pam_rec2$cluster
+fviz_cluster(object = list(data=g.dist_rec2, cluster = Datacovidof2$clusterPT_rec2),
+             geom = c("text"), 
+             ellipse.type = "convex")
+fviz_nbclust(Datacovidof2[,c(3:5)], hcut,diss=g.dist_rec2,method = 'gap_stat',k.max = 10,verbose = F)
+res.agnes_rec2 = hcut(g.dist_rec2, k = 2,hc_func='agnes',hc_method = 'ward.D')
+Datacovidof2$clustAG_rec2=res.agnes_rec2$cluster
+fviz_dend(res.agnes_rec2,k=2, cex = 0.5, horiz = T)
+res.diana_rec2 = hcut(g.dist_rec2, k = 2,hc_func='diana')
+Datacovidof2$clustDIV_rec2=res.diana_rec2$cluster
+fviz_dend(res.diana_rec2, cex = 0.5,horiz = T)
+fviz_silhouette(res.pam_rec2)
+fviz_silhouette(res.agnes_rec2)
+fviz_silhouette(res.diana_rec2)
+```
+```{r}
+cluster2_rec=Datacovidof2[Datacovidof2$clustDIV_rec==2,'Pais']
+cluster2_rec2=Datacovidof2[Datacovidof2$clustDIV_rec2==2,'Pais']
+intersect(cluster2_rec,cluster2_rec2)
+setdiff(cluster2_rec2,cluster2_rec)
+```
+```{r}
+Datacovidof2=Datacovidof2[-c(4,8,14,21,27,29,37:39,43,47,50,59,61:62,66:67),]
+```
+```{r}
+Modelo6=formula(Decesos~ UHC+CHE+CHE_percapita)
+reg6cov=lm(Modelo6,data=Datacovidof2)
+stargazer(reg6cov,type='text',intercept.bottom = F)
 ```
