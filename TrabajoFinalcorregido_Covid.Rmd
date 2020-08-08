@@ -1,66 +1,44 @@
-# VARIABLES DE SALUD
 
-#Limpieza
-
-# BASE DE DATOS: DENSIDAD DE CAMAS EN LOS CENTROS HOSPITALARIOS (Mayra Vargas)
+# LIMPIEZA
+#DENSIDAD DE CAMAS EN LOS CENTROS HOSPITALARIOS
 ```{r}
 library(htmltab)
 linkCIA_cama = "https://www.cia.gov/library/publications/resources/the-world-factbook/fields/360.html"
 linkPath_cama='//*[@id="fieldListing"]'
 camas = htmltab(doc = linkCIA_cama, 
                 which = linkPath_cama)
-```
-#LIMPIEZA 
-```{r}
 library(tidyr)
 camas=separate(camas,`Hospital bed density`,into = c("oficial","delete")," ")
 camas$delete=NULL
 names(camas)=c("Pais","numero de camas por 1000 hab")
 camas$`numero de camas por 1000 hab`=as.numeric(camas$`numero de camas por 1000 hab`)
-str(camas)
-```
 #NA
-```{r}
 table(camas$`numero de camas por 1000 hab`,useNA = "always")
-```
 #MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA
-```{r}
 library(rio)
 lkpais = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 Paisesoficial=import(lkpais)
 Numerodecamas=merge(camas,Paisesoficial,by.x='Pais',by.y='Pais')
 ```
-# BASE DE DATOS: GASTO ACTUAL EN SALUD (Current Health Expenditure - CHE) (Mayra Vargas)
+#GASTO ACTUAL EN SALUD (Current Health Expenditure - CHE) 
 ```{r}
-library(htmltab)
 linkCIA_che = "https://www.cia.gov/library/publications/resources/the-world-factbook/fields/409.html"
 linkPath_che='//*[@id="fieldListing"]'
 che= htmltab(doc = linkCIA_che,
              which = linkPath_che)
-```
-#LIMPIEZA
-```{r}
-library(tidyr)
 che=separate(che,`Current Health Expenditure`,into = c("oficial","delete"),"%")
 che$delete=NULL
 names(che)=c("Pais","CHE")
 che$CHE=as.numeric(che$CHE)
-str(che)
-```
 #NA
-```{r}
 table(che$CHE,useNA = "always")
-```
 #MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA
-```{r}
-library(rio)
 lkpaises= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 Paisesoficial=import(lkpaises)
 HealthExpenditure=merge(che,Paisesoficial,by.x='Pais', by.y='Pais')
 ```
-# Base de datos: Asistencia sanitaria universal (Gonzalo Berger) 
+#Asistencia sanitaria universal 
 ```{r}
-library(rio)
 UHClk='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_World_Development_Indicators.xlsx'
 datauhc=import(UHClk)
 lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls'
@@ -73,76 +51,48 @@ datauhc[datauhc$Pais=='Venezuela, RB','Pais']='Venezuela'
 datauhc[datauhc$Pais=='Czech Republic','Pais']='Czechia'
 datauhc[datauhc$Pais=='Slovak Republic','Pais']='Slovakia'
 datauhc[datauhc$Pais=='Russian Federation','Pais']='Russia'
-```
-#NA (Gonzalo Berger)
-```{r}
+#NA
 table(datauhc$`Asistencia sanitaria universal`, useNA = 'always')
-```
-#MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA (Gonzalo Berger)
-```{r}
+#MERGE PARA QUEDARNOS CON LOS PAÍSES DE EUROPA Y AMÉRICA
 UHC=merge(datapaises,datauhc)
 ```
-# BASE DE DATOS: OCUPACIÓN HOSPITALARIA (Ivonne Mondoñedo Mora)
+#OCUPACIÓN HOSPITALARIA
 ```{r}
-library(htmltab)
 LinkDoc="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/359.html"
 Link_path_doc='//*[@id="fieldListing"]'
 Medicos= htmltab (doc = LinkDoc,which = Link_path_doc)
-```
-#Limpieza 
-```{r}
-names(Medicos)
 names(Medicos)= c ("Pais", "Numero_medicos")
-library(tidyr)
 Medicos=separate(Medicos,Numero_medicos,into=c("Numero_medicos",'delete'), "\\ ")[,-3]
 Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
 Medicos$Numero_medicos=trimws(Medicos$Numero_medicos,whitespace = "[\\h\\v]")
 Medicos$Numero_medicos=as.numeric(Medicos$Numero_medicos)
-```
 #Ver los NA's 
-```{r}
 table(Medicos$`Numero_medicos`,useNA = "always")
-```
 #Merge para quedarnos solo con países de Europa y América 
-```{r}
-library(rio)
 Europa_America3="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 EuroAmer3=import(Europa_America3)
 names(EuroAmer3)= c ("Pais")
 Doctores_EA =merge(Medicos,EuroAmer3,by.x='Pais', by.y='Pais') 
 ```
-# BASE DE DATOS: che_per_capita (Ivonne Mondoñedo Mora)
+#GASTO EN SALUD PER CÁPITA
 ```{r}
-library(rio)
 Linkche_per_capita="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Current-health-expenditure-per-capita-current-US.xls"
 che_per_capita= import(Linkche_per_capita)
-```
-#Limpieza 
-```{r}
 che_per_capita[c(2)]=NULL
 names(che_per_capita)= c ("Pais", "Porcentaje_che_per_capita")
-library(tidyr)
 che_per_capita=separate(che_per_capita,Porcentaje_che_per_capita,into=c("Porcentaje_che_per_capita",'delete'), "\\%")[,-3]
 che_per_capita$Porcentaje_che_per_capita=trimws(che_per_capita$Porcentaje_che_per_capita,whitespace = "[\\h\\v]")
 che_per_capita[,c(2)]=as.numeric(che_per_capita[,c(2)])
-```
 #Ver los NA's 
-```{r}
 table(che_per_capita$`Porcentaje_che_per_capita`,useNA = "always")
-```
 #Merge para quedarnos solo con países de Europa y América 
-```{r}
-library(rio)
 Europa_America2="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 EuroAmer2=import(Europa_America2)
 names(EuroAmer2)= c ("Pais")
 che_per_capita_EA =merge(che_per_capita,EuroAmer2,by.x='Pais', by.y='Pais') 
 ```
-# VARIABLES DE GOBERNANZA
-#Limpieza de las bases de datos
-# BASE DE DATOS: Estabilidad y ausencia de violencia + Control de Corrupción (Gonzalo Berger)
+#Estabilidad y ausencia de violencia + Control de la Corrupción
 ```{r}
-library(rio)
 lkcorrup='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_control_of_corruption.xlsx'
 datacorrup=import(lkcorrup)
 lkpaises='https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls'
@@ -151,133 +101,81 @@ datacorrup[c(2:4)]=NULL
 datacorrup=datacorrup[c(1:99),]
 names(datacorrup)=c('Pais','Control de la corrupción')
 datacorrup$`Control de la corrupción`=as.numeric(datacorrup$`Control de la corrupción`)
-
 lkviolence='https://github.com/GonzaloBerger/123/raw/master/Data_Extract_From_Worldwide_Governance_Indicators_political_stability_and_absence_of_violence.xlsx'
 dataviolence=import(lkviolence)
 dataviolence[c(2:4)]=NULL
 dataviolence=dataviolence[c(1:99),]
 names(dataviolence)=c('Pais','Estabilidad política y ausencia de violencia/terrorismo')
 dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`=as.numeric(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`)
-```
 #NA
-```{r}
 table(datacorrup$`Control de la corrupción`, useNA = 'always')
-```
-```{r}
 table(dataviolence$`Estabilidad política y ausencia de violencia/terrorismo`, useNA = 'always')
-```
 #Merge
-```{r}
 corrupcionyviolencia=merge(datacorrup,dataviolence)
 CORRUPVIOLENCIA=merge(datapaises,corrupcionyviolencia) 
 ``` 
-# Base de datos de la base de datos: voz y Accountability: rango de porcentaje (Voice and Accountability: PErcentile Rank) Mayra Vargas
+#Voz y Accountability: rango de porcentaje
 ```{r}
-library(rio)
 lXvoandac="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Voice%20and%20Accountability%20Percentile%20Rank.xlsx"
 VoiceandAcc=import(lXvoandac)
-```
-# Limpieza
-```{r}
 VoiceandAcc[,c(2,3,4)]=NULL
 names(VoiceandAcc)=c("Pais","VoiceandAccountability")
 VoiceandAcc$VoiceandAccountability=as.numeric(VoiceandAcc$VoiceandAccountability)
-str(VoiceandAcc)
-```
-# NA
-```{r}
+#NA
 table(VoiceandAcc$VoiceandAccountability,useNA = "always")
-```
-# Merge
-```{r}
-library(rio)
+#Merge
 lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 Paisesoficial=import(lkpaises)
 VoiceandAccountability = merge(VoiceandAcc,Paisesoficial,by.x='Pais',by.y='Pais')
 ```
-# BASE DE DATOS: Efectivida del gobierno - Ivonne Deliany Mondoñedo Mora
+#Efectividad del gobierno
 ```{r}
-library(rio)
 Gobernabilidad="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_Extract_From_Worldwide_Governance_Indicators%20(3).xlsx"
 Gobernanza=import(Gobernabilidad)
-```
-#Limpieza 
-```{r}
 names(Gobernanza)= c ("Pais", "Efectividad_gobierno")
 Gobernanza$Efectividad_gobierno=as.numeric(Gobernanza$Efectividad_gobierno)
 Gobernanza$Efectividad_gobierno=trimws(Gobernanza$Efectividad_gobierno,whitespace = "[\\h\\v]")
 Gobernanza[Gobernanza$Pais=='Russian','Pais']='Russia'
-```
 #Ver los NA's 
-```{r}
 table(Gobernanza$`Efectividad_gobierno`,useNA = "always")
-```
 #Merge para quedarnos solo con países de Europa y América
-```{r}
-library(rio)
 Europa_America4="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 EuroAmer4=import(Europa_America4)
 names(EuroAmer4)= c ("Pais")
 Gobernanza_EA=merge(Gobernanza,EuroAmer4,by.x='Pais', by.y='Pais') 
 ```
-#Base de datos: imperio de la ley- Mayra Vargas
+#Imperio de la ley
 ```{r}
-library(rio)
 lkRofLaw= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Data_From_Worldwide_Governance_Indicators_Rule%20of%20Law%20Percentile%20Rank.xlsx"
 RuleofLaw= import(lkRofLaw)
-```
-#Limpieza
-```{r}
 RuleofLaw[,c(2,3,4)] = NULL
 names(RuleofLaw)=c("Pais","RuleofLaw")
 RuleofLaw$RuleofLaw=as.numeric(RuleofLaw$RuleofLaw)
-```
 #NA
-```{r}
 table(RuleofLaw$RuleofLaw,useNA = "always")
-```
-#Merge para quedarnos con los países de Europa y América Latina
-```{r}
+#Merge para quedarnos con los países de Europa y América
 lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 Paisesoficial=import(lkpaises)
 Imperiodelaley=merge(RuleofLaw,Paisesoficial,by.x = 'Pais',by.y = 'Pais')
 ```
-# Base de datos : cualidad regulatoria - Mayra Vargas
+#Calidad regulatoria
 ```{r}
-library(rio)
 lkregulatoryq= "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/Regulatory%20Quality%20-%20Percentile%20Rank.xlsx"
 Regqual= import(lkregulatoryq)
-```
-#Limpieza
-```{r}
 Regqual[,c(2,3,4)] = NULL
 names(Regqual)=c("Pais","RegulatoryQuality")
-```
-```{r}
 Regqual[Regqual$Pais=='Venezuela, RB','Pais']='Venezuela'
 Regqual$RegulatoryQuality=as.numeric(Regqual$RegulatoryQuality)
-str(Regqual)
-```
 #NA
-```{r}
 table(Regqual$RegulatoryQuality,useNA = "always")
-```
 #MERGE
-```{r}
 lkpaises = "https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 Paisesoficial=import(lkpaises)
 RegulatoryQuality=merge(Regqual,Paisesoficial,by.x='Pais', by.y='Pais')
 ```
-# VARIABLES DE ACCESO A AGUA POTABLE Y SANEAMIENTO
-#Limpieza
-# Base de datos: Acceso a agua potable (Gonzalo Berger)
+#Acceso a fuentes mejoradas de agua potable
 ```{r} 
-library(htmltab)
-library(tidyr)
 library(stringr)
-library(rio)
-```
-```{r}
 lkpage='https://www.cia.gov/library/publications/resources/the-world-factbook/fields/361.html'
 lkpath='//*[@id="fieldListing"]'
 Aguapotable = htmltab(doc = lkpage, which = lkpath)
@@ -291,49 +189,30 @@ Aguapotable[,c(2)] = gsub(':','',Aguapotable[,c(2)])
 Aguapotable[,c(2)] = trimws(Aguapotable[,c(2)],whitespace = '[\\h\\v]')
 Aguapotable$Z1=as.numeric(Aguapotable$Z1)
 names(Aguapotable)=c('Pais','% of population with access to improved drinking water')
-```
 #NA
-```{r}
 table(Aguapotable$`% of population with access to improved drinking water`, useNA = 'always')
-```
 #Merge
-```{r}
 Agua=merge(datapaises,Aguapotable)
 ```
-# BASE DE DATOS: Saneamiento - Ivonne Deliany Mondoñedo Mora
+#Acceso a instalaciones mejoradas de saneamiento
 ```{r}
-library(htmltab)
 Linksana="https://www.cia.gov/library/publications/resources/the-world-factbook/fields/398.html"
 Link_path_sana='//*[@id="fieldListing"]'
 saneamiento= htmltab (doc = Linksana,which = Link_path_sana)
-```
-#Limpieza 
-```{r}
 names(saneamiento)= c ("Pais", "Porcentaje_Saneamiento")
-library(tidyr)
 saneamiento$Porcentaje_Saneamiento=gsub("\\%.*","",saneamiento$Porcentaje_Saneamiento)
 saneamiento$Porcentaje_Saneamiento=gsub(".*\\:","",saneamiento$Porcentaje_Saneamiento)
 saneamiento$Porcentaje_Saneamiento=as.numeric(saneamiento$Porcentaje_Saneamiento)
 saneamiento$Porcentaje_Saneamiento=trimws(saneamiento$Porcentaje_Saneamiento,whitespace = "[\\h\\v]")
-```
 #Ver los NA's 
-```{r}
 table(saneamiento$`Porcentaje_Saneamiento`,useNA = "always")
-```
 #Merge para quedarnos solo con países de Europa y América 
-```{r}
-library(rio)
 Europa_America1="https://github.com/IvonneMM/COVID19grupo2oficial/raw/master/America%20y%20Europa3%20(3)%20(1)%20(1)%20(6).xls"
 EuroAmer1=import(Europa_America1)
 names(EuroAmer1)= c ("Pais")
 Saneamiento_EA =merge(saneamiento,EuroAmer1,by.x='Pais', by.y='Pais')
 ```
-# BASE DE DATOS: Muertes confirmadas por millón de habitantes (Gonzalo Berger)
-```{r}
-library(htmltab)
-library(rio)
-library(stringr)
-```
+#Muertes confirmadas por millón de habitantes
 ```{r}
 lkpage='https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory'
 lkpath='//*[@id="thetable"]'
@@ -360,48 +239,34 @@ names(poblacion)=c('Pais','continentalregion','subregion','Poblacion_2019')
 poblacion$Poblacion_2019=gsub(',',"",poblacion$Poblacion_2019)
 poblacion$Poblacion_2019=as.numeric(poblacion$Poblacion_2019)
 covid19[covid19$Pais=='Saint Vincent','Pais']='Saint Vincent and the Grenadines'
-```
 #NA
-```{r}
 table(covid19$Muertes_confirmadas, useNA = 'always')
-```
 #Merge y estandarización
-```{r}
 data=merge(covid19,poblacion)
 data$'Decesos por millón de habitantes'=(data$Muertes_confirmadas/data$Poblacion_2019)*10^6
 data=data[,-c(2,5)]
 dataCovid=merge(data,datapaises)
 ```
-# MERGE DE LAS VARIABLES DE SALUD (Gonzalo Berger)
+# MERGE 
 ```{r}
+#MERGE DE LAS VARIABLES DE SALUD
 camasCHE = merge(Numerodecamas,HealthExpenditure,all.x=T,all.y=T)
 UHCcamasCHE = merge(UHC,camasCHE,all.x=T,all.y=T)
 DoctoresUHCcamasCHE = merge(Doctores_EA,UHCcamasCHE,all.x=T,all.y=T)
 DataSalud = merge (che_per_capita_EA,DoctoresUHCcamasCHE,all.x=T,all.y=T)
-```
-# MERGE DE VARIABLES DE GOBERNANZA - Ivonne Mondoñedo Mora 
-```{r}
+#MERGE DE VARIABLES DE GOBERNANZA
 Accountability_Corrupcion_Violencia=merge(CORRUPVIOLENCIA,VoiceandAccountability,all.x=T, all.y=T)
 Gob_Ley=merge(Gobernanza_EA,Imperiodelaley,all.x=T, all.y=T)
 Accountability_Corrupcion_Violencia_Gob_Ley=merge(Accountability_Corrupcion_Violencia,Gob_Ley, all.x=T, all.y=T)
 Merge_Gobernanza=merge(Accountability_Corrupcion_Violencia_Gob_Ley,RegulatoryQuality, all.x=T, all.y=T)
 Merge_Gobernanza$Efectividad_gobierno=as.numeric(Merge_Gobernanza$Efectividad_gobierno)
-```
-# MERGE DE LAS VARIABLES DE AGUA Y SANEAMIENTO - Mayra Vargas
-```{r}
+#MERGE DE LAS VARIABLES DE AGUA Y SANEAMIENTO
 Aguaysaneamiento=merge(Agua,Saneamiento_EA,all.x =T,all.y =T)
 Aguaysaneamiento$Porcentaje_Saneamiento=as.numeric(Aguaysaneamiento$Porcentaje_Saneamiento)
-```
-# MERGE FINAL (Mayra Vargas)
-```{r}
+#MERGE FINAL
 merge1=merge(DataSalud,Merge_Gobernanza,all.x = T,all.y = T)
 merge2=merge(Aguaysaneamiento,merge1,all.x = T,all.y = T)
-```
-```{r}
 Datacovidof=merge(dataCovid,merge2,all.x = T,all.y = T)
-```
-
-```{r}
 names(Datacovidof)=c("Pais","Region","Subregion","Decesos","Agua","Saneamiento","CHE_percapita","Medicos","UHC","Camas","CHE","CC","PV","VA","GE","RL","RQ")
 ```
 # CLUSTERS DE SALUD 
@@ -410,6 +275,8 @@ library(cluster)
 library(factoextra)
 library(dbscan)
 library(fpc)
+library(stringr)
+library(magrittr)
 ```
 ```{r}
 row.names(Datacovidof)=Datacovidof$Pais
@@ -527,60 +394,33 @@ poorDIANA_gob$Pais=row.names(poorDIANA_gob)
 poorDIANAcases_gob=poorDIANA_gob[poorDIANA_gob$sil_width<0,'Pais']
 poorDIANAcases_gob
 ```
-```{r}
+
 #Estrategia basada en densidad
 ```{r}
 proyeccion_gob= cmdscale(g.dist_gob, k=2,add = T)
-Datacovidof$dim1 <- proyeccion_gob$points[,1] 
-Datacovidof$dim2 <- proyeccion_gob$points[,2]
-```
-```{r}
+Datacovidof$dim1 = proyeccion_gob$points[,1] 
+Datacovidof$dim2 = proyeccion_gob$points[,2]
 base_gob= ggplot(Datacovidof,aes(x=dim1, y=dim2,label=row.names(Datacovidof))) 
 base_gob + geom_text(size=2)
-```
-```{r}
 Datacovidof$pam=as.factor(res.pam_gob$clustering)
 Datacovidof$agnes=as.factor(res.agnes_gob$cluster)
 Datacovidof$diana=as.factor(res.diana_gob$cluster)
-```
-```{r}
 min(Datacovidof[,c('dim1','dim2')]); max(Datacovidof[,c('dim1','dim2')])
-```
-```{r}
 limites=c(-0.8,0.6)
-
 base_gob= ggplot(Datacovidof,aes(x=dim1, y=dim2)) + ylim(limites) + xlim(limites) + coord_fixed()
 base_gob + geom_point(size=2, aes(color=pam))  + labs(title = "PAM") 
-```
-```{r}
 base_gob + geom_point(size=2, aes(color=agnes)) + labs(title = "AGNES")
-```
-```{r}
 base_gob + geom_point(size=2, aes(color=diana)) + labs(title = "DIANA")
-```
-```{r}
-library(dbscan)
-library(cluster)
-
 g.dist.cmd_gob=daisy(Datacovidof[,c('dim1','dim2')], metric = 'euclidean')
 kNNdistplot(g.dist.cmd_gob, k=6)
 abline(h=0.23, lty=2)
-```
-```{r}
-library(fpc)
 db.cmd_gob= dbscan(g.dist.cmd_gob, eps=0.23, MinPts=6,method = 'dist')
 db.cmd_gob
-```
-```{r}
 Datacovidof$dbCMD_gob=as.factor(db.cmd_gob$cluster)
-```
-```{r}
 library(ggrepel)
 base_gob= ggplot(Datacovidof,aes(x=dim1, y=dim2)) + ylim(limites) + xlim(limites) + coord_fixed()
 dbplot_gob= base_gob + geom_point(aes(color=dbCMD_gob)) 
 dbplot_gob
-```
-```{r}
 LABEL=ifelse(Datacovidof$dbCMD_gob==0,row.names(Merge_Gobernanza),"")
 dbplot_gob + geom_text_repel(aes(label=LABEL),
                          size=6, 
@@ -589,115 +429,61 @@ dbplot_gob + geom_text_repel(aes(label=LABEL),
                          segment.colour = "grey")
 ```
 
-# Clusters de agua potable y saneamiento (Mayra Vargas)
+# CLUSTERS DE AGUA Y SANEAMIENTO
 ```{r}
-library(cluster)
-library(factoextra)
-library(stringr)
-library(magrittr)
-```
-```{r}
-set.seed(777)
-row.names(Datacovidof)=Datacovidof$Pais
-Datacovidof=na.omit(Datacovidof)
 distancia= daisy(Datacovidof[,c(5,6)],metric = "gower")
-```
 #Cluster no jerárquico - partición
-```{r}
 fviz_nbclust(Datacovidof[,c(5,6)], pam, diss = distancia,method = "gap_stat",k.max = 10,verbose = F)
-```
-```{r}
 pam.resultado = pam(distancia,1,cluster.only = F)
 Datacovidof$clusterAS=pam.resultado$cluster
 fviz_cluster(object = list(data=distancia, cluster = Datacovidof$clusterAS),
              geom = c("text"), 
              ellipse.type = "convex")
-```
-
-#Clusters jerarquicos
-```{r}
+#Clusters jerárquicos
 fviz_nbclust(Datacovidof[,c(5,6)], hcut, diss = distancia,method = "gap_stat",k.max = 10,verbose = F)
-```
-
 #Aglomerativo - Agnes
-```{r}
 res.agnes<-hcut(distancia, k = 1,hc_func='agnes',hc_method = "ward.D")
 Datacovidof$clusterAgnes=res.agnes$cluster
 fviz_dend(res.agnes,k=1, cex = 0.5, horiz = T)
-```
-
 #Divisivo - Diana
-```{r}
-res.diana <- hcut(distancia, k = 1,hc_func='diana')
+res.diana = hcut(distancia, k = 1,hc_func='diana')
 Datacovidof$clusterDivisivo=res.diana$cluster
 fviz_dend(res.diana, cex = 0.7,horiz = T)
 ```
-
 #Estrategia basada en densidad
 ```{r}
 proyeccionAS = cmdscale(distancia, k=2,add = T)
-```
-```{r}
-Datacovidof$dim1 <- proyeccionAS$points[,1]
-Datacovidof$dim2 <- proyeccionAS$points[,2]
-
-#limites
+Datacovidof$dim1 = proyeccionAS$points[,1]
+Datacovidof$dim2 = proyeccionAS$points[,2]
+#límites
 min(Datacovidof[,c('dim1','dim2')]); max(Datacovidof[,c('dim1','dim2')])
-```
-```{r}
 limites=c(-0.4,1)
 g.dist.cmd_AS = daisy(Datacovidof[,c('dim1','dim2')], metric = 'euclidean')
-```
-```{r}
-library(dbscan)
 kNNdistplot(g.dist.cmd_AS, k=2)
 abline(h=0.06,lty=2)
-```
-```{r}
-library(fpc)
 db.cmd_AS= dbscan(g.dist.cmd_AS, eps=0.06, MinPts=2,method = 'dist')
 db.cmd_AS
-```
-```{r}
 Datacovidof$dbCMD_AS=as.factor(db.cmd_AS$cluster)
-```
-```{r}
 library(ggrepel)
 base_AS= ggplot(Datacovidof,aes(x=dim1, y=dim2)) + ylim(limites) + xlim(limites) + coord_fixed()
 dbplot_AS= base_AS + geom_point(aes(color=dbCMD_AS))
-
 dbplot_AS
-```
-```{r}
 dbplot_AS + geom_text_repel(size=3,aes(label=row.names(Datacovidof[,c(5,6)])))
-```
-```{r}
 LABEL=ifelse(Datacovidof$dbCMD_AS==0,row.names(Datacovidof[,c(5,6)]),"")
 dbplot_AS + geom_text_repel(aes(label=LABEL),
                          size=5, 
                          direction = "y", ylim = 0.45,
                          angle=45,
                          segment.colour = "turquoise")
-```
-
-```{r}
 Dataclusters=Datacovidof[,c(1,4,18:20,23)]
 names(Dataclusters)=c('Pais','Decesos','Salud_PAM','Salud_AG','Salud_DI','Gobernanza_PAM')
 ```
-# Analisis Factorial Exploratorio (EFA) - Mayra Vargas
-```{r}
-Datacovidof=na.omit(Datacovidof)
-```
-
+# Analisis Factorial Exploratorio (EFA)
 ```{r}
 COVIDEFA=Datacovidof[,c(7:11)]
-```
-
-```{r}
 library(polycor)
 MatrixCovid=polycor::hetcor(COVIDEFA)$correlations
 ```
-
 #Explorar Correlaciones
 ```{r}
 library(ggcorrplot)
@@ -725,7 +511,6 @@ is.singular.matrix(MatrixCovid)
 ```{r}
 fa.parallel(COVIDEFA,fm = 'ML', fa = 'fa')
 ```
-
 #Primer resultado
 ```{r}
 library(GPArotation)
@@ -742,7 +527,6 @@ print(resulefa$loadings,cutoff = 0.5)
 ```{r}
 fa.diagram(resulefa)
 ```
-
 #Evaluación
 #¿La Raíz del error cuadrático medio corregida está cerca a cero?
 ```{r}
@@ -764,7 +548,6 @@ sort(resulefa$communality)
 ```{r}
 sort(resulefa$complexity)
 ```
-
 ```{r}
 COVIDEFA2=Datacovidof[,c(12:17)]
 ```
@@ -817,29 +600,19 @@ print(resulefa2$loadings,cutoff = 0.5)
 ```{r}
 fa.diagram(resulefa2)
 ```
-
 ```{r}
 Modelo=' Recursos_financieros=~ CHE_percapita + CHE + UHC
           Recursos_humanos_y_materiales=~ Camas + Medicos
           Governanza=~ RL + GE + CC + VA + RQ + PV
           Agua_y_saneamiento=~ Agua + Saneamiento'
-```
-```{r}
 covidreg=Datacovidof[,4:17]
 covidreg=scale(covidreg)
-```
-```{r}
 library(lavaan)
-```
-```{r}
 cfa=cfa(Modelo,data=covidreg,
         std.lv=TRUE,
         missing='fiml')
-```
-```{r}
 covidreg=as.data.frame(cbind(covidreg,lavPredict(cfa)))
 ```
-
 # Regresión lineal
 ```{r}
 library(stargazer)
